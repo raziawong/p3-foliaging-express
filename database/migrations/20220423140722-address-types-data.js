@@ -16,7 +16,7 @@ exports.setup = function (options, seedLink) {
 
 exports.up = function (db) {
   const types = ["billing", "shipping"];
-  const promises = types.map((t) => db.insert("supply_types", ["type"], [t]));
+  const promises = types.map((t) => db.insert("address_types", ["type"], [t]));
   return Promise.all(promises);
 };
 
