@@ -1,6 +1,5 @@
-const dbMigrate = require("db-migrate");
-const assert = require("assert");
 require("dotenv").config();
+const dbMigrate = require("db-migrate");
 
 const getDBM = () => {
   const opts = {
@@ -19,13 +18,7 @@ const getDBM = () => {
     },
   };
 
-  const callback = (migrator, orignalError) => {
-    migrator.driver.close((err) => {
-      assert.ifError(err);
-    });
-  };
-
-  return dbMigrate.getInstance(true, opts, callback);
+  return dbMigrate.getInstance(true, opts);
 };
 
 module.exports = getDBM;

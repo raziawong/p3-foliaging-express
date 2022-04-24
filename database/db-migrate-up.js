@@ -4,11 +4,12 @@ main = () => {
   dbm
     .up()
     .then(() => {
-      console.log("Migrations completed successfully");
+      console.log("----- Migrations completed successfully -----");
       return;
     })
     .catch((err) => {
-      console.log("Migrations have failed");
+      console.error(err);
+      console.log("----- Migrations have failed -----");
       return;
     });
 };

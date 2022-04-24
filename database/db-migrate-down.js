@@ -2,13 +2,14 @@ const dbm = require("./db-migrate-instance")();
 
 main = () => {
   dbm
-    .down()
+    .down(50)
     .then(() => {
-      console.log("Migrations reverted successfully");
+      console.log("----- Migrations reverted successfully -----");
       return;
     })
     .catch((err) => {
-      console.log("Migrations revert have failed");
+      console.error(err);
+      console.log("----- Migrations revert failed -----");
       return;
     });
 };
