@@ -3,10 +3,8 @@ const hbs = require("hbs");
 const waxOn = require("wax-on");
 require("dotenv").config();
 
-let app = express();
+const app = express();
 app.set("view engine", "hbs");
-
-// static folder
 app.use(express.static("public"));
 waxOn.on(hbs.handlebars);
 waxOn.setLayoutPath("./views/layouts");
@@ -19,7 +17,7 @@ app.use(
 
 async function main() {
   app.get("/", (req, res) => {
-    res.send("Alive!");
+    res.render("landing/index");
   });
 }
 
