@@ -16,7 +16,7 @@ exports.setup = function (options, seedLink) {
 
 exports.up = function (db) {
   return db.createTable("water_frequencies", {
-    id: { type: "int", primaryKey: true, autoIncrement: true },
+    id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     frequency: { type: "string", length: 80, unique: true, notNull: true },
   });
 };

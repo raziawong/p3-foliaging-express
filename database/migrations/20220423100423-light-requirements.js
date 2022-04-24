@@ -16,7 +16,7 @@ exports.setup = function (options, seedLink) {
 
 exports.up = function (db) {
   return db.createTable("light_requirements", {
-    id: { type: "int", primaryKey: true, autoIncrement: true },
+    id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     requirement: { type: "string", length: 80, unique: true, notNull: true },
   });
 };

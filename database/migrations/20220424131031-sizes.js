@@ -15,14 +15,14 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable("planter_materials", {
+  return db.createTable("sizes", {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
-    material: { type: "string", length: 50, unique: true, notNull: true },
+    size: { type: "string", length: 50, unique: true, notNull: true },
   });
 };
 
 exports.down = function (db) {
-  return db.dropTable("planter_materials");
+  return db.dropTable("sizes");
 };
 
 exports._meta = {

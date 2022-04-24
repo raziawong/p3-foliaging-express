@@ -15,14 +15,16 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable("planter_materials", {
-    id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
-    material: { type: "string", length: 50, unique: true, notNull: true },
-  });
+  const sizes = ["Small", "Medium", "Large"];
+  const promises = sizes.map((s) => db.insert("sizes", ["size"], [s]));
+  return Promise.all(promises);
 };
 
 exports.down = function (db) {
-  return db.dropTable("planter_materials");
+  const sql = "DELETE FROM sizes";
+  return db.runSql(sql, function (err) {
+    if (err) return console.log(err);
+  });
 };
 
 exports._meta = {

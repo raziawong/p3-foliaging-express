@@ -16,7 +16,7 @@ exports.setup = function (options, seedLink) {
 
 exports.up = function (db) {
   return db.createTable("planter_types", {
-    id: { type: "int", primaryKey: true, autoIncrement: true },
+    id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     type: { type: "string", length: 50, unique: true, notNull: true },
   });
 };
