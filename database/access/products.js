@@ -1,6 +1,6 @@
 const { Product, Color, Size, Image, Discount } = require("../models");
 
-const getProductById = (id) => {
+const getProductById = async (id) => {
   return await Product.where({ id }).fetch({
     require: true,
     withRelated: [
@@ -13,27 +13,27 @@ const getProductById = (id) => {
       "supply",
     ],
   });
-}
+};
 
-const getAllProducts = () => {
+const getAllProducts = async () => {
   return await Product.fetchAll();
-}
+};
 
-const getAllColors = () => {
+const getAllColors = async () => {
   return await Color.fetchAll();
-}
+};
 
-const getAllSizes = () => {
+const getAllSizes = async () => {
   return await Size.fetchAll();
-}
+};
 
-const getAllImages = () => {
+const getAllImages = async () => {
   return await Image.fetchAll();
-}
+};
 
-const getAllDiscounts = () => {
+const getAllDiscounts = async () => {
   return await Discount.fetchAll();
-}
+};
 
 module.exports = {
   getProductById,

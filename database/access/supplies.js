@@ -16,6 +16,7 @@ const getAllSupplyTypes = async () => {
 };
 
 module.exports = {
+  getSupplyById,
   getAllSupplies,
   getAllSupplyTypes,
 };
