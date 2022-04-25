@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { setInterval } = require("timers");
 const dbm = require("./db-migrate-instance")();
 
 main = () => {
