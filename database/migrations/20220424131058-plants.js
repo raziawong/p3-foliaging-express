@@ -19,7 +19,6 @@ exports.up = function (db) {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     name: { type: "string", length: 150, unique: true, notNull: true },
     alias: { type: "string", length: 150, notNull: false },
-    cultivar: { type: "string", length: 100, unique: true, notNull: false },
     description: { type: "string", length: 200, notNull: false },
     details: { type: "text", notNull: false },
     plant_guide: { type: "text", notNull: false },

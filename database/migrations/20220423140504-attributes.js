@@ -18,6 +18,7 @@ exports.up = function (db) {
   return db.createTable("attributes", {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     attribute: { type: "string", length: 80, unique: true, notNull: true },
+    description: { type: "string", length: 150, notNull: false },
   });
 };
 
