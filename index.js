@@ -15,13 +15,19 @@ app.use(
   })
 );
 
-async function main() {
-  app.get("/", (req, res) => {
-    res.render("landing/index");
-  });
-}
+const ims = {
+  inventories: require("./routes/ims/inventories"),
+  products: require("./routes/ims/products"),
+};
 
-main();
+(async function () {
+  app.get("/", function (req, res) {
+    res.redirect("/landing");
+  });
+
+  app.use("/products", ims.products);
+  app.use("/inventory", ims.inventories);
+})();
 
 app.listen(3000, () => {
   console.log("Server has started");
