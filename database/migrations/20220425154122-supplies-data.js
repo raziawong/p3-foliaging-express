@@ -15,21 +15,28 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  const types = [
-    "Hanging",
-    "Self-Watering",
-    "Pot With Saucer",
-    "Saucer Only",
-    "Stands",
-    "Basket",
-    "Pot Only",
+  const values = [
+    {
+      name: "Perlite",
+      type_id: 2,
+    },
+    {
+      name: "Organic Neem Oil",
+      type_id: 4,
+    },
+    {
+      name: "Cotton Yarn Rubber Gloves",
+      type_id: 1,
+    },
   ];
-  const promises = types.map((t) => db.insert("planter_types", ["type"], [t]));
+  const promises = values.map((v) =>
+    db.insert("supplies", ["name", "type_id"], [v.name, v.type_id])
+  );
   return Promise.all(promises);
 };
 
 exports.down = function (db) {
-  const sql = "DELETE FROM planter_types";
+  const sql = "DELETE FROM supplies";
   return db.runSql(sql, function (err) {
     if (err) return console.log(err);
   });
