@@ -1,7 +1,36 @@
-{{#extends 'base'}}
+{{#extends "dashboard"}}
 
-{{#block 'content'}}
+  {{#block "content"}}
     <h1>Plants Inventory</h1>
-{{/block}}
+    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
+      <div class="w-full overflow-x-auto">
+        <table class="w-full whitespace-no-wrap">
+          <thead>
+            <tr
+              class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+            >
+              <th class="px-4 py-3">ID</th>
+              <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Alias</th>
+              <th class="px-4 py-3">Species</th>
+              <th class="px-4 py-3">Description</th>
+              <th class="px-4 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody  class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+            {{#each plants}}
+              <tr class="text-gray-700 dark:text-gray-400">
+                <td class="px-4 py-3">{{this.id}}</td>
+                <td class="px-4 py-3">{{this.name}}</td>
+                <td class="px-4 py-3">{{this.alias}}</td>
+                <td class="px-4 py-3">{{this.species.name}}</td>
+                <td class="px-4 py-3">{{this.description}}</td>
+                <td class="px-4 py-3"></td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div></div>
+  {{/block}}
 
 {{/extends}}

@@ -15,7 +15,9 @@ const getPlantById = async (id) => {
 };
 
 const getAllPlants = async () => {
-  return await Plant.fetchAll();
+  return await Plant.fetchAll({
+    withRelated: ["species", "light", "water", "care"],
+  });
 };
 
 const getAllSpecies = async () => {
