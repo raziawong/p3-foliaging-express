@@ -131,6 +131,15 @@ const Product = bookshelf.model("Product", {
   discounts: function () {
     return this.belongsToMany("Discount");
   },
+  plant: function () {
+    return this.belongsTo("Plant");
+  },
+  planter: function () {
+    return this.belongsTo("Planter");
+  },
+  supply: function () {
+    return this.belongsTo("Supply");
+  },
 });
 
 const AccountType = bookshelf.model("AccountType", {
