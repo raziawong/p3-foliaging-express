@@ -1,6 +1,6 @@
 module.exports = {
   mode: "jit",
-  content: ["./views/**/*.hbs", "./src/**/*.js"],
+  content: ["./views/**/*.hbs", "./public/**/*.js"],
   theme: {
     extend: {},
   },
