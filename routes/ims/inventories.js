@@ -17,7 +17,7 @@ router.get("/plants", async (req, res) => {
 router.get("/planters", async (req, res) => {
   const items = await getAllPlanters();
   res.render("inventories/planters/index", {
-    items: items.toJSON(),
+    planters: items.toJSON(),
   });
 });
 

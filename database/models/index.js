@@ -7,7 +7,7 @@ const LightRequirement = bookshelf.model("LightRequirement", {
   },
 });
 const WaterFrequency = bookshelf.model("WaterFrequency", {
-  tableName: "water_frequency",
+  tableName: "water_frequencies",
   plant: function () {
     return this.hasMany("Plant");
   },
