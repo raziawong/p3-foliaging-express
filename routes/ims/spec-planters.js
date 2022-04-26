@@ -7,7 +7,7 @@ const {
   addPlanter,
   updatePlanter,
 } = require("../../database/access/planters");
-const { messages, titles } = require("../../helpers/const");
+const { messages, titles, variables } = require("../../helpers/const");
 const { uiFields, createPlanterForm } = require("../../helpers/form");
 
 router.get("/", async (req, res) => {
@@ -37,13 +37,13 @@ router.post("/create", async (req, res) => {
     success: async (form) => {
       const planter = await addPlanter(form.data);
       req.flash(
-        "success_messages",
+        "variables.success",
         messages.createSuccess(titles.planter, planter.get("name"))
       );
       res.redirect("/specifications/planters");
     },
     error: async (form) => {
-      req.flash("error_messages", messages.createError(titles.planter));
+      req.flash("variables.error", messages.createError(titles.planter));
       res.redirect("/specifications/planters/create");
     },
   });
@@ -70,13 +70,13 @@ router.post("/:id/update", async (req, res) => {
     success: async (form) => {
       const planter = await updatePlanter(req.params.id, form.data);
       req.flash(
-        "success_messages",
+        "variables.success",
         messages.updateSuccess(titles.planter, planter.get("name"))
       );
       res.redirect("/specifications/planters");
     },
     error: async (form) => {
-      req.flash("error_messages", messages.updateError(titles.planter));
+      req.flash("variables.error", messages.updateError(titles.planter));
       res.redirect(`/specifications/planters/${req.params.id}/update`);
     },
   });
@@ -98,12 +98,15 @@ router.post("/:id/delete", async (req, res) => {
     await item.destroy();
   } catch (err) {
     req.flash(
-      "error_messages",
-      req.flash("error_messages", messages.deleteError(titles.planter))
+      "variables.error",
+      req.flash("variables.error", messages.deleteError(titles.planter))
     );
     res.redirect(`/specifications/planters/${req.params.id}/delete`);
   } finally {
-    req.flash("success_messages", messages.deleteSuccess(titles.planter, name));
+    req.flash(
+      "variables.success",
+      messages.deleteSuccess(titles.planter, name)
+    );
     res.redirect("/specifications/planters");
   }
 });

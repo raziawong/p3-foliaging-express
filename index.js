@@ -8,6 +8,7 @@ const session = require("express-session");
 const flash = require("express-flash");
 const FileStore = require("session-file-store")(session);
 const csrf = require("csurf");
+const { variables } = require("./helpers/const");
 
 const app = express();
 app.set("view engine", "hbs");
@@ -50,14 +51,14 @@ app.use(function (req, res, next) {
 
 app.use(flash());
 app.use(function (req, res, next) {
-  res.locals.success_messages = req.flash("success_messages");
-  res.locals.error_messages = req.flash("error_messages");
+  res.locals[variables.success] = req.flash(variables.success);
+  res.locals[variables.error] = req.flash(variables.error);
   next();
 });
 
 app.use(function (err, req, res, next) {
   if (err && err.code == "EBADCSRFTOKEN") {
-    req.flash("error_messages", "The form has expired. Please try again");
+    req.flash(variables.error, "The form has expired. Please try again");
     res.redirect("back");
   } else {
     next();

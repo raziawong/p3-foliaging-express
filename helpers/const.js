@@ -3,6 +3,10 @@ const titles = {
   planter: "Planter Specification",
   supply: "Supply Specification",
 };
+const variables = {
+  success: "success_messages",
+  error: "error_messages",
+};
 const messages = {
   createSuccess: (title, name) => `New ${title}, ${name}, has been created`,
   createError: (title) =>
@@ -17,5 +21,6 @@ const messages = {
 
 module.exports = {
   titles,
+  variables,
   messages,
 };

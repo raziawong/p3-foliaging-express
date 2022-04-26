@@ -10,7 +10,7 @@ const {
   addPlant,
   updatePlant,
 } = require("../../database/access/plants");
-const { messages, titles } = require("../../helpers/const");
+const { messages, titles, variables } = require("../../helpers/const");
 const { createPlantForm, uiFields } = require("../../helpers/form");
 
 router.get("/", async (req, res) => {
@@ -46,13 +46,13 @@ router.post("/create", async (req, res) => {
     success: async (form) => {
       const plant = await addPlant(form.data);
       req.flash(
-        "success_messages",
+        "variables.success",
         messages.createSuccess(titles.plant, plant.get("name"))
       );
       res.redirect("/specifications/plants");
     },
     error: async (form) => {
-      req.flash("error_messages", messages.createError(titles.plant));
+      req.flash("variables.error", messages.createError(titles.plant));
       res.redirect("/specifications/plants/create");
     },
   });
@@ -90,13 +90,13 @@ router.post("/:id/update", async (req, res) => {
     success: async (form) => {
       const plant = await updatePlant(req.params.id, form.data);
       req.flash(
-        "success_messages",
+        "variables.success",
         messages.updateSuccess(titles.plant, plant.get("name"))
       );
       res.redirect("/specifications/plants");
     },
     error: async (form) => {
-      req.flash("error_messages", messages.updateError(titles.plant));
+      req.flash("variables.error", messages.updateError(titles.plant));
       res.redirect(`/specifications/plants/${req.params.id}/update`);
     },
   });
@@ -117,10 +117,10 @@ router.post("/:id/delete", async (req, res) => {
   try {
     await item.destroy();
   } catch (err) {
-    req.flash("error_messages", messages.deleteError(titles.plant));
+    req.flash("variables.error", messages.deleteError(titles.plant));
     res.redirect(`/specifications/plants/${req.params.id}/delete`);
   } finally {
-    req.flash("success_messages", messages.deleteSuccess(titles.plant, name));
+    req.flash("variables.success", messages.deleteSuccess(titles.plant, name));
     res.redirect("/specifications/plants");
   }
 });

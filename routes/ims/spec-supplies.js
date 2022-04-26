@@ -6,7 +6,7 @@ const {
   addSupply,
   updateSupply,
 } = require("../../database/access/supplies");
-const { messages, titles } = require("../../helpers/const");
+const { messages, titles, variables } = require("../../helpers/const");
 const { createSupplyForm, uiFields } = require("../../helpers/form");
 
 router.get("/", async (req, res) => {
@@ -30,13 +30,13 @@ router.post("/create", async (req, res) => {
     success: async (form) => {
       const supply = await addSupply(form.data);
       req.flash(
-        "success_messages",
+        variables.success,
         messages.createSuccess(titles.supply, supply.get("name"))
       );
       res.redirect("/specifications/supplies");
     },
     error: async (form) => {
-      req.flash("error_messages", messages.createError(titles.supply));
+      req.flash(variables.error, messages.createError(titles.supply));
       res.redirect("/specifications/supplies/create");
     },
   });
@@ -57,13 +57,13 @@ router.post("/:id/update", async (req, res) => {
     success: async (form) => {
       const supply = await updateSupply(req.params.id, form.data);
       req.flash(
-        "success_messages",
+        "variables.success",
         messages.updateSuccess(titles.supply, supply.get("name"))
       );
       res.redirect("/specifications/supplies");
     },
     error: async (form) => {
-      req.flash("error_messages", messages.updateError(titles.supply));
+      req.flash("variables.error", messages.updateError(titles.supply));
       res.redirect(`/specifications/supplies/${req.params.id}/update`);
     },
   });
@@ -84,10 +84,10 @@ router.post("/:id/delete", async (req, res) => {
   try {
     await item.destroy();
   } catch (err) {
-    req.flash("error_messages", messages.deleteError(titles.supply));
+    req.flash("variables.error", messages.deleteError(titles.supply));
     res.redirect(`/specifications/supplies/${req.params.id}/delete`);
   } finally {
-    req.flash("success_messages", messages.deleteSuccess(titles.supply, name));
+    req.flash("variables.success", messages.deleteSuccess(titles.supply, name));
     res.redirect("/specifications/supplies");
   }
 });
