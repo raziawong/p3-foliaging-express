@@ -22,7 +22,7 @@ router.get("/create", async (req, res) => {
     await getAllPlanterTypesOpts(),
     await getAllPlanterMaterialsOpts()
   );
-  res.render("specifications/create", {
+  res.render("operations/create", {
     form: planterForm.toHTML(uiFields),
   });
 });
@@ -37,13 +37,13 @@ router.post("/create", async (req, res) => {
     success: async (form) => {
       const planter = await addPlanter(form.data);
       req.flash(
-        "variables.success",
+        variables.success,
         messages.createSuccess(titles.planter, planter.get("name"))
       );
       res.redirect("/specifications/planters");
     },
     error: async (form) => {
-      req.flash("variables.error", messages.createError(titles.planter));
+      req.flash(variables.error, messages.createError(titles.planter));
       res.redirect("/specifications/planters/create");
     },
   });
@@ -56,7 +56,7 @@ router.get("/:id/update", async (req, res) => {
     await getAllPlanterMaterialsOpts()
   );
   planterForm = planterForm.bind({ ...planter.attributes });
-  res.render("specifications/update", {
+  res.render("operations/update", {
     form: planterForm.toHTML(uiFields),
   });
 });
@@ -70,13 +70,13 @@ router.post("/:id/update", async (req, res) => {
     success: async (form) => {
       const planter = await updatePlanter(req.params.id, form.data);
       req.flash(
-        "variables.success",
+        variables.success,
         messages.updateSuccess(titles.planter, planter.get("name"))
       );
       res.redirect("/specifications/planters");
     },
     error: async (form) => {
-      req.flash("variables.error", messages.updateError(titles.planter));
+      req.flash(variables.error, messages.updateError(titles.planter));
       res.redirect(`/specifications/planters/${req.params.id}/update`);
     },
   });
@@ -84,7 +84,7 @@ router.post("/:id/update", async (req, res) => {
 
 router.get("/:id/delete", async (req, res) => {
   const item = await getPlanterById(req.params.id);
-  res.render("specifications/delete", {
+  res.render("operations/delete", {
     item: item.toJSON(),
     homePath: "/specifications/planters",
   });
@@ -98,15 +98,12 @@ router.post("/:id/delete", async (req, res) => {
     await item.destroy();
   } catch (err) {
     req.flash(
-      "variables.error",
-      req.flash("variables.error", messages.deleteError(titles.planter))
+      variables.error,
+      req.flash(variables.error, messages.deleteError(titles.planter))
     );
     res.redirect(`/specifications/planters/${req.params.id}/delete`);
   } finally {
-    req.flash(
-      "variables.success",
-      messages.deleteSuccess(titles.planter, name)
-    );
+    req.flash(variables.success, messages.deleteSuccess(titles.planter, name));
     res.redirect("/specifications/planters");
   }
 });

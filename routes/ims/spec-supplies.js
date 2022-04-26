@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 
 router.get("/create", async (req, res) => {
   const supplyForm = createSupplyForm(await getAllSupplyTypesOpts());
-  res.render("specifications/create", {
+  res.render("operations/create", {
     form: supplyForm.toHTML(uiFields),
   });
 });
@@ -46,7 +46,7 @@ router.get("/:id/update", async (req, res) => {
   const supply = await getSupplyById(req.params.id);
   let supplyForm = createSupplyForm(await getAllSupplyTypesOpts());
   supplyForm = supplyForm.bind({ ...supply.attributes });
-  res.render("specifications/update", {
+  res.render("operations/update", {
     form: supplyForm.toHTML(uiFields),
   });
 });
@@ -57,13 +57,13 @@ router.post("/:id/update", async (req, res) => {
     success: async (form) => {
       const supply = await updateSupply(req.params.id, form.data);
       req.flash(
-        "variables.success",
+        variables.success,
         messages.updateSuccess(titles.supply, supply.get("name"))
       );
       res.redirect("/specifications/supplies");
     },
     error: async (form) => {
-      req.flash("variables.error", messages.updateError(titles.supply));
+      req.flash(variables.error, messages.updateError(titles.supply));
       res.redirect(`/specifications/supplies/${req.params.id}/update`);
     },
   });
@@ -71,7 +71,7 @@ router.post("/:id/update", async (req, res) => {
 
 router.get("/:id/delete", async (req, res) => {
   const item = await getSupplyById(req.params.id);
-  res.render("specifications/delete", {
+  res.render("operations/delete", {
     item: item.toJSON(),
     homePath: "/specifications/supplies",
   });
@@ -84,10 +84,10 @@ router.post("/:id/delete", async (req, res) => {
   try {
     await item.destroy();
   } catch (err) {
-    req.flash("variables.error", messages.deleteError(titles.supply));
+    req.flash(variables.error, messages.deleteError(titles.supply));
     res.redirect(`/specifications/supplies/${req.params.id}/delete`);
   } finally {
-    req.flash("variables.success", messages.deleteSuccess(titles.supply, name));
+    req.flash(variables.success, messages.deleteSuccess(titles.supply, name));
     res.redirect("/specifications/supplies");
   }
 });

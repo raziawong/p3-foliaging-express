@@ -28,7 +28,7 @@ router.get("/create", async (req, res) => {
     await getAllWaterFrequenciesOpts(),
     await getAllTraitsOpts()
   );
-  res.render("specifications/create", {
+  res.render("operations/create", {
     form: plantForm.toHTML(uiFields),
   });
 });
@@ -46,13 +46,13 @@ router.post("/create", async (req, res) => {
     success: async (form) => {
       const plant = await addPlant(form.data);
       req.flash(
-        "variables.success",
+        variables.success,
         messages.createSuccess(titles.plant, plant.get("name"))
       );
       res.redirect("/specifications/plants");
     },
     error: async (form) => {
-      req.flash("variables.error", messages.createError(titles.plant));
+      req.flash(variables.error, messages.createError(titles.plant));
       res.redirect("/specifications/plants/create");
     },
   });
@@ -73,7 +73,7 @@ router.get("/:id/update", async (req, res) => {
     ...dbData,
     traits: selected,
   });
-  res.render("specifications/update", {
+  res.render("operations/update", {
     form: plantForm.toHTML(uiFields),
   });
 });
@@ -90,13 +90,13 @@ router.post("/:id/update", async (req, res) => {
     success: async (form) => {
       const plant = await updatePlant(req.params.id, form.data);
       req.flash(
-        "variables.success",
+        variables.success,
         messages.updateSuccess(titles.plant, plant.get("name"))
       );
       res.redirect("/specifications/plants");
     },
     error: async (form) => {
-      req.flash("variables.error", messages.updateError(titles.plant));
+      req.flash(variables.error, messages.updateError(titles.plant));
       res.redirect(`/specifications/plants/${req.params.id}/update`);
     },
   });
@@ -104,7 +104,7 @@ router.post("/:id/update", async (req, res) => {
 
 router.get("/:id/delete", async (req, res) => {
   const item = await getPlantById(req.params.id);
-  res.render("specifications/delete", {
+  res.render("operations/delete", {
     item: item.toJSON(),
     homePath: "/specifications/plants",
   });
@@ -117,10 +117,10 @@ router.post("/:id/delete", async (req, res) => {
   try {
     await item.destroy();
   } catch (err) {
-    req.flash("variables.error", messages.deleteError(titles.plant));
+    req.flash(variables.error, messages.deleteError(titles.plant));
     res.redirect(`/specifications/plants/${req.params.id}/delete`);
   } finally {
-    req.flash("variables.success", messages.deleteSuccess(titles.plant, name));
+    req.flash(variables.success, messages.deleteSuccess(titles.plant, name));
     res.redirect("/specifications/plants");
   }
 });
