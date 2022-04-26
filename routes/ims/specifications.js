@@ -9,21 +9,21 @@ router.get("/", async (req, res) => {
 
 router.get("/plants", async (req, res) => {
   const items = await getAllPlants();
-  res.render("inventories/plants/index", {
+  res.render("specifications/plants/index", {
     plants: items.toJSON(),
   });
 });
 
 router.get("/planters", async (req, res) => {
   const items = await getAllPlanters();
-  res.render("inventories/planters/index", {
+  res.render("specifications/planters/index", {
     planters: items.toJSON(),
   });
 });
 
 router.get("/supplies", async (req, res) => {
   const plants = await getAllSupplies();
-  res.render("inventories/supplies/index", {
+  res.render("specifications/supplies/index", {
     supplies: items.toJSON(),
   });
 });

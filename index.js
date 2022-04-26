@@ -8,6 +8,7 @@ app.set("view engine", "hbs");
 app.use(express.static("public"));
 waxOn.on(hbs.handlebars);
 waxOn.setLayoutPath("./views/layouts");
+hbs.registerPartials(__dirname + "/views/partials");
 
 app.use(
   express.urlencoded({
@@ -16,7 +17,7 @@ app.use(
 );
 
 const ims = {
-  inventories: require("./routes/ims/inventories"),
+  specifications: require("./routes/ims/specifications"),
   products: require("./routes/ims/products"),
 };
 
@@ -26,7 +27,7 @@ const ims = {
   });
 
   app.use("/products", ims.products);
-  app.use("/inventory", ims.inventories);
+  app.use("/specifications", ims.specifications);
 })();
 
 app.listen(3000, () => {
