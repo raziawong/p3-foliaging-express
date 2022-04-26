@@ -1,36 +1,61 @@
 {{#extends "dashboard"}}
-
   {{#block "content"}}
-    <h1>Plants Inventory</h1>
-    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
+    <h1>
+      Plants Specifications
+    </h1>
+    <div class="w-full mb-8 overflow-hidden">
       <div class="w-full overflow-x-auto">
-        <table class="w-full whitespace-no-wrap">
-          <thead>
-            <tr
-              class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
-            >
-              <th class="px-4 py-3">ID</th>
-              <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Alias</th>
-              <th class="px-4 py-3">Species</th>
-              <th class="px-4 py-3">Description</th>
-              <th class="px-4 py-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody  class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-            {{#each plants}}
-              <tr class="text-gray-700 dark:text-gray-400">
-                <td class="px-4 py-3">{{this.id}}</td>
-                <td class="px-4 py-3">{{this.name}}</td>
-                <td class="px-4 py-3">{{this.alias}}</td>
-                <td class="px-4 py-3">{{this.species.name}}</td>
-                <td class="px-4 py-3">{{this.description}}</td>
-                <td class="px-4 py-3"></td>
+        <div class="overflow-x-auto">
+          <table class="table w-full">
+            <!-- head -->
+            <thead>
+              <tr>
+                <th>
+                  ID
+                </th>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Alias
+                </th>
+                <th>
+                  Species
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Actions
+                </th>
               </tr>
-            {{/each}}
-          </tbody>
-        </table>
-      </div></div>
-  {{/block}}
+            </thead>
+            <tbody>
+              {{#each plants}}
+                <tr>
+                  <td>
+                    {{this.id}}
+                  </td>
+                  <td>
+                    {{this.name}}
+                  </td>
+                  <td>
+                    {{this.alias}}
+                  </td>
+                  <td>
+                    {{this.species.name}}
+                  </td>
+                  <td>
+                    {{this.description}}
+                  </td>
+                  <td></td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
 
+        </div>
+      </div>
+    </div>
+  {{/block}}
 {{/extends}}

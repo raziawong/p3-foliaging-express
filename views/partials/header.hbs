@@ -1,69 +1,131 @@
-<header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
-  <div
-    class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300"
-  >
-    <!-- Mobile hamburger -->
-    <button
-      class="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"
-      @click="toggleSideMenu"
-      aria-label="Menu"
-    >
-      <svg
-        class="w-6 h-6"
-        aria-hidden="true"
-        fill="currentColor"
-        viewBox="0 0 20 20"
+<div class="navbar bg-base-100">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <label
+        for="dashboard-drawer"
+        class="btn btn-primary drawer-button lg:hidden"
       >
-        <path
-          fill-rule="evenodd"
-          d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-          clip-rule="evenodd"
-        ></path>
-      </svg>
-    </button>
-    <!-- Filler -->
-    <div class="flex justify-center flex-1 lg:mr-32">
-      <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
-        <div class="absolute inset-y-0 flex items-center pl-2">
-        </div>
-      </div>
-    </div>
-    <ul class="flex items-center flex-shrink-0 space-x-6">
-      <!-- Theme toggler -->
-      <li class="flex">
-        <button
-          class="rounded-md focus:outline-none focus:shadow-outline-purple"
-          @click="toggleTheme"
-          aria-label="Toggle color mode"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          <template x-if="!dark">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h7"
+          ></path>
+        </svg>
+      </label>
+      <label tabindex="0" class="btn btn-ghost lg:hidden">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h8m-8 6h16"
+          ></path>
+        </svg>
+      </label>
+      <ul
+        tabindex="0"
+        class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+      >
+        <li>
+          <a>
+            Item 1
+          </a>
+        </li>
+        <li tabindex="0">
+          <a class="justify-between">
+            Parent
             <svg
-              class="w-5 h-5"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
+              class="fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
             >
               <path
-                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+                d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
               ></path>
             </svg>
-          </template>
-          <template x-if="dark">
-            <svg
-              class="w-5 h-5"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-          </template>
-        </button>
+          </a>
+          <ul class="p-2">
+            <li>
+              <a>
+                Submenu 1
+              </a>
+            </li>
+            <li>
+              <a>
+                Submenu 2
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a>
+            Item 3
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal p-0">
+      <li>
+        <a>
+          Item 1
+        </a>
+      </li>
+      <li tabindex="0">
+        <a>
+          Parent
+          <svg
+            class="fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+            ></path>
+          </svg>
+        </a>
+        <ul class="p-2">
+          <li>
+            <a>
+              Submenu 1
+            </a>
+          </li>
+          <li>
+            <a>
+              Submenu 2
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a>
+          Item 3
+        </a>
       </li>
     </ul>
   </div>
-</header>
+  <div class="navbar-end">
+    <a class="btn">
+      Get started
+    </a>
+  </div>
+</div>
