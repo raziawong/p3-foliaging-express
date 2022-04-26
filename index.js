@@ -1,7 +1,13 @@
 const express = require("express");
 const hbs = require("hbs");
 const waxOn = require("wax-on");
+const cors = require("cors");
 require("dotenv").config();
+
+const session = require("express-session");
+const flash = require("express-flash");
+const FileStore = require("session-file-store")(session);
+const csrf = require("csurf");
 
 const app = express();
 app.set("view engine", "hbs");
@@ -15,6 +21,32 @@ app.use(
     extended: false,
   })
 );
+
+app.use(cors());
+
+app.use(
+  session({
+    store: new FileStore(),
+    secret: process.env.SESSION_SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(function (req, res, next) {
+  res.locals.user = req.session.user;
+  next();
+});
+
+const csrfInstance = csrf();
+app.use(function (req, res, next) {
+  csrfInstance(req, res, next);
+});
+app.use(function (req, res, next) {
+  if (req.csrfToken) {
+    res.locals.csrfToken = req.csrfToken();
+  }
+  next();
+});
 
 const ims = {
   specifications: require("./routes/ims/specifications"),
