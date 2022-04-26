@@ -15,15 +15,15 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable("attributes_plants", {
+  return db.createTable("plants_traits", {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
-    attribute_id: {
+    trait_id: {
       type: "int",
       unsigned: true,
       notNull: true,
       foreignKey: {
-        name: "FK_attributes_plants_attribute_id",
-        table: "attributes",
+        name: "FK_plants_traits_trait_id",
+        table: "traits",
         mapping: "id",
         rules: {
           onDelete: "CASCADE",
@@ -36,7 +36,7 @@ exports.up = function (db) {
       unsigned: true,
       notNull: true,
       foreignKey: {
-        name: "FK_attributes_plants_plant_id",
+        name: "FK_plants_traits_plants_id",
         table: "plants",
         mapping: "id",
         rules: {
@@ -50,19 +50,19 @@ exports.up = function (db) {
 
 exports.down = function (db) {
   const foreignKeys = [
-    "FK_attributes_plants_attribute_id",
-    "FK_attributes_plants_plant_id",
+    "FK_plants_traits_trait_id",
+    "FK_plants_traits_plants_id",
   ];
   const promises = foreignKeys.map((fk) =>
-    db.removeForeignKey("attributes_plants", fk)
+    db.removeForeignKey("plants_traits", fk)
   );
   let ret = null;
   try {
     ret = Promise.all(promises).then(() => {
-      db.dropTable("attributes_plants");
+      db.dropTable("plants_traits");
     });
   } catch (err) {
-    console.log("Encountered error when dropping <attributes_plants> table");
+    console.log("Encountered error when dropping <plants_traits> table");
   }
   return ret;
 };

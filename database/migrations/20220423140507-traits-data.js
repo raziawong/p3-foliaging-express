@@ -24,14 +24,12 @@ exports.up = function (db) {
     "Pet Friendly",
     "Variegated",
   ];
-  const promises = attributes.map((a) =>
-    db.insert("attributes", ["attribute"], [a])
-  );
+  const promises = attributes.map((a) => db.insert("traits", ["trait"], [a]));
   return Promise.all(promises);
 };
 
 exports.down = function (db) {
-  const sql = "DELETE FROM attributes";
+  const sql = "DELETE FROM traits";
   return db.runSql(sql, function (err) {
     if (err) return console.log(err);
   });

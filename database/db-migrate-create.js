@@ -17,8 +17,8 @@ main = () => {
   doDBMCreate("water-frequencies-data");
   doDBMCreate("care-levels");
   doDBMCreate("care-levels-data");
-  doDBMCreate("attributes");
-  doDBMCreate("attributes-data");
+  doDBMCreate("traits");
+  doDBMCreate("traits-data");
   doDBMCreate("supply-types");
   doDBMCreate("supply-types-data");
   doDBMCreate("planter-types");
@@ -53,9 +53,9 @@ main = () => {
   setTimeout(() => doDBMCreate("cart-items"), 9000);
   setTimeout(() => doDBMCreate("ordered-items"), 9000);
   setTimeout(() => doDBMCreate("discounts-products"), 9000);
-  setTimeout(() => doDBMCreate("attributes-plants"), 9000);
+  setTimeout(() => doDBMCreate("plants-traits"), 9000);
   setTimeout(() => doDBMCreate("products-contraint-check"), 9000);
-  setTimeout(() => doDBMCreate("attributes-plants-data"), 10500);
+  setTimeout(() => doDBMCreate("plants-traits-data"), 10500);
 };
 
 main();

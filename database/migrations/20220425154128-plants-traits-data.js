@@ -17,46 +17,46 @@ exports.setup = function (options, seedLink) {
 exports.up = function (db) {
   const values = [
     {
-      attribute_id: 1,
+      trait_id: 1,
       plant_id: 1,
     },
     {
-      attribute_id: 2,
+      trait_id: 2,
       plant_id: 1,
     },
     {
-      attribute_id: 3,
+      trait_id: 3,
       plant_id: 1,
     },
     {
-      attribute_id: 4,
+      trait_id: 4,
       plant_id: 1,
     },
     {
-      attribute_id: 1,
+      trait_id: 1,
       plant_id: 3,
     },
     {
-      attribute_id: 2,
+      trait_id: 2,
       plant_id: 3,
     },
     {
-      attribute_id: 6,
+      trait_id: 6,
       plant_id: 3,
     },
   ];
   const promises = values.map((v) =>
     db.insert(
-      "attributes_plants",
-      ["attribute_id", "plant_id"],
-      [v.attribute_id, v.plant_id]
+      "plants_traits",
+      ["trait_id", "plant_id"],
+      [v.trait_id, v.plant_id]
     )
   );
   return Promise.all(promises);
 };
 
 exports.down = function (db) {
-  const sql = "DELETE FROM attributes_plants";
+  const sql = "DELETE FROM plants_traits";
   return db.runSql(sql, function (err) {
     if (err) return console.log(err);
   });
