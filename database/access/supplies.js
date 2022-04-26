@@ -6,11 +6,21 @@ const getSupplyById = async (id) => {
     withRelated: ["type"],
   });
 };
-
 const getAllSupplies = async () => {
   return await Supply.fetchAll({
     withRelated: ["type"],
   });
+};
+const addSupply = async (data) => {
+  const supply = new Supply().set(data);
+  await supply.save();
+  return supply;
+};
+const updateSupply = async (id, data) => {
+  const supply = await getSupplyById(id);
+  supply.set(data);
+  await supply.save();
+  return supply;
 };
 
 const getAllSupplyTypes = async () => {
@@ -25,6 +35,8 @@ const getAllSupplyTypesOpts = async () => {
 module.exports = {
   getSupplyById,
   getAllSupplies,
+  addSupply,
+  updateSupply,
   getAllSupplyTypes,
   getAllSupplyTypesOpts,
 };

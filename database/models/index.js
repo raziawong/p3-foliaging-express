@@ -18,8 +18,8 @@ const CareLevel = bookshelf.model("CareLevel", {
     return this.hasMany("Plant");
   },
 });
-const Attribute = bookshelf.model("Attribute", {
-  tableName: "attributes",
+const Trait = bookshelf.model("Trait", {
+  tableName: "traits",
   plants: function () {
     return this.belongsToMany("Plant");
   },
@@ -41,8 +41,8 @@ const Plant = bookshelf.model("Plant", {
   care: function () {
     return this.belongsTo("CareLevel");
   },
-  attributes: function () {
-    return this.belongsToMany("Attribute");
+  traits: function () {
+    return this.belongsToMany("Trait");
   },
   species: function () {
     return this.belongsTo("Species");
@@ -231,7 +231,7 @@ module.exports = {
   LightRequirement,
   WaterFrequency,
   CareLevel,
-  Attribute,
+  Trait,
   Species,
   Plant,
   SupplyType,

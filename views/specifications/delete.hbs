@@ -1,0 +1,28 @@
+{{#extends "dashboard"}}
+
+  {{#block "content"}}
+    <div class="w-full py-10 flex items-center justify-center">
+      <form method="POST">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+        <div class="alert alert-warning shadow-xs">
+          <div>
+            Are you sure you want to delete
+            <strong>{{item.name}}</strong>?
+          </div>
+          <div class="flex-none">
+            <a
+              href="{{homePath}}"
+              class="btn btn-outline btn-accent btn-sm"
+            >Cancel</a>
+            <input
+              type="submit"
+              class="btn btn-outline btn-error btn-sm"
+              value="Confirm"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+  {{/block}}
+
+{{/extends}}

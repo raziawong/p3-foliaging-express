@@ -6,11 +6,21 @@ const getPlanterById = async (id) => {
     withRelated: ["type", "material"],
   });
 };
-
 const getAllPlanters = async () => {
   return await Planter.fetchAll({
     withRelated: ["type", "material"],
   });
+};
+const addPlanter = async (data) => {
+  const planter = new Planter().set(data);
+  await planter.save();
+  return planter;
+};
+const updatePlanter = async (id, data) => {
+  const planter = await getPlanterById(id);
+  planter.set(data);
+  await planter.save();
+  return planter;
 };
 
 const getAllPlanterTypes = async () => {
@@ -34,6 +44,8 @@ const getAllPlanterMaterialsOpts = async () => {
 module.exports = {
   getPlanterById,
   getAllPlanters,
+  addPlanter,
+  updatePlanter,
   getAllPlanterTypes,
   getAllPlanterTypesOpts,
   getAllPlanterMaterials,

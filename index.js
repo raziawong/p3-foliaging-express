@@ -48,6 +48,22 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.success_messages = req.flash("success_messages");
+  res.locals.error_messages = req.flash("error_messages");
+  next();
+});
+
+app.use(function (err, req, res, next) {
+  if (err && err.code == "EBADCSRFTOKEN") {
+    req.flash("error_messages", "The form has expired. Please try again");
+    res.redirect("back");
+  } else {
+    next();
+  }
+});
+
 const ims = {
   specifications: require("./routes/ims/specifications"),
   products: require("./routes/ims/products"),

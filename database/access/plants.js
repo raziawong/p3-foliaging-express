@@ -4,20 +4,43 @@ const {
   LightRequirement,
   WaterFrequency,
   CareLevel,
-  Attribute,
+  Trait,
 } = require("../models");
 
 const getPlantById = async (id) => {
   return await Plant.where({ id }).fetch({
     require: false,
-    withRelated: ["species", "light", "water", "care", "attributes"],
+    withRelated: ["species", "light", "water", "care", "traits"],
   });
 };
-
 const getAllPlants = async () => {
   return await Plant.fetchAll({
     withRelated: ["species", "light", "water", "care"],
   });
+};
+const addPlant = async (data) => {
+  const { traits, ...inputs } = data;
+  const plant = new Plant().set(inputs);
+  await plant.save();
+  if (traits) {
+    await plant.traits().attach(traits.split(","));
+  }
+
+  return plant;
+};
+const updatePlant = async (id, data) => {
+  const plant = await getPlantById(id);
+  const { traits, ...inputs } = data;
+  plant.set(inputs);
+  await plant.save();
+
+  const selected = traits.split(",");
+  const existing = await plant.related("traits").pluck("id");
+  const remove = existing.filter((id) => selected.includes(id) === false);
+  await plant.traits().detach(remove);
+  await plant.traits().attach(selected);
+
+  return plant;
 };
 
 const getAllSpecies = async () => {
@@ -56,18 +79,20 @@ const getAllCareLevelsOpts = async () => {
   );
 };
 
-const getAllAttributes = async () => {
-  return await Attribute.fetchAll();
+const getAllTraits = async () => {
+  return await Trait.fetchAll();
 };
-const getAllAttributesOpts = async () => {
-  return await getAllAttributes().then((resp) =>
-    resp.map((o) => [o.get("id"), o.get("attribute")])
+const getAllTraitsOpts = async () => {
+  return await getAllTraits().then((resp) =>
+    resp.map((o) => [o.get("id"), o.get("trait")])
   );
 };
 
 module.exports = {
   getPlantById,
   getAllPlants,
+  addPlant,
+  updatePlant,
   getAllSpecies,
   getAllSpeciesOpts,
   getAllLightRequirements,
@@ -76,6 +101,6 @@ module.exports = {
   getAllWaterFrequenciesOpts,
   getAllCareLevels,
   getAllCareLevelsOpts,
-  getAllAttributes,
-  getAllAttributesOpts,
+  getAllTraits,
+  getAllTraitsOpts,
 };
