@@ -16,9 +16,15 @@ const getAllSupplies = async () => {
 const getAllSupplyTypes = async () => {
   return await SupplyType.fetchAll();
 };
+const getAllSupplyTypesOpts = async () => {
+  return await getAllSupplyTypes().then((resp) =>
+    resp.map((o) => [o.get("id"), o.get("type")])
+  );
+};
 
 module.exports = {
   getSupplyById,
   getAllSupplies,
   getAllSupplyTypes,
+  getAllSupplyTypesOpts,
 };
