@@ -1,7 +1,54 @@
-{{#extends 'dashboard'}}
+{{#extends "dashboard"}}
+  {{#block "content"}}
+    <h1>
+      Supplies Specifications
+    </h1>
+    <div class="w-full mb-8 overflow-hidden">
+      <div class="w-full overflow-x-auto">
+        <div class="overflow-x-auto">
+          <table class="table w-full">
+            <thead>
+              <tr>
+                <th>
+                  ID
+                </th>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Type
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each supplies}}
+                <tr>
+                  <td>
+                    {{this.id}}
+                  </td>
+                  <td>
+                    {{this.name}}
+                  </td>
+                  <td>
+                    {{this.type.type}}
+                  </td>
+                  <td>
+                    {{this.description}}
+                  </td>
+                  <td></td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
 
-{{#block 'content'}}
-    <h1>Supplies Inventory</h1>
-{{/block}}
-
+        </div>
+      </div>
+    </div>
+  {{/block}}
 {{/extends}}

@@ -16,13 +16,15 @@ router.get("/plants", async (req, res) => {
 
 router.get("/planters", async (req, res) => {
   const items = await getAllPlanters();
+  console.log(items.toJSON());
+  console.log((await getAllPlanterMaterials()).toJSON());
   res.render("specifications/planters/index", {
     planters: items.toJSON(),
   });
 });
 
 router.get("/supplies", async (req, res) => {
-  const plants = await getAllSupplies();
+  const items = await getAllSupplies();
   res.render("specifications/supplies/index", {
     supplies: items.toJSON(),
   });

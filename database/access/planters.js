@@ -8,7 +8,9 @@ const getPlanterById = async (id) => {
 };
 
 const getAllPlanters = async () => {
-  return await Planter.fetchAll();
+  return await Planter.fetchAll({
+    withRelated: ["type", "material"],
+  });
 };
 
 const getAllPlanterTypes = async () => {

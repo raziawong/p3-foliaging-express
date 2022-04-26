@@ -8,7 +8,9 @@ const getSupplyById = async (id) => {
 };
 
 const getAllSupplies = async () => {
-  return await Supply.fetchAll();
+  return await Supply.fetchAll({
+    withRelated: ["type"],
+  });
 };
 
 const getAllSupplyTypes = async () => {

@@ -2,19 +2,19 @@ const bookshelf = require("../bookshelf");
 
 const LightRequirement = bookshelf.model("LightRequirement", {
   tableName: "light_requirements",
-  plant: function () {
+  plants: function () {
     return this.hasMany("Plant");
   },
 });
 const WaterFrequency = bookshelf.model("WaterFrequency", {
   tableName: "water_frequencies",
-  plant: function () {
+  plants: function () {
     return this.hasMany("Plant");
   },
 });
 const CareLevel = bookshelf.model("CareLevel", {
   tableName: "care_levels",
-  plant: function () {
+  plants: function () {
     return this.hasMany("Plant");
   },
 });
@@ -26,7 +26,7 @@ const Attribute = bookshelf.model("Attribute", {
 });
 const Species = bookshelf.model("Species", {
   tableName: "species",
-  plant: function () {
+  plants: function () {
     return this.hasMany("Plant");
   },
 });
@@ -55,13 +55,13 @@ const Plant = bookshelf.model("Plant", {
 const SupplyType = bookshelf.model("SupplyType", {
   tableName: "supply_types",
   supplies: function () {
-    return this.hasMany("Supply");
+    return this.hasMany("Supply", "type_id");
   },
 });
 const Supply = bookshelf.model("Supply", {
   tableName: "supplies",
   type: function () {
-    return this.belongsTo("SupplyType");
+    return this.belongsTo("SupplyType", "type_id");
   },
   products: function () {
     return this.hasMany("Product");
@@ -71,22 +71,22 @@ const Supply = bookshelf.model("Supply", {
 const PlanterType = bookshelf.model("PlanterType", {
   tableName: "planter_types",
   planters: function () {
-    return this.hasMany("Planter");
+    return this.hasMany("Planter", "type_id");
   },
 });
 const PlanterMaterial = bookshelf.model("PlanterMaterial", {
   tableName: "planter_materials",
   planters: function () {
-    return this.hasMany("Planter");
+    return this.hasMany("Planter", "material_id");
   },
 });
 const Planter = bookshelf.model("Planter", {
   tableName: "planters",
   type: function () {
-    return this.belongsTo("PlanterType");
+    return this.belongsTo("PlanterType", "type_id");
   },
   material: function () {
-    return this.belongsTo("PlanterMaterial");
+    return this.belongsTo("PlanterMaterial", "material_id");
   },
   products: function () {
     return this.hasMany("Product");
