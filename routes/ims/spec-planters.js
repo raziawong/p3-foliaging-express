@@ -32,7 +32,6 @@ router.post("/create", async (req, res) => {
     await getAllPlanterTypesOpts(),
     await getAllPlanterMaterialsOpts()
   );
-
   planterForm.handle(req, {
     success: async (form) => {
       const planter = await addPlanter(form.data);
@@ -43,8 +42,9 @@ router.post("/create", async (req, res) => {
       res.redirect("/specifications/planters");
     },
     error: async (form) => {
-      req.flash(variables.error, messages.createError(titles.planter));
-      res.redirect("/specifications/planters/create");
+      res.render("operations/create", {
+        form: form.toHTML(uiFields),
+      });
     },
   });
 });
@@ -76,8 +76,9 @@ router.post("/:id/update", async (req, res) => {
       res.redirect("/specifications/planters");
     },
     error: async (form) => {
-      req.flash(variables.error, messages.updateError(titles.planter));
-      res.redirect(`/specifications/planters/${req.params.id}/update`);
+      res.render("operations/update", {
+        form: form.toHTML(uiFields),
+      });
     },
   });
 });
@@ -97,10 +98,7 @@ router.post("/:id/delete", async (req, res) => {
   try {
     await item.destroy();
   } catch (err) {
-    req.flash(
-      variables.error,
-      req.flash(variables.error, messages.deleteError(titles.planter))
-    );
+    req.flash(variables.error, messages.deleteError(titles.planter));
     res.redirect(`/specifications/planters/${req.params.id}/delete`);
   } finally {
     req.flash(variables.success, messages.deleteSuccess(titles.planter, name));

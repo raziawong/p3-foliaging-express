@@ -36,8 +36,9 @@ router.post("/create", async (req, res) => {
       res.redirect("/specifications/supplies");
     },
     error: async (form) => {
-      req.flash(variables.error, messages.createError(titles.supply));
-      res.redirect("/specifications/supplies/create");
+      res.render("operations/create", {
+        form: form.toHTML(uiFields),
+      });
     },
   });
 });
@@ -63,8 +64,9 @@ router.post("/:id/update", async (req, res) => {
       res.redirect("/specifications/supplies");
     },
     error: async (form) => {
-      req.flash(variables.error, messages.updateError(titles.supply));
-      res.redirect(`/specifications/supplies/${req.params.id}/update`);
+      res.render("operations/update", {
+        form: form.toHTML(uiFields),
+      });
     },
   });
 });
