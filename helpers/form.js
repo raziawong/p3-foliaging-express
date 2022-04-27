@@ -5,24 +5,15 @@ var uiFields = (name, object) => {
   const oWidget = object.widget;
   if (!Array.isArray(oWidget.classes)) {
     oWidget.classes =
-      oWidget.classes && oWidget.length
-        ? oWidget.classes.split(",")
-        : oWidget.type === "select"
-        ? ["select", "select-sm", "select-bordered", "w-full"]
-        : oWidget.type === "multipleSelect"
-        ? ["select", "select-bordered", "w-full", "h-32"]
-        : oWidget.type === "textarea"
-        ? ["textarea", "textarea-bordered", "w-full", "h-24"]
-        : ["input", "input-sm", "input-bordered", "w-full"];
+      oWidget.classes && oWidget.length ? oWidget.classes.split(",") : [];
+    if (oWidget.type !== "checkbox") {
+      oWidget.classes.push("w-full");
+    } else if (oWidget.type === "textarea") {
+      oWidget.classes.push("h-24");
+    }
   }
 
-  const errorClass = object.error
-    ? oWidget.type === "select" || oWidget.type === "multipleSelect"
-      ? "select-error"
-      : oWidget.type === "textarea"
-      ? "textarea-error"
-      : "input-error"
-    : "";
+  const errorClass = object.error ? "border-red-500" : "";
   if (errorClass) {
     oWidget.classes.push(errorClass);
   }
@@ -30,9 +21,7 @@ var uiFields = (name, object) => {
   object.cssClasses = { label: ["label"] };
   const label = object.labelHTML(name);
   const error = object.error
-    ? `<label class="label"><span class="text-red-500 label-text-alt">` +
-      object.error +
-      "</span></label>"
+    ? `<label class="text-red-500 prose-sm">` + object.error + "</label>"
     : "";
 
   const widget = oWidget.toHTML(name, object);
@@ -149,7 +138,7 @@ const createDiscountForm = () => {
       widget: widgets.date(),
     }),
     all_products: fields.boolean({
-      widget: widgets.checkbox({ classes: ["toggle toggle-secondary"] }),
+      widget: widgets.checkbox(),
     }),
   });
 };
