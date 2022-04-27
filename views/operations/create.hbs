@@ -1,11 +1,11 @@
-{{#extends "dashboard"}}
+{{#extends "base"}}
 
-  {{#block "content"}}
-    <form class="w-full" method="POST">
-      <input type="hidden" name="_csrf" value="{{csrfToken}}" />
-      {{{form}}}
-      <input type="submit" class="btn btn-primary mt-3" />
-    </form>
-  {{/block}}
+{{#block "content"}}
+<form class="w-full" method="POST">
+  <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+  {{{form}}}
+  <input type="submit" class="btn btn-primary mt-3" />
+</form>
+{{/block}}
 
 {{/extends}}
