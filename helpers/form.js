@@ -7,21 +7,21 @@ var uiFields = (name, object) => {
     oWidget.classes =
       oWidget.classes && oWidget.length
         ? oWidget.classes.split(",")
-        : oWidget.type === "text"
-        ? ["input", "input-sm", "input-bordered", "w-full"]
-        : oWidget.type === "textarea"
-        ? ["textarea", "textarea-bordered", "w-full", "h-24"]
+        : oWidget.type === "select"
+        ? ["select", "select-sm", "select-bordered", "w-full"]
         : oWidget.type === "multipleSelect"
         ? ["select", "select-bordered", "w-full", "h-32"]
-        : ["select", "select-sm", "select-bordered", "w-full"];
+        : oWidget.type === "textarea"
+        ? ["textarea", "textarea-bordered", "w-full", "h-24"]
+        : ["input", "input-sm", "input-bordered", "w-full"];
   }
 
   const errorClass = object.error
-    ? oWidget.type === "text"
-      ? "input-error"
+    ? oWidget.type === "select" || oWidget.type === "multipleSelect"
+      ? "select-error"
       : oWidget.type === "textarea"
       ? "textarea-error"
-      : "select-error"
+      : "input-error"
     : "";
   if (errorClass) {
     oWidget.classes.push(errorClass);
@@ -41,34 +41,48 @@ var uiFields = (name, object) => {
 
 const createProductForm = (plants, planters, supplies, colors, sizes) => {
   return forms.create({
-    name: fields.title({
+    title: fields.string({
       required: true,
       errorAfterField: true,
       validators: [validators.maxlength(150)],
     }),
-    plant: fields.string({
+    plant_id: fields.string({
       label: "Plant",
       errorAfterField: true,
       widget: widgets.select(),
       choices: plants,
     }),
-    planter: fields.string({
+    planter_id: fields.string({
+      label: "Planter",
       errorAfterField: true,
       widget: widgets.select(),
       choices: planters,
     }),
-    supply: fields.string({
+    supply_id: fields.string({
+      label: "Supply",
       errorAfterField: true,
       widget: widgets.select(),
       choices: supplies,
     }),
-    color: fields.string({
+    stock: fields.number({
       required: true,
+      errorAfterField: true,
+      widget: widgets.number(),
+    }),
+    price: fields.number({
+      label: "Price ($)",
+      required: true,
+      errorAfterField: true,
+      widget: widgets.number(),
+    }),
+    color_id: fields.string({
+      label: "Color",
       errorAfterField: true,
       widget: widgets.select(),
       choices: colors,
     }),
-    size: fields.string({
+    size_id: fields.string({
+      label: "Size",
       required: true,
       errorAfterField: true,
       widget: widgets.select(),
@@ -86,18 +100,7 @@ const createProductForm = (plants, planters, supplies, colors, sizes) => {
       widget: widgets.number(),
     }),
     weight: fields.number({
-      label: "Weight (g)",
-      widget: widgets.number(),
-    }),
-    stock: fields.number({
-      required: true,
-      errorAfterField: true,
-      widget: widgets.number(),
-    }),
-    price: fields.number({
-      label: "Price (cents)",
-      required: true,
-      errorAfterField: true,
+      label: "Weight (kg)",
       widget: widgets.number(),
     }),
   });

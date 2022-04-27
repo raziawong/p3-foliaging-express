@@ -140,6 +140,36 @@ const Product = bookshelf.model("Product", {
   supply: function () {
     return this.belongsTo("Supply");
   },
+  parse: function (resp) {
+    if (resp.height) {
+      resp.height = resp.height / 10;
+    }
+    if (resp.width) {
+      resp.width = resp.width / 10;
+    }
+    if (resp.weight) {
+      resp.weight = resp.weight / 1000;
+    }
+    if (resp.price) {
+      resp.price = resp.price / 100;
+    }
+    return resp;
+  },
+  format: function (attributes) {
+    if (attributes.height && !isNaN(attributes.height)) {
+      attributes.height = attributes.height * 10;
+    }
+    if (attributes.width && !isNaN(attributes.width)) {
+      attributes.width = attributes.width * 10;
+    }
+    if (attributes.weight && !isNaN(attributes.weight)) {
+      attributes.weight = attributes.weight * 1000;
+    }
+    if (attributes.price && !isNaN(attributes.price)) {
+      attributes.price = attributes.price * 100;
+    }
+    return attributes;
+  },
 });
 
 const AccountType = bookshelf.model("AccountType", {
