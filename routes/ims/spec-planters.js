@@ -96,7 +96,9 @@ router.post("/:id/delete", async (req, res) => {
   const name = item.get("name");
 
   try {
-    await item.destroy();
+    if (item) {
+      await item.destroy();
+    }
   } catch (err) {
     req.flash(variables.error, messages.deleteError(titles.planter));
     res.redirect(`/specifications/planters/${req.params.id}/delete`);

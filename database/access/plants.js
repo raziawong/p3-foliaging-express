@@ -30,16 +30,19 @@ const addPlant = async (data) => {
 };
 const updatePlant = async (id, data) => {
   const plant = await getPlantById(id);
-  const { traits, ...inputs } = data;
-  plant.set(inputs);
-  await plant.save();
+  if (plant) {
+    const { traits, ...inputs } = data;
+    plant.set(inputs);
+    await plant.save();
 
-  const selected = traits.split(",");
-  const existing = await plant.related("traits").pluck("id");
-  const remove = existing.filter((id) => selected.includes(id) === false);
-  await plant.traits().detach(remove);
-  await plant.traits().attach(selected);
-
+    if (traits) {
+      const selected = traits.split(",");
+      const existing = await plant.related("traits").pluck("id");
+      const remove = existing.filter((id) => selected.includes(id) === false);
+      await plant.traits().detach(remove);
+      await plant.traits().attach(selected);
+    }
+  }
   return plant;
 };
 
