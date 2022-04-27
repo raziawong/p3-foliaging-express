@@ -11,7 +11,7 @@ const { createSupplyForm, uiFields } = require("../../helpers/form");
 
 router.get("/", async (req, res) => {
   const items = await getAllSupplies();
-  res.render("specifications/supplies/index", {
+  res.render("listing/supplies", {
     supplies: items.toJSON(),
   });
 });

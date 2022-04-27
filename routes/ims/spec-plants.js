@@ -15,7 +15,7 @@ const { createPlantForm, uiFields } = require("../../helpers/form");
 
 router.get("/", async (req, res) => {
   const items = await getAllPlants();
-  res.render("specifications/plants/index", {
+  res.render("listing/plants", {
     plants: items.toJSON(),
   });
 });

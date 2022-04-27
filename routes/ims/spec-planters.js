@@ -12,7 +12,7 @@ const { uiFields, createPlanterForm } = require("../../helpers/form");
 
 router.get("/", async (req, res) => {
   const items = await getAllPlanters();
-  res.render("specifications/planters/index", {
+  res.render("listing/planters", {
     planters: items.toJSON(),
   });
 });

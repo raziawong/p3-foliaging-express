@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
       : {};
     return item;
   });
-  res.render("products", {
+  res.render("listing/products", {
     products: items,
   });
 });
