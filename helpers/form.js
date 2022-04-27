@@ -69,12 +69,14 @@ const createProductForm = (plants, planters, supplies, colors, sizes) => {
     stock: fields.number({
       required: true,
       errorAfterField: true,
+      validators: [validators.min(1)],
       widget: widgets.number(),
     }),
     price: fields.number({
       label: "Price ($)",
       required: true,
       errorAfterField: true,
+      validators: [validators.min(1)],
       widget: widgets.number(),
     }),
     color_id: fields.string({
@@ -92,17 +94,52 @@ const createProductForm = (plants, planters, supplies, colors, sizes) => {
     height: fields.number({
       label: "Height (cm)",
       errorAfterField: true,
+      validators: [validators.min(1)],
       widget: widgets.number(),
     }),
     width: fields.number({
       label: "Width / Circumference (cm)",
       errorAfterField: true,
-      validators: [validators.maxlength(200)],
+      validators: [validators.min(1)],
       widget: widgets.number(),
     }),
     weight: fields.number({
       label: "Weight (kg)",
+      validators: [validators.min(1)],
       widget: widgets.number(),
+    }),
+  });
+};
+
+const createDiscountForm = () => {
+  return forms.create({
+    title: fields.string({
+      required: true,
+      errorAfterField: true,
+      validators: [validators.maxlength(50)],
+    }),
+    code: fields.string({
+      errorAfterField: true,
+      validators: [validators.maxlength(10)],
+    }),
+    percentage: fields.number({
+      required: true,
+      errorAfterField: true,
+      validators: [validators.min(1), validators.max(99)],
+      widget: widgets.number(),
+    }),
+    start_date: fields.date({
+      required: true,
+      errorAfterField: true,
+      widget: widgets.date(),
+    }),
+    end_date: fields.date({
+      required: true,
+      errorAfterField: true,
+      widget: widgets.date(),
+    }),
+    all_products: fields.boolean({
+      widget: widgets.checkbox({ classes: ["toggle toggle-secondary"] }),
     }),
   });
 };
@@ -225,6 +262,7 @@ const createSupplyForm = (type) => {
 module.exports = {
   uiFields,
   createProductForm,
+  createDiscountForm,
   createPlantForm,
   createPlanterForm,
   createSupplyForm,

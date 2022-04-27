@@ -1,5 +1,6 @@
 const titles = {
   product: "Product Item",
+  discount: "Discount Item",
   plant: "Plant Specification",
   planter: "Planter Specification",
   supply: "Supply Specification",

@@ -113,6 +113,11 @@ const Image = bookshelf.model("Image", {
 });
 const Discount = bookshelf.model("Discount", {
   tableName: "discounts",
+  initialize: function () {
+    this.on("creating", (model, attributes) => {
+      attributes.created_date = new Date();
+    });
+  },
   products: function () {
     return this.belongsToMany("Product");
   },

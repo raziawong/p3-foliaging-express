@@ -1,11 +1,11 @@
-const { Product, Color, Size, Image, Discount } = require("../models");
+const { Product, Color, Size, Image } = require("../models");
+const { getAllDiscounts } = require("./discounts");
 const { getAllPlanters } = require("./planters");
 const { getAllPlants } = require("./plants");
 const { getAllSupplies } = require("./supplies");
 
-const getProductById = async (id) => {
-  return await Product.where({ id }).fetch({
-    require: true,
+const getAllProducts = async () => {
+  return await Product.fetchAll({
     withRelated: [
       "color",
       "size",
@@ -17,8 +17,9 @@ const getProductById = async (id) => {
     ],
   });
 };
-const getAllProducts = async () => {
-  return await Product.fetchAll({
+const getProductById = async (id) => {
+  return await Product.where({ id }).fetch({
+    require: true,
     withRelated: [
       "color",
       "size",
@@ -87,9 +88,6 @@ const getAllImagesOpts = async () => {
   );
 };
 
-const getAllDiscounts = async () => {
-  return await Discount.fetchAll();
-};
 const getAllDiscountsOpts = async () => {
   const opts = await getAllDiscounts().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("title")])
@@ -97,7 +95,6 @@ const getAllDiscountsOpts = async () => {
   opts.unshift(["", "None"]);
   return opts;
 };
-
 const getAllPlantsOpts = async () => {
   const opts = await getAllPlants().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("name")])
@@ -121,8 +118,8 @@ const getAllSuppliesOpts = async () => {
 };
 
 module.exports = {
-  getProductById,
   getAllProducts,
+  getProductById,
   addProduct,
   updateProduct,
   getAllColors,
@@ -131,7 +128,6 @@ module.exports = {
   getAllSizesOpts,
   getAllImages,
   getAllImagesOpts,
-  getAllDiscounts,
   getAllDiscountsOpts,
   getAllPlantsOpts,
   getAllPlantersOpts,

@@ -23,6 +23,7 @@ exports.up = function (db) {
     created_date: { type: "datetime", notNull: true },
     start_date: { type: "datetime", notNull: true },
     end_date: { type: "datetime", notNull: true },
+    all_products: { type: "boolean", defaultValue: false, notNull: true },
   });
 };
 
