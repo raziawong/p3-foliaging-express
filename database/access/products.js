@@ -45,11 +45,13 @@ const updateProduct = async (id, data) => {
   product.set(inputs);
   await product.save();
 
-  const selected = discounts.split(",");
-  const existing = await product.related("discounts").pluck("id");
-  const remove = existing.filter((id) => selected.includes(id) === false);
-  await product.discounts().detach(remove);
-  await product.discounts().attach(selected);
+  if (discounts) {
+    const selected = discounts.split(",");
+    const existing = await product.related("discounts").pluck("id");
+    const remove = existing.filter((id) => selected.includes(id) === false);
+    await product.discounts().detach(remove);
+    await product.discounts().attach(selected);
+  }
 
   return product;
 };

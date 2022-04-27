@@ -83,7 +83,6 @@ const createProductForm = (plants, planters, supplies, colors, sizes) => {
     }),
     size_id: fields.string({
       label: "Size",
-      required: true,
       errorAfterField: true,
       widget: widgets.select(),
       choices: sizes,

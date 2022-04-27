@@ -119,6 +119,15 @@ const Discount = bookshelf.model("Discount", {
 });
 const Product = bookshelf.model("Product", {
   tableName: "products",
+  initialize: function () {
+    this.on("creating", (model, attributes) => {
+      attributes.created_date = new Date();
+      attributes.modified_date = new Date();
+    });
+    this.on("updating", (model, attributes) => {
+      attributes.modified_date = new Date();
+    });
+  },
   color: function () {
     return this.belongsTo("Color");
   },
@@ -156,6 +165,12 @@ const Product = bookshelf.model("Product", {
     return resp;
   },
   format: function (attributes) {
+    Object.entries(attributes).map(([k, v]) => {
+      if (!v) {
+        delete attributes[k];
+      }
+    });
+
     if (attributes.height && !isNaN(attributes.height)) {
       attributes.height = attributes.height * 10;
     }
