@@ -1,5 +1,5 @@
 module.exports = {
-  content: ["./views/**/*.hbs", "./public/**/*.js", "./forms/*.js"],
+  content: ["./views/**/*.hbs", "./public/**/*.js", "./helpers/*.js"],
   dasiyui: {
     themes: [
       {

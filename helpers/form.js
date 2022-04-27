@@ -27,10 +27,12 @@ var uiFields = (name, object) => {
     oWidget.classes.push(errorClass);
   }
 
-  oWidget.labelClasses = ["label"];
+  object.cssClasses = { label: ["label"] };
   const label = object.labelHTML(name);
   const error = object.error
-    ? `<div class="invalid-feedback">` + object.error + "</div>"
+    ? `<label class="label"><span class="text-red-500 label-text-alt">` +
+      object.error +
+      "</span></label>"
     : "";
 
   const widget = oWidget.toHTML(name, object);
