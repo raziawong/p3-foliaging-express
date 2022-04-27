@@ -16,9 +16,19 @@ const { messages, titles, variables } = require("../../helpers/const");
 const { createProductForm, uiFields } = require("../../helpers/form");
 
 router.get("/", async (req, res) => {
-  const items = await getAllProducts();
+  let items = await getAllProducts();
+  items = items.toJSON().map((item) => {
+    item.specification = item.plant_id
+      ? item.plant
+      : item.planter_id
+      ? item.planter
+      : item.supply_id
+      ? item.supply
+      : {};
+    return item;
+  });
   res.render("products", {
-    products: items.toJSON(),
+    products: items,
   });
 });
 
