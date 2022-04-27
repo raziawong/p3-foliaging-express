@@ -66,8 +66,8 @@ app.use(function (err, req, res, next) {
 });
 
 const ims = {
-  specifications: require("./routes/ims/specifications"),
-  products: require("./routes/ims/products"),
+  specifications: require("./routes/pim/specifications"),
+  products: require("./routes/pim/products"),
 };
 
 (async function () {
