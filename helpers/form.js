@@ -41,7 +41,14 @@ var uiFields = (name, object) => {
   );
 };
 
-const createProductForm = (plants, planters, supplies, colors, sizes) => {
+const createProductForm = (
+  plants,
+  planters,
+  supplies,
+  discounts,
+  colors,
+  sizes
+) => {
   return forms.create({
     title: fields.string({
       required: true,
@@ -79,15 +86,17 @@ const createProductForm = (plants, planters, supplies, colors, sizes) => {
       validators: [validators.min(1)],
       widget: widgets.number(),
     }),
+    discount: fields.string({
+      widget: widgets.multipleSelect(),
+      choices: discounts,
+    }),
     color_id: fields.string({
       label: "Color",
-      errorAfterField: true,
       widget: widgets.select(),
       choices: colors,
     }),
     size_id: fields.string({
       label: "Size",
-      errorAfterField: true,
       widget: widgets.select(),
       choices: sizes,
     }),
@@ -105,6 +114,7 @@ const createProductForm = (plants, planters, supplies, colors, sizes) => {
     }),
     weight: fields.number({
       label: "Weight (kg)",
+      errorAfterField: true,
       validators: [validators.min(1)],
       widget: widgets.number(),
     }),

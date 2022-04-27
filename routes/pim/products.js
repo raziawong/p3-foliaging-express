@@ -42,6 +42,7 @@ const prodInfo = {
       await getAllPlantsOpts(),
       await getAllPlantersOpts(),
       await getAllSuppliesOpts(),
+      await getAllDiscountsOpts(),
       await getAllColorsOpts(),
       await getAllSizesOpts()
     );
@@ -55,6 +56,7 @@ const prodInfo = {
       await getAllPlantsOpts(),
       await getAllPlantersOpts(),
       await getAllSuppliesOpts(),
+      await getAllDiscountsOpts(),
       await getAllColorsOpts(),
       await getAllSizesOpts()
     );
@@ -81,6 +83,7 @@ const prodInfo = {
       await getAllPlantsOpts(),
       await getAllPlantersOpts(),
       await getAllSuppliesOpts(),
+      await getAllDiscountsOpts(),
       await getAllColorsOpts(),
       await getAllSizesOpts()
     );
@@ -98,6 +101,7 @@ const prodInfo = {
       await getAllPlantsOpts(),
       await getAllPlantersOpts(),
       await getAllSuppliesOpts(),
+      await getAllDiscountsOpts(),
       await getAllColorsOpts(),
       await getAllSizesOpts()
     );

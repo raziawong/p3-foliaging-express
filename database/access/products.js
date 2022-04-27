@@ -92,7 +92,6 @@ const getAllDiscountsOpts = async () => {
   const opts = await getAllDiscounts().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("title")])
   );
-  opts.unshift(["", "None"]);
   return opts;
 };
 const getAllPlantsOpts = async () => {
