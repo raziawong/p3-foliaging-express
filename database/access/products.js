@@ -1,4 +1,4 @@
-const { Product, Color, Size, Image } = require("../models");
+const { Product, Color, Size } = require("../models");
 const { getAllDiscounts } = require("./discounts");
 const { getAllPlanters } = require("./planters");
 const { getAllPlants } = require("./plants");
@@ -18,21 +18,25 @@ const getAllProducts = async () => {
   });
 };
 const getProductById = async (id) => {
-  return await Product.where({ id }).fetch({
-    require: true,
-    withRelated: [
-      "color",
-      "size",
-      "images",
-      "discounts",
-      "plant",
-      "planter",
-      "supply",
-    ],
-  });
+  try {
+    return await Product.where({ id }).fetch({
+      require: true,
+      withRelated: [
+        "color",
+        "size",
+        "images",
+        "discounts",
+        "plant",
+        "planter",
+        "supply",
+      ],
+    });
+  } catch (err) {}
+
+  return false;
 };
 const addProduct = async (data) => {
-  const { images, discounts, ...inputs } = data;
+  const { imageUrl, discounts, ...inputs } = data;
   const product = new Product().set(inputs);
   await product.save();
   if (discounts) {
@@ -40,8 +44,7 @@ const addProduct = async (data) => {
   }
   return product;
 };
-const updateProduct = async (id, data) => {
-  const product = await getProductById(id);
+const updateProduct = async (product, data) => {
   const { images, discounts, ...inputs } = data;
   product.set(inputs);
   await product.save();
@@ -77,15 +80,6 @@ const getAllSizesOpts = async () => {
   );
   opts.unshift(["", "None"]);
   return opts;
-};
-
-const getAllImages = async () => {
-  return await Image.fetchAll();
-};
-const getAllImagesOpts = async () => {
-  return await getAllImages().then((resp) =>
-    resp.map((o) => [o.get("id"), o.get("image_url")])
-  );
 };
 
 const getAllDiscountsOpts = async () => {
@@ -125,8 +119,6 @@ module.exports = {
   getAllColorsOpts,
   getAllSizes,
   getAllSizesOpts,
-  getAllImages,
-  getAllImagesOpts,
   getAllDiscountsOpts,
   getAllPlantsOpts,
   getAllPlantersOpts,

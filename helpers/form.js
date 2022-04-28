@@ -88,7 +88,7 @@ const createProductForm = (
       validators: [validators.min(1)],
       widget: widgets.number(),
     }),
-    discount: fields.string({
+    discounts: fields.string({
       widget: widgets.multipleSelect(),
       choices: discounts,
     }),

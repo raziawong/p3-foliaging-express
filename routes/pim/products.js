@@ -20,6 +20,8 @@ const prodInfo = {
 };
 
 (async function () {
+  router.use("/discounts", prodInfo.discounts);
+
   router.get("/", async (req, res) => {
     let items = await getAllProducts();
     items = items.toJSON().map((item) => {
@@ -80,56 +82,69 @@ const prodInfo = {
 
   router.get("/:id/update", async (req, res) => {
     const product = await getProductById(req.params.id);
-    let productForm = createProductForm(
-      await getAllPlantsOpts(),
-      await getAllPlantersOpts(),
-      await getAllSuppliesOpts(),
-      await getAllDiscountsOpts(),
-      await getAllColorsOpts(),
-      await getAllSizesOpts()
-    );
-    const { ...dbData } = product.attributes;
-    productForm = productForm.bind({
-      ...dbData,
-    });
-    res.render("operations/update", {
-      title: product.toJSON().title,
-      form: productForm.toHTML(uiFields),
-    });
+
+    if (product) {
+      let productForm = createProductForm(
+        await getAllPlantsOpts(),
+        await getAllPlantersOpts(),
+        await getAllSuppliesOpts(),
+        await getAllDiscountsOpts(),
+        await getAllColorsOpts(),
+        await getAllSizesOpts()
+      );
+      const { discounts, uploadcare_group, imageUrl, ...dbData } =
+        product.attributes;
+      let selected = await product.related("discounts").pluck("id");
+      productForm = productForm.bind({
+        ...dbData,
+        discounts: selected,
+      });
+      res.render("operations/update", {
+        title: product.toJSON().title,
+        form: productForm.toHTML(uiFields),
+      });
+    }
   });
 
   router.post("/:id/update", async (req, res) => {
-    let productForm = createProductForm(
-      await getAllPlantsOpts(),
-      await getAllPlantersOpts(),
-      await getAllSuppliesOpts(),
-      await getAllDiscountsOpts(),
-      await getAllColorsOpts(),
-      await getAllSizesOpts()
-    );
-    productForm.handle(req, {
-      success: async (form) => {
-        const product = await updateProduct(req.params.id, form.data);
-        req.flash(
-          variables.success,
-          messages.updateSuccess(titles.product, product.get("name"))
-        );
-        res.redirect("/products");
-      },
-      error: async (form) => {
-        res.render("operations/update", {
-          form: form.toHTML(uiFields),
-        });
-      },
-    });
+    const product = await getProductById(req.params.id);
+
+    if (product) {
+      let productForm = createProductForm(
+        await getAllPlantsOpts(),
+        await getAllPlantersOpts(),
+        await getAllSuppliesOpts(),
+        await getAllDiscountsOpts(),
+        await getAllColorsOpts(),
+        await getAllSizesOpts()
+      );
+      productForm.handle(req, {
+        success: async (form) => {
+          const updatedProduct = await updateProduct(product, form.data);
+          req.flash(
+            variables.success,
+            messages.updateSuccess(titles.product, updatedProduct.get("name"))
+          );
+          res.redirect("/products");
+        },
+        error: async (form) => {
+          res.render("operations/update", {
+            title: product.toJSON().title,
+            form: form.toHTML(uiFields),
+          });
+        },
+      });
+    }
   });
 
   router.get("/:id/delete", async (req, res) => {
     const item = await getProductById(req.params.id);
-    res.render("operations/delete", {
-      title: item.toJSON().title,
-      homePath: "/products",
-    });
+    if (item) {
+      res.render("operations/delete", {
+        title: item.toJSON().title,
+        homePath: "/products",
+      });
+    }
   });
 
   router.post("/:id/delete", async (req, res) => {
@@ -151,8 +166,6 @@ const prodInfo = {
       res.redirect("/products");
     }
   });
-
-  router.use("/discounts", prodInfo.discounts);
 })();
 
 module.exports = router;
