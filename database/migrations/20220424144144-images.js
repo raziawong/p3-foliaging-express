@@ -18,6 +18,7 @@ exports.up = function (db) {
   return db.createTable("images", {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     image_url: { type: "string", length: 2048, notNull: true },
+    uploadcare_group_id: { type: "string", length: 200, notNull: true },
     product_id: {
       type: "int",
       unsigned: true,

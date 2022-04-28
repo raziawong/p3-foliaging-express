@@ -20,7 +20,7 @@ var uiFields = (name, object) => {
     }
   }
 
-  const errorClass = object.error ? "border-red-800 dark:border-red-100" : "";
+  const errorClass = object.error ? "border-red-800 dark:border-red-300" : "";
   if (errorClass) {
     oWidget.classes.push(errorClass);
   }
@@ -28,7 +28,7 @@ var uiFields = (name, object) => {
   object.cssClasses = { label: ["label dark:text-zinc-100"] };
   const label = object.labelHTML(name);
   const error = object.error
-    ? `<label class="text-red-800 dark:text-red-100 prose-sm">` +
+    ? `<label class="text-red-800 dark:text-red-300 prose-sm">` +
       object.error +
       "</label>"
     : "";
@@ -119,6 +119,9 @@ const createProductForm = (
       errorAfterField: true,
       validators: [validators.min(1)],
       widget: widgets.number(),
+    }),
+    uploadcare_group_id: fields.string({
+      widget: widgets.hidden(),
     }),
   });
 };

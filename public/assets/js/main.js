@@ -1,11 +1,11 @@
-function main() {
-  function init() {
+const main = () => {
+  const init = () => {
     window.addEventListener("DOMContentLoaded", function () {
       handleNavInteractions();
     });
-  }
+  };
 
-  function handleNavInteractions() {
+  const handleNavInteractions = () => {
     const desktopMenus = document.querySelectorAll("#desktop-nav .nav-menu");
     const mobileSidebar = document.getElementById("mobile-nav");
     const mobileBackdrop = document.getElementById("mobile-nav-bd");
@@ -84,38 +84,9 @@ function main() {
         close.classList.add("hidden");
       }
     };
-  }
+  };
 
   init();
-}
+};
 
 main();
-
-// let list = document.getElementById("list");
-// let chevrondown = document.getElementById("chevrondown");
-// let chevronup = document.getElementById("chevronup");
-// const listHandler = (check) => {
-//   if (check) {
-//     list.classList.remove("hidden");
-//     chevrondown.classList.remove("hidden");
-//     chevronup.classList.add("hidden");
-//   } else {
-//     list.classList.add("hidden");
-//     chevrondown.classList.add("hidden");
-//     chevronup.classList.remove("hidden");
-//   }
-// };
-// let list2 = document.getElementById("list2");
-// let chevrondown2 = document.getElementById("chevrondown2");
-// let chevronup2 = document.getElementById("chevronup2");
-// const listHandler2 = (check) => {
-//   if (check) {
-//     list2.classList.remove("hidden");
-//     chevrondown2.classList.remove("hidden");
-//     chevronup2.classList.add("hidden");
-//   } else {
-//     list2.classList.add("hidden");
-//     chevrondown2.classList.add("hidden");
-//     chevronup2.classList.remove("hidden");
-//   }
-// };
