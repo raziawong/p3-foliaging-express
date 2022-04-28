@@ -4,7 +4,7 @@
   <div id="mobile-nav-bd" class="bg-gray-800 opacity-50 inset-0 fixed w-full h-full">
   </div>
   <div
-    class="w-64 z-20 absolute left-0 z-40 top-0 bg-white shadow flex-col justify-between transition duration-150 ease-in-out h-full">
+    class="w-64 z-20 absolute left-0 z-40 top-0 bg-white shadow dark:bg-neutral-800 flex-col justify-between transition duration-150 ease-in-out h-full">
     <div class="flex flex-col justify-between h-full">
       <div class="px-6 pt-4 overflow-y-auto">
         <div class="flex items-center justify-between">
@@ -12,8 +12,14 @@
             <img src="/assets/img/logo.png" class="w-9/12" alt="foliaging">
           </div>
           <button id="sb-close"
-            class="hidden text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 rounded">
-            <img src="/assets/icons/close.svg" alt="close">
+            class="hidden text-gray-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" aria-label="close" class="icon icon-tabler icon-tabler-x" width="24"
+              height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" />
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
           </button>
         </div>
         <ul class="f-m-m">
@@ -49,22 +55,34 @@
                   </svg>
                 </div> --}}
 
-                <a href="javascript:void(0)" class="text-gray-700 ml-3 text-lg">Products</a>
+                <a href="javascript:void(0)" class="text-gray-700 dark:text-zinc-300 ml-3 text-lg">Products</a>
               </div>
-              <button class="mobile-item-expand ml-4 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
-                <img src="/assets/icons/chevron-down.svg" alt="up">
+              <button
+                class="mobile-item-expand ml-4 text-gray-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="14"
+                  height="14" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
               </button>
-              <button class="mobile-item-close hidden ml-4 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
-                <img class="transform rotate-180" src="/assets/icons/chevron-down.svg" alt="down">
+              <button
+                class="mobile-item-close hidden ml-4 text-gray-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="icon icon-tabler icon-tabler-chevron-down transform rotate-180" width="14" height="14"
+                  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
               </button>
             </div>
             <div class="mobile-items hidden">
               <ul class="my-3">
-                <li class="text-sm text-indigo-500 py-2 px-6"><a href="javascript:void(0)"> Best Sellers </a></li>
-                <li class="text-sm text-gray-800 hover:text-indigo-500 py-2 px-6">
+                <li class="text-sm text-gray-800 dark:text-zinc-200 hover:text-amber-200 py-2 px-6">
                   <a href="/products">Listing</a>
                 </li>
-                <li class="text-sm text-gray-800 hover:text-indigo-500 py-2 px-6">
+                <li class="text-sm text-gray-800 dark:text-zinc-200 hover:text-amber-200 py-2 px-6">
                   <a href="/products/discounts">Discounts</a>
                 </li>
               </ul>
@@ -87,27 +105,39 @@
           <li class="text-gray-800 pt-8">
             <div class="flex items-center">
               <div class="flex items-center">
-                <a href="javascript:void(0)" class="text-gray-800 ml-3 text-lg">Specifications</a>
+                <a href="javascript:void(0)" class="text-gray-800 dark:text-zinc-200 ml-3 text-lg">Specifications</a>
               </div>
               <div>
-                <button class="mobile-item-expand ml-4 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
-                  <img src="/assets/icons/chevron-down.svg" alt="up">
+                <button
+                  class="mobile-item-expand ml-4 text-gray-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="14"
+                    height="14" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
                 </button>
                 <button
-                  class="mobile-item-close hidden ml-4 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
-                  <img class="transform rotate-180" src="/assets/icons/chevron-down.svg" alt="down">
+                  class="mobile-item-close hidden ml-4 text-gray-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-chevron-down transform rotate-180" width="14" height="14"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
                 </button>
               </div>
             </div>
             <div class="mobile-items hidden">
               <ul class="my-3">
-                <li class="text-sm text-indigo-500 py-2 px-6">
+                <li class="text-sm text-gray-800 dark:text-zinc-200 hover:text-amber-200 py-2 px-6">
                   <a href="/specifications/plants">Plants</a>
                 </li>
-                <li class="text-sm text-gray-800 hover:text-indigo-500 py-2 px-6">
+                <li class="text-sm text-gray-800 dark:text-zinc-200 hover:text-amber-200 py-2 px-6">
                   <a href="/specifications/planters">Planters</a>
                 </li>
-                <li class="text-sm text-gray-800 hover:text-indigo-500 py-2 px-6">
+                <li class="text-sm text-gray-800 dark:text-zinc-200 hover:text-amber-200 py-2 px-6">
                   <a href="/specifications/supplies">Supplies</a>
                 </li>
               </ul>
@@ -120,7 +150,7 @@
 </div>
 <!-- Mobile starts -->
 <!-- Desktop ends -->
-<nav id="desktop-nav" class="w-full mx-auto bg-white shadow z-20 relative">
+<nav id="desktop-nav" class="w-full mx-auto bg-white dark:bg-neutral-800 shadow z-20 relative">
   <div class="justify-between container px-4 h-16 flex items-center lg:items-stretch mx-auto">
     <div class="flex items-center">
       <div aria-label="Home" role="img" class="mr-10 flex items-center">
@@ -132,20 +162,25 @@
           <a href="javascript:void(0)"> Dashboard</a>
         </li> --}}
         <li
-          class="nav-menu hover:text-indigo-700 cursor-pointer h-full flex items-center text-sm text-gry-800 mx-10 tracking-normal relative">
-          <a href="javascript:void(0)" class="flex items-center">
+          class="nav-menu hover:text-amber-200 cursor-pointer h-full flex items-center text-sm text-gray-800 dark:text-zinc-300 mx-10 tracking-normal relative">
+          <a href="javascript:void(0)" class="flex items-center ">
             Products
             <span class="ml-2">
-              <img src="/assets/icons/chevron-down.svg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="14"
+                height="14" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </span>
           </a>
-          <ul class="bg-white shadow rounded py-1 w-32 left-0 mt-16 -ml-4 absolute hidden top-0">
+          <ul class="bg-white dark:bg-neutral-700 shadow rounded py-1 w-32 left-0 mt-16 -ml-4 absolute hidden top-0">
             <li
-              class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal">
+              class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-3 hover:text-amber-200 px-3 font-normal">
               <a href="/products">Listing</a>
             </li>
             <li
-              class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal">
+              class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-3 hover:text-amber-200 px-3 font-normal">
               <a href="/products/discounts">Discounts</a>
             </li>
           </ul>
@@ -155,24 +190,29 @@
           <a href="javascript:void(0)"> Performance</a>
         </li> --}}
         <li
-          class="nav-menu hover:text-indigo-700 cursor-pointer h-full flex items-center text-sm text-gray-800 tracking-normal relative">
+          class="nav-menu hover:text-amber-200 cursor-pointer h-full flex items-center text-sm text-gray-800 dark:text-zinc-300 tracking-normal relative">
           <a href="javascript:void(0)" class="flex items-center">
             Specifications
             <span class="ml-2">
-              <img src="/assets/icons/chevron-down.svg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="14"
+                height="14" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
             </span>
           </a>
-          <ul class="bg-white shadow rounded py-1 w-32 left-0 mt-16 -ml-4 absolute hidden top-0">
+          <ul class="bg-white dark:bg-neutral-700 shadow rounded py-1 w-32 left-0 mt-16 -ml-4 absolute hidden top-0">
             <li
-              class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal">
+              class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-3 hover:text-amber-200 px-3 font-normal">
               <a href="/specifications/plants">Plants</a>
             </li>
             <li
-              class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal">
+              class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-3 hover:text-amber-200 px-3 font-normal">
               <a href="/specifications/planters">Planters</a>
             </li>
             <li
-              class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-3 hover:bg-indigo-700 hover:text-white px-3 font-normal">
+              class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-3 hover:text-amber-200 px-3 font-normal">
               <a href="/specifications/supplies">Supplies</a>
             </li>
           </ul>
@@ -185,12 +225,12 @@
         <div class="w-full h-full flex">
           <div aria-haspopup="true" class="nav-menu cursor-pointer w-full flex items-center justify-end relative">
             <button aria-haspopup="true"
-              class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 rounded flex items-center">
-              <p class="text-gray-800 text-sm ml-2">Jane Doe</p>
+              class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 hover:text-amber-200 rounded flex items-center">
+              <p class="text-gray-800 dark:text-zinc-300 text-sm ml-2">Jane Doe</p>
             </button>
-            <ul class="p-2 w-40 border-r bg-white absolute rounded z-40 left-0 shadow mt-52 hidden">
+            <ul class="p-2 w-40 border-r bg-white dark:bg-neutral-700 absolute rounded z-40 left-0 shadow mt-52 hidden">
               <li
-                class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
+                class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-2 hover:text-amber-200 focus:outline-none">
                 <div class="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="20"
                     height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
@@ -203,7 +243,7 @@
                 </div>
               </li>
               <li
-                class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center">
+                class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-amber-200 focus:outline-none flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-help" width="20" height="20"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
                   stroke-linejoin="round">
@@ -215,7 +255,7 @@
                 <a href="javascript:void(0)" class="ml-2">Help Center</a>
               </li>
               <li
-                class="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 flex items-center focus:text-indigo-700 focus:outline-none">
+                class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-amber-200 flex items-center focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="20"
                   height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
                   stroke-linecap="round" stroke-linejoin="round">
@@ -234,8 +274,15 @@
     <div class="visible xl:hidden flex items-center">
       <div>
         <button id="hamburger"
-          class="text-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">
-          <img src="/assets/icons/menu.svg" alt="menu">
+          class="text-gray-800 dark:text-zinc-300 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">
+          <svg xmlns="http://www.w3.org/2000/svg" aria-label="menu" class="icon icon-tabler icon-tabler-menu-2"
+            width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="18" x2="20" y2="18" />
+          </svg>
         </button>
       </div>
     </div>

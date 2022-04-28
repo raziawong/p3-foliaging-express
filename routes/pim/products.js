@@ -47,6 +47,7 @@ const prodInfo = {
       await getAllSizesOpts()
     );
     res.render("operations/create", {
+      title: titles.product,
       form: productForm.toHTML(uiFields),
     });
   });

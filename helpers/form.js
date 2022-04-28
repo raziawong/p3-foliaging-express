@@ -6,27 +6,40 @@ var uiFields = (name, object) => {
   if (!Array.isArray(oWidget.classes)) {
     oWidget.classes =
       oWidget.classes && oWidget.length ? oWidget.classes.split(",") : [];
+    oWidget.classes = [
+      ...oWidget.classes,
+      "rounded-sm bg-gray-200 border-transparent focus:border-gray-200 focus:bg-zinc-800 focus:text-zinc-50",
+      "dark:bg-gray-600 dark:text-zinc-50 dark:focus:border-zinc-50 dark:focus:text-zinc-50",
+    ];
     if (oWidget.type !== "checkbox") {
-      oWidget.classes.push("w-full");
+      oWidget.classes.push("w-full p-2");
     } else if (oWidget.type === "textarea") {
       oWidget.classes.push("h-24");
+    } else if (oWidget.type === "checkbox") {
+      oWidget.classes.push("mx-2");
     }
   }
 
-  const errorClass = object.error ? "border-red-500" : "";
+  const errorClass = object.error ? "border-red-800 dark:border-red-100" : "";
   if (errorClass) {
     oWidget.classes.push(errorClass);
   }
 
-  object.cssClasses = { label: ["label"] };
+  object.cssClasses = { label: ["label dark:text-zinc-100"] };
   const label = object.labelHTML(name);
   const error = object.error
-    ? `<label class="text-red-500 prose-sm">` + object.error + "</label>"
+    ? `<label class="text-red-800 dark:text-red-100 prose-sm">` +
+      object.error +
+      "</label>"
     : "";
 
   const widget = oWidget.toHTML(name, object);
   return (
-    `<div class="form-control w-full py-1">` + label + widget + error + "</div>"
+    `<div class="basis-full lg:basis-1/2 self-center"><div class="form-control m-2">` +
+    label +
+    widget +
+    error +
+    "</div></div>"
   );
 };
 
@@ -166,17 +179,6 @@ const createPlantForm = (
       widget: widgets.select(),
       choices: species,
     }),
-    description: fields.string({
-      errorAfterField: true,
-      validators: [validators.maxlength(200)],
-      widget: widgets.textarea(),
-    }),
-    details: fields.string({
-      widget: widgets.textarea(),
-    }),
-    plant_guide: fields.string({
-      widget: widgets.textarea(),
-    }),
     care_level_id: fields.string({
       label: "Care Level",
       required: true,
@@ -197,6 +199,17 @@ const createPlantForm = (
       errorAfterField: true,
       widget: widgets.select(),
       choices: water_freqs,
+    }),
+    description: fields.string({
+      errorAfterField: true,
+      validators: [validators.maxlength(200)],
+      widget: widgets.textarea(),
+    }),
+    details: fields.string({
+      widget: widgets.textarea(),
+    }),
+    plant_guide: fields.string({
+      widget: widgets.textarea(),
     }),
     traits: fields.string({
       errorAfterField: true,
