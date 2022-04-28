@@ -79,6 +79,6 @@ const ims = {
   app.use("/specifications", ims.specifications);
 })();
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server has started");
 });
