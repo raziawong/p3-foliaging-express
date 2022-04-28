@@ -19,6 +19,7 @@ router.get("/", async (req, res) => {
 router.get("/create", async (req, res) => {
   const supplyForm = createSupplyForm(await getAllSupplyTypesOpts());
   res.render("operations/create", {
+    title: titles.supply,
     form: supplyForm.toHTML(uiFields),
   });
 });
@@ -48,6 +49,7 @@ router.get("/:id/update", async (req, res) => {
   let supplyForm = createSupplyForm(await getAllSupplyTypesOpts());
   supplyForm = supplyForm.bind({ ...supply.attributes });
   res.render("operations/update", {
+    title: supply.toJSON().name,
     form: supplyForm.toHTML(uiFields),
   });
 });
@@ -74,7 +76,7 @@ router.post("/:id/update", async (req, res) => {
 router.get("/:id/delete", async (req, res) => {
   const item = await getSupplyById(req.params.id);
   res.render("operations/delete", {
-    item: item.toJSON(),
+    title: item.toJSON().name,
     homePath: "/specifications/supplies",
   });
 });

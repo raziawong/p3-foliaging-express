@@ -8,6 +8,7 @@ function main() {
   function handleNavInteractions() {
     const desktopMenus = document.querySelectorAll("#desktop-nav .nav-menu");
     const mobileSidebar = document.getElementById("mobile-nav");
+    const mobileBackdrop = document.getElementById("mobile-nav-bd");
     const mobileMenu = document.getElementById("hamburger");
     const mobileClose = document.getElementById("sb-close");
     const mobileItemExpand =
@@ -20,6 +21,9 @@ function main() {
       sidebarHandler(true);
     });
     mobileClose.addEventListener("click", (evt) => {
+      sidebarHandler(false);
+    });
+    mobileBackdrop.addEventListener("click", (evt) => {
       sidebarHandler(false);
     });
 
@@ -48,9 +52,9 @@ function main() {
     for (const top of desktopMenus) {
       const menu = top.getElementsByTagName("ul")[0];
       top.addEventListener("mouseover", (evt) => {
-        menu.classList.remove("hidden");
+        menu.classList.toggle("hidden");
       });
-      menu.addEventListener("mouseout", (evt) => {
+      document.addEventListener("mouseout", (evt) => {
         menu.classList.add("hidden");
       });
     }
@@ -58,10 +62,12 @@ function main() {
     const sidebarHandler = (check) => {
       if (check) {
         mobileSidebar.style.transform = "translateX(0px)";
+        document.body.classList.add("overflow-hidden");
         mobileMenu.classList.add("hidden");
         mobileClose.classList.remove("hidden");
       } else {
         mobileSidebar.style.transform = "translateX(-100%)";
+        document.body.classList.remove("overflow-hidden");
         mobileMenu.classList.remove("hidden");
         mobileClose.classList.add("hidden");
       }

@@ -23,6 +23,7 @@ router.get("/create", async (req, res) => {
     await getAllPlanterMaterialsOpts()
   );
   res.render("operations/create", {
+    title: titles.planter,
     form: planterForm.toHTML(uiFields),
   });
 });
@@ -57,6 +58,7 @@ router.get("/:id/update", async (req, res) => {
   );
   planterForm = planterForm.bind({ ...planter.attributes });
   res.render("operations/update", {
+    title: planter.toJSON().name,
     form: planterForm.toHTML(uiFields),
   });
 });
@@ -86,7 +88,7 @@ router.post("/:id/update", async (req, res) => {
 router.get("/:id/delete", async (req, res) => {
   const item = await getPlanterById(req.params.id);
   res.render("operations/delete", {
-    item: item.toJSON(),
+    title: item.toJSON().name,
     homePath: "/specifications/planters",
   });
 });

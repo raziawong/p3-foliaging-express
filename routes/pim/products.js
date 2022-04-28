@@ -92,6 +92,7 @@ const prodInfo = {
       ...dbData,
     });
     res.render("operations/update", {
+      title: product.toJSON().title,
       form: productForm.toHTML(uiFields),
     });
   });
@@ -125,14 +126,14 @@ const prodInfo = {
   router.get("/:id/delete", async (req, res) => {
     const item = await getProductById(req.params.id);
     res.render("operations/delete", {
-      item: item.toJSON(),
+      title: item.toJSON().title,
       homePath: "/products",
     });
   });
 
   router.post("/:id/delete", async (req, res) => {
     const item = await getProductById(req.params.id);
-    const name = item.get("name");
+    const title = item.get("title");
 
     try {
       if (item) {
@@ -144,7 +145,7 @@ const prodInfo = {
     } finally {
       req.flash(
         variables.success,
-        messages.deleteSuccess(titles.product, name)
+        messages.deleteSuccess(titles.product, title)
       );
       res.redirect("/products");
     }

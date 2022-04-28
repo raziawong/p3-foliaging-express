@@ -29,6 +29,7 @@ router.get("/create", async (req, res) => {
     await getAllTraitsOpts()
   );
   res.render("operations/create", {
+    title: titles.plant,
     form: plantForm.toHTML(uiFields),
   });
 });
@@ -75,6 +76,7 @@ router.get("/:id/update", async (req, res) => {
     traits: selected,
   });
   res.render("operations/update", {
+    title: plant.toJSON().name,
     form: plantForm.toHTML(uiFields),
   });
 });
@@ -107,7 +109,7 @@ router.post("/:id/update", async (req, res) => {
 router.get("/:id/delete", async (req, res) => {
   const item = await getPlantById(req.params.id);
   res.render("operations/delete", {
-    item: item.toJSON(),
+    title: item.toJSON().name,
     homePath: "/specifications/plants",
   });
 });

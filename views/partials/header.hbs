@@ -1,14 +1,15 @@
 <!-- Navigation starts -->
 <!-- Mobile starts -->
 <div id="mobile-nav" class="w-full xl:hidden h-full absolute z-40">
-  <div class="bg-gray-800 opacity-50 inset-0 fixed w-full h-full" onclick="sidebarHandler(false)"></div>
+  <div id="mobile-nav-bd" class="bg-gray-800 opacity-50 inset-0 fixed w-full h-full">
+  </div>
   <div
     class="w-64 z-20 absolute left-0 z-40 top-0 bg-white shadow flex-col justify-between transition duration-150 ease-in-out h-full">
     <div class="flex flex-col justify-between h-full">
       <div class="px-6 pt-4 overflow-y-auto">
         <div class="flex items-center justify-between">
-          <div aria-label="Home" role="img" class="flex items-center">
-            <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_tabs-svg1.svg" alt="logo">
+          <div aria-label="Home" role="img" class="flex items-center justify-center">
+            <img src="/assets/img/logo.png" class="w-9/12" alt="foliaging">
           </div>
           <button id="sb-close"
             class="hidden text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 rounded">
@@ -120,10 +121,10 @@
 <!-- Mobile starts -->
 <!-- Desktop ends -->
 <nav id="desktop-nav" class="w-full mx-auto bg-white shadow z-20 relative">
-  <div class="justify-between container px-6 h-16 flex items-center lg:items-stretch mx-auto">
+  <div class="justify-between container px-4 h-16 flex items-center lg:items-stretch mx-auto">
     <div class="flex items-center">
       <div aria-label="Home" role="img" class="mr-10 flex items-center">
-        <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_tabs-svg1.svg" alt="logo">
+        <img src="/assets/img/logo.png" class="w-5/12" alt="foliaging">
       </div>
       <ul class="pr-32 xl:flex hidden items-center h-full">
         {{!-- <li

@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
 router.get("/create", async (req, res) => {
   const discountForm = createDiscountForm();
   res.render("operations/create", {
+    title: titles.discount,
     form: discountForm.toHTML(uiFields),
   });
 });
@@ -45,6 +46,7 @@ router.get("/:id/update", async (req, res) => {
   const discount = await getDiscountById(req.params.id);
   const discountForm = createDiscountForm().bind({ ...discount.attributes });
   res.render("operations/update", {
+    title: discount.toJSON().title,
     form: discountForm.toHTML(uiFields),
   });
 });
@@ -71,7 +73,7 @@ router.post("/:id/update", async (req, res) => {
 router.get("/:id/delete", async (req, res) => {
   const item = await getDiscountById(req.params.id);
   res.render("operations/delete", {
-    item: item.toJSON(),
+    title: item.toJSON().title,
     homePath: "/products/discounts",
   });
 });
