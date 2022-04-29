@@ -12,7 +12,11 @@ const {
   getAllSuppliesOpts,
 } = require("../../database/access/products");
 const { messages, titles, variables } = require("../../helpers/const");
-const { createProductForm, uiFields } = require("../../helpers/form");
+const {
+  createProductForm,
+  uiFields,
+  updateProductForm,
+} = require("../../helpers/form");
 
 const prodInfo = {
   discounts: require("./prod-info-discounts"),
@@ -60,6 +64,14 @@ const prodInfo = {
   });
 
   router.post("/create", async (req, res) => {
+    const renderForm = (form) => {
+      res.render("operations/create", {
+        needImage: true,
+        publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
+        title: titles.product,
+        form: form.toHTML(uiFields),
+      });
+    };
     const productForm = createProductForm(
       await getAllPlantsOpts(),
       await getAllPlantersOpts(),
@@ -70,20 +82,24 @@ const prodInfo = {
     );
     productForm.handle(req, {
       success: async (form) => {
-        const product = await addProduct(form.data);
-        req.flash(
-          variables.success,
-          messages.createSuccess(titles.product, product.get("name"))
-        );
-        res.redirect("/products");
+        const { plant_id, planter_id, supply_id } = form.data;
+        if (plant_id || planter_id || supply_id) {
+          const product = await addProduct(form.data);
+          req.flash(
+            variables.success,
+            messages.createSuccess(titles.product, product.get("name"))
+          );
+          res.redirect("/products");
+        } else {
+          req.flash(
+            variables.error,
+            "Either Plant, Planter or Supply needs to be selected"
+          );
+          renderForm(form);
+        }
       },
       error: async (form) => {
-        res.render("operations/create", {
-          needImage: true,
-          publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
-          title: titles.product,
-          form: form.toHTML(uiFields),
-        });
+        renderForm(form);
       },
     });
   });
@@ -92,24 +108,26 @@ const prodInfo = {
     const product = await getProductById(req.params.id);
 
     if (product) {
-      let productForm = createProductForm(
-        await getAllPlantsOpts(),
-        await getAllPlantersOpts(),
-        await getAllSuppliesOpts(),
+      const { discounts, ...dbData } = product.attributes;
+      const productObj = product.toJSON();
+      let productForm = updateProductForm(
         await getAllDiscountsOpts(),
         await getAllColorsOpts(),
         await getAllSizesOpts()
       );
-      const { discounts, ...dbData } = product.attributes;
       let selected = await product.related("discounts").pluck("id");
       productForm = productForm.bind({
         ...dbData,
         discounts: selected,
       });
+      let specification =
+        productObj.plant || productObj.planter || productObj.supply;
+      console.log(specification);
       res.render("operations/update", {
         needImage: true,
         publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
-        title: product.toJSON().title,
+        specification: specification.name,
+        title: productObj.title,
         form: productForm.toHTML(uiFields),
       });
     } else {

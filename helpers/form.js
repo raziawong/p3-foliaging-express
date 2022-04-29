@@ -55,113 +55,181 @@ const createProductForm = (
   colors,
   sizes
 ) => {
-  return forms.create({
-    uploadcare_group_id: fields.string({
-      required: validators.required("Please upload at least one image"),
-      widget: widgets.hidden(),
-    }),
-    title: fields.string({
-      required: true,
-      errorAfterField: true,
-      validators: [validators.maxlength(150)],
-    }),
-    plant_id: fields.string({
-      label: "Plant",
-      errorAfterField: true,
-      widget: widgets.select(),
-      choices: plants,
-    }),
-    planter_id: fields.string({
-      label: "Planter",
-      errorAfterField: true,
-      widget: widgets.select(),
-      choices: planters,
-    }),
-    supply_id: fields.string({
-      label: "Supply",
-      errorAfterField: true,
-      widget: widgets.select(),
-      choices: supplies,
-    }),
-    stock: fields.number({
-      required: true,
-      errorAfterField: true,
-      validators: [validators.min(1)],
-      widget: widgets.number(),
-    }),
-    price: fields.number({
-      label: "Price ($)",
-      required: true,
-      errorAfterField: true,
-      validators: [validators.min(1)],
-      widget: widgets.number(),
-    }),
-    discounts: fields.string({
-      widget: widgets.multipleSelect(),
-      choices: discounts,
-    }),
-    color_id: fields.string({
-      label: "Color",
-      widget: widgets.select(),
-      choices: colors,
-    }),
-    size_id: fields.string({
-      label: "Size",
-      widget: widgets.select(),
-      choices: sizes,
-    }),
-    height: fields.number({
-      label: "Height (cm)",
-      errorAfterField: true,
-      validators: [validators.min(1)],
-      widget: widgets.number(),
-    }),
-    width: fields.number({
-      label: "Width / Circumference (cm)",
-      errorAfterField: true,
-      validators: [validators.min(1)],
-      widget: widgets.number(),
-    }),
-    weight: fields.number({
-      label: "Weight (kg)",
-      errorAfterField: true,
-      validators: [validators.min(1)],
-      widget: widgets.number(),
-    }),
-  });
+  return forms.create(
+    {
+      uploadcare_group_id: fields.string({
+        required: validators.required("Please upload at least one image"),
+        widget: widgets.hidden(),
+      }),
+      title: fields.string({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.maxlength(150)],
+      }),
+      plant_id: fields.string({
+        label: "Plant",
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: plants,
+      }),
+      planter_id: fields.string({
+        label: "Planter",
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: planters,
+      }),
+      supply_id: fields.string({
+        label: "Supply",
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: supplies,
+      }),
+      stock: fields.number({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.min(1)],
+        widget: widgets.number(),
+      }),
+      price: fields.number({
+        label: "Price ($)",
+        required: true,
+        errorAfterField: true,
+        validators: [validators.min(1)],
+        widget: widgets.number(),
+      }),
+      discounts: fields.string({
+        widget: widgets.multipleSelect(),
+        choices: discounts,
+      }),
+      color_id: fields.string({
+        label: "Color",
+        widget: widgets.select(),
+        choices: colors,
+      }),
+      size_id: fields.string({
+        label: "Size",
+        widget: widgets.select(),
+        choices: sizes,
+      }),
+      height: fields.number({
+        label: "Height (cm)",
+        errorAfterField: true,
+        validators: [validators.min(1)],
+        widget: widgets.number(),
+      }),
+      width: fields.number({
+        label: "Width / Circumference (cm)",
+        errorAfterField: true,
+        validators: [validators.min(1)],
+        widget: widgets.number(),
+      }),
+      weight: fields.number({
+        label: "Weight (kg)",
+        errorAfterField: true,
+        validators: [validators.min(1)],
+        widget: widgets.number(),
+      }),
+    },
+    { validatePastFirstError: true }
+  );
+};
+
+const updateProductForm = (discounts, colors, sizes) => {
+  return forms.create(
+    {
+      uploadcare_group_id: fields.string({
+        required: validators.required("Please upload at least one image"),
+        widget: widgets.hidden(),
+      }),
+      title: fields.string({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.maxlength(150)],
+      }),
+      stock: fields.number({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.min(1)],
+        widget: widgets.number(),
+      }),
+      price: fields.number({
+        label: "Price ($)",
+        required: true,
+        errorAfterField: true,
+        validators: [validators.min(1)],
+        widget: widgets.number(),
+      }),
+      discounts: fields.string({
+        widget: widgets.multipleSelect(),
+        choices: discounts,
+      }),
+      color_id: fields.string({
+        label: "Color",
+        widget: widgets.select(),
+        choices: colors,
+      }),
+      size_id: fields.string({
+        label: "Size",
+        widget: widgets.select(),
+        choices: sizes,
+      }),
+      height: fields.number({
+        label: "Height (cm)",
+        errorAfterField: true,
+        validators: [validators.min(1)],
+        widget: widgets.number(),
+      }),
+      width: fields.number({
+        label: "Width / Circumference (cm)",
+        errorAfterField: true,
+        validators: [validators.min(1)],
+        widget: widgets.number(),
+      }),
+      weight: fields.number({
+        label: "Weight (kg)",
+        errorAfterField: true,
+        validators: [validators.min(1)],
+        widget: widgets.number(),
+      }),
+    },
+    { validatePastFirstError: true }
+  );
 };
 
 const createDiscountForm = () => {
-  return forms.create({
-    title: fields.string({
-      required: true,
-      errorAfterField: true,
-      validators: [validators.maxlength(50)],
-    }),
-    code: fields.string({
-      errorAfterField: true,
-      validators: [validators.maxlength(10)],
-    }),
-    percentage: fields.number({
-      required: true,
-      errorAfterField: true,
-      validators: [validators.min(1), validators.max(99)],
-      widget: widgets.number(),
-    }),
-    start_date: fields.date({
-      required: true,
-      errorAfterField: true,
-      widget: widgets.date(),
-    }),
-    end_date: fields.date({
-      required: true,
-      errorAfterField: true,
-      widget: widgets.date(),
-    }),
-    all_products: fields.boolean({
-      widget: widgets.checkbox(),
-    }),
-  });
+  return forms.create(
+    {
+      title: fields.string({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.maxlength(50)],
+      }),
+      code: fields.string({
+        errorAfterField: true,
+        validators: [validators.maxlength(10)],
+      }),
+      percentage: fields.number({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.min(1), validators.max(99)],
+        widget: widgets.number(),
+      }),
+      start_date: fields.date({
+        required: true,
+        errorAfterField: true,
+        widget: widgets.date(),
+      }),
+      end_date: fields.date({
+        required: true,
+        errorAfterField: true,
+        widget: widgets.date(),
+      }),
+      all_products: fields.boolean({
+        widget: widgets.checkbox(),
+      }),
+    },
+    { validatePastFirstError: true }
+  );
 };
 
 const createPlantForm = (
@@ -171,117 +239,127 @@ const createPlantForm = (
   water_freqs,
   traits
 ) => {
-  return forms.create({
-    name: fields.string({
-      required: true,
-      errorAfterField: true,
-      validators: [validators.maxlength(150)],
-    }),
-    alias: fields.string({
-      errorAfterField: true,
-      validators: [validators.maxlength(150)],
-    }),
-    species_id: fields.string({
-      required: true,
-      errorAfterField: true,
-      widget: widgets.select(),
-      choices: species,
-    }),
-    care_level_id: fields.string({
-      label: "Care Level",
-      required: true,
-      errorAfterField: true,
-      widget: widgets.select(),
-      choices: care_levels,
-    }),
-    light_requirement_id: fields.string({
-      label: "Light Requirement",
-      required: true,
-      errorAfterField: true,
-      widget: widgets.select(),
-      choices: light_reqs,
-    }),
-    water_frequency_id: fields.string({
-      label: "Water Frequency",
-      required: true,
-      errorAfterField: true,
-      widget: widgets.select(),
-      choices: water_freqs,
-    }),
-    description: fields.string({
-      errorAfterField: true,
-      validators: [validators.maxlength(200)],
-      widget: widgets.textarea(),
-    }),
-    details: fields.string({
-      widget: widgets.textarea(),
-    }),
-    plant_guide: fields.string({
-      widget: widgets.textarea(),
-    }),
-    traits: fields.string({
-      errorAfterField: true,
-      widget: widgets.multipleSelect(),
-      choices: traits,
-    }),
-  });
+  return forms.create(
+    {
+      name: fields.string({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.maxlength(150)],
+      }),
+      alias: fields.string({
+        errorAfterField: true,
+        validators: [validators.maxlength(150)],
+      }),
+      species_id: fields.string({
+        required: true,
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: species,
+      }),
+      care_level_id: fields.string({
+        label: "Care Level",
+        required: true,
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: care_levels,
+      }),
+      light_requirement_id: fields.string({
+        label: "Light Requirement",
+        required: true,
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: light_reqs,
+      }),
+      water_frequency_id: fields.string({
+        label: "Water Frequency",
+        required: true,
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: water_freqs,
+      }),
+      description: fields.string({
+        errorAfterField: true,
+        validators: [validators.maxlength(200)],
+        widget: widgets.textarea(),
+      }),
+      details: fields.string({
+        widget: widgets.textarea(),
+      }),
+      plant_guide: fields.string({
+        widget: widgets.textarea(),
+      }),
+      traits: fields.string({
+        errorAfterField: true,
+        widget: widgets.multipleSelect(),
+        choices: traits,
+      }),
+    },
+    { validatePastFirstError: true }
+  );
 };
 
 const createPlanterForm = (type, material) => {
-  return forms.create({
-    name: fields.string({
-      required: true,
-      errorAfterField: true,
-      validators: [validators.maxlength(150)],
-    }),
-    type_id: fields.string({
-      required: true,
-      errorAfterField: true,
-      widget: widgets.select(),
-      choices: type,
-    }),
-    material_id: fields.string({
-      required: true,
-      errorAfterField: true,
-      widget: widgets.select(),
-      choices: material,
-    }),
-    description: fields.string({
-      errorAfterField: true,
-      validators: [validators.maxlength(200)],
-      widget: widgets.textarea(),
-    }),
-    details: fields.string(),
-  });
+  return forms.create(
+    {
+      name: fields.string({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.maxlength(150)],
+      }),
+      type_id: fields.string({
+        required: true,
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: type,
+      }),
+      material_id: fields.string({
+        required: true,
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: material,
+      }),
+      description: fields.string({
+        errorAfterField: true,
+        validators: [validators.maxlength(200)],
+        widget: widgets.textarea(),
+      }),
+      details: fields.string(),
+    },
+    { validatePastFirstError: true }
+  );
 };
 
 const createSupplyForm = (type) => {
-  return forms.create({
-    name: fields.string({
-      required: true,
-      errorAfterField: true,
-      validators: [validators.maxlength(150)],
-    }),
-    type_id: fields.string({
-      required: true,
-      errorAfterField: true,
-      widget: widgets.select(),
-      choices: type,
-    }),
-    description: fields.string({
-      errorAfterField: true,
-      validators: [validators.maxlength(200)],
-      widget: widgets.textarea(),
-    }),
-    details: fields.string({
-      widget: widgets.textarea(),
-    }),
-  });
+  return forms.create(
+    {
+      name: fields.string({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.maxlength(150)],
+      }),
+      type_id: fields.string({
+        required: true,
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: type,
+      }),
+      description: fields.string({
+        errorAfterField: true,
+        validators: [validators.maxlength(200)],
+        widget: widgets.textarea(),
+      }),
+      details: fields.string({
+        widget: widgets.textarea(),
+      }),
+    },
+    { validatePastFirstError: true }
+  );
 };
 
 module.exports = {
   uiFields,
   createProductForm,
+  updateProductForm,
   createDiscountForm,
   createPlantForm,
   createPlanterForm,
