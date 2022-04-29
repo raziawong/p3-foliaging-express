@@ -122,7 +122,6 @@ const prodInfo = {
       });
       let specification =
         productObj.plant || productObj.planter || productObj.supply;
-      console.log(specification);
       res.render("operations/update", {
         needImage: true,
         publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
