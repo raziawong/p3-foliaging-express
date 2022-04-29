@@ -1,19 +1,53 @@
 {{#extends "base"}}
 
+{{#if needImage}}
+{{#block "head"}}
+<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+<script src="https://ucarecdn.com/libs/widget-tab-effects/1.x/uploadcare.tab-effects.lang.en.min.js"></script>
+<link rel="stylesheet" href="/assets/css/multiupload.css" />
+<script>
+  UPLOADCARE_LOCALE = 'en';
+  UPLOADCARE_LOCALE_TRANSLATIONS = {
+    buttons: {
+      choose: {
+        images: {
+          other: 'Manage Images'
+        }
+      }
+    }
+  };
+</script>
+{{/block}}
+{{/if}}
+
 {{#block "content"}}
 <div class="w-full sm:px-6">
   <div class="px-4 md:px-10 py-4 md:py-7 bg-gray-100 dark:bg-gray-700 rounded-tl-lg rounded-tr-lg">
     <div class="sm:flex items-center justify-between">
       <p tabindex="0"
         class="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800 dark:text-white ">
-        Update {{title}}</p>
+        Update {{title}}
+      </p>
     </div>
   </div>
-  <div class="bg-white dark:bg-gray-800  shadow px-4 md:px-10 pt-4 md:pt-7 pb-5">
+  <div class="bg-white dark:bg-gray-800 shadow px-4 md:px-10 pt-4 md:pt-7 pb-5">
     <form class="w-full flex flex-row flex-wrap" method="POST">
       <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+      {{#if needImage}}
+      <div class="basis-full mb-2">
+        <div id="image-upload-wrapper" class="flex justify-start">
+          <p class="m-2 p-2 flex text-sm items-center bg-white dark:bg-gray-700 dark:text-sky-200 transition duration-150
+            ease-in-out hover:bg-sky-600 hover:text-slate-50 hover:border-slate-50 rounded border border-sky-600
+            text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+            <input type="hidden" role="uploadcare-uploader" data-images-only="true" data-public-key={{publicKey}}
+              data-multiple="true" data-tabs="file camera url facebook gdrive gphotos dropbox instagram"
+              data-effects="crop, rotate, flip, blur, mirror, sharp, invert, enhance, grayscale" />
+          </p>
+        </div>
+      </div>
+      {{/if}}
       {{{form}}}
-      <div class="basis-full">
+      <div class="basis-full flex justify-end">
         <button type="submit"
           class="focus:ring-2 focus:ring-offset-2 focus:ring-zinc-100 mt-6 px-6 py-3 bg-yellow-600 hover:bg-amber-300 focus:outline-none rounded">
           <span class="text-sm font-medium leading-none text-white">Update</span>
@@ -23,5 +57,11 @@
   </div>
 </div>
 {{/block}}
+
+{{#if needImage}}
+{{#block "js"}}
+<script src="/assets/js/multiupload.js"></script>
+{{/block}}
+{{/if}}
 
 {{/extends}}

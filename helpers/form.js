@@ -33,9 +33,13 @@ var uiFields = (name, object) => {
       "</label>"
     : "";
 
+  const wrapClass =
+    oWidget.type === "hidden"
+      ? "basis-full self-start"
+      : "basis-full lg:basis-1/2 self-center";
   const widget = oWidget.toHTML(name, object);
   return (
-    `<div class="basis-full lg:basis-1/2 self-center"><div class="form-control m-2">` +
+    `<div class="${wrapClass}"><div class="form-control m-2">` +
     label +
     widget +
     error +
@@ -52,6 +56,10 @@ const createProductForm = (
   sizes
 ) => {
   return forms.create({
+    uploadcare_group_id: fields.string({
+      required: validators.required("Please upload at least one image"),
+      widget: widgets.hidden(),
+    }),
     title: fields.string({
       required: true,
       errorAfterField: true,
@@ -119,9 +127,6 @@ const createProductForm = (
       errorAfterField: true,
       validators: [validators.min(1)],
       widget: widgets.number(),
-    }),
-    uploadcare_group_id: fields.string({
-      widget: widgets.hidden(),
     }),
   });
 };

@@ -23,6 +23,7 @@ exports.up = function (db) {
     weight: { type: "smallint", notNull: false },
     stock: { type: "smallint", notNull: true },
     price: { type: "bigint", notNull: true },
+    uploadcare_group_id: { type: "string", length: 100, notNull: true },
     created_date: { type: "datetime", notNull: true },
     modified_date: { type: "datetime", notNull: true },
     plant_id: {

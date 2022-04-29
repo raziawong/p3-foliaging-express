@@ -6,37 +6,21 @@ const { getAllSupplies } = require("./supplies");
 
 const getAllProducts = async () => {
   return await Product.fetchAll({
-    withRelated: [
-      "color",
-      "size",
-      "images",
-      "discounts",
-      "plant",
-      "planter",
-      "supply",
-    ],
+    withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
   });
 };
 const getProductById = async (id) => {
   try {
     return await Product.where({ id }).fetch({
       require: true,
-      withRelated: [
-        "color",
-        "size",
-        "images",
-        "discounts",
-        "plant",
-        "planter",
-        "supply",
-      ],
+      withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
     });
   } catch (err) {}
 
   return false;
 };
 const addProduct = async (data) => {
-  const { imageUrl, discounts, ...inputs } = data;
+  const { discounts, ...inputs } = data;
   const product = new Product().set(inputs);
   await product.save();
   if (discounts) {
@@ -45,10 +29,9 @@ const addProduct = async (data) => {
   return product;
 };
 const updateProduct = async (product, data) => {
-  const { images, discounts, ...inputs } = data;
+  const { discounts, ...inputs } = data;
   product.set(inputs);
   await product.save();
-
   if (discounts) {
     const selected = discounts.split(",");
     const existing = await product.related("discounts").pluck("id");
@@ -56,7 +39,6 @@ const updateProduct = async (product, data) => {
     await product.discounts().detach(remove);
     await product.discounts().attach(selected);
   }
-
   return product;
 };
 

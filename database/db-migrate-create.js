@@ -44,7 +44,6 @@ main = () => {
   setTimeout(() => doDBMCreate("plants-data"), 4500);
   setTimeout(() => doDBMCreate("planters-data"), 4500);
   setTimeout(() => doDBMCreate("supplies-data"), 4500);
-  setTimeout(() => doDBMCreate("images"), 4500);
   setTimeout(() => doDBMCreate("discounts"), 4500);
   setTimeout(() => doDBMCreate("users"), 4500);
   setTimeout(() => doDBMCreate("addresses"), 6000);

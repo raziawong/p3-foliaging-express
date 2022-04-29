@@ -6,7 +6,6 @@ const {
   updateProduct,
   getAllColorsOpts,
   getAllSizesOpts,
-  getAllImagesOpts,
   getAllDiscountsOpts,
   getAllPlantsOpts,
   getAllPlantersOpts,
@@ -49,6 +48,8 @@ const prodInfo = {
       await getAllSizesOpts()
     );
     res.render("operations/create", {
+      needImage: true,
+      publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
       title: titles.product,
       form: productForm.toHTML(uiFields),
     });
@@ -74,6 +75,9 @@ const prodInfo = {
       },
       error: async (form) => {
         res.render("operations/create", {
+          needImage: true,
+          publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
+          title: titles.product,
           form: form.toHTML(uiFields),
         });
       },
@@ -92,14 +96,15 @@ const prodInfo = {
         await getAllColorsOpts(),
         await getAllSizesOpts()
       );
-      const { discounts, uploadcare_group, imageUrl, ...dbData } =
-        product.attributes;
+      const { discounts, ...dbData } = product.attributes;
       let selected = await product.related("discounts").pluck("id");
       productForm = productForm.bind({
         ...dbData,
         discounts: selected,
       });
       res.render("operations/update", {
+        needImage: true,
+        publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
         title: product.toJSON().title,
         form: productForm.toHTML(uiFields),
       });
@@ -129,6 +134,8 @@ const prodInfo = {
         },
         error: async (form) => {
           res.render("operations/update", {
+            needImage: true,
+            publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
             title: product.toJSON().title,
             form: form.toHTML(uiFields),
           });

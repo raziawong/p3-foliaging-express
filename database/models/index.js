@@ -105,12 +105,6 @@ const Size = bookshelf.model("Size", {
     return this.belongsTo("Product");
   },
 });
-const Image = bookshelf.model("Image", {
-  tableName: "images",
-  product: function () {
-    return this.belongsTo("Product");
-  },
-});
 const Discount = bookshelf.model("Discount", {
   tableName: "discounts",
   initialize: function () {
@@ -138,9 +132,6 @@ const Product = bookshelf.model("Product", {
   },
   size: function () {
     return this.belongsTo("Size");
-  },
-  images: function () {
-    return this.hasMany("Image");
   },
   discounts: function () {
     return this.belongsToMany("Discount");
@@ -291,7 +282,6 @@ module.exports = {
   Planter,
   Color,
   Size,
-  Image,
   Discount,
   Product,
   AccountType,

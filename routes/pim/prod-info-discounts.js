@@ -36,6 +36,7 @@ router.post("/create", async (req, res) => {
     },
     error: async (form) => {
       res.render("operations/create", {
+        title: titles.discount,
         form: form.toHTML(uiFields),
       });
     },
@@ -44,30 +45,38 @@ router.post("/create", async (req, res) => {
 
 router.get("/:id/update", async (req, res) => {
   const discount = await getDiscountById(req.params.id);
-  const discountForm = createDiscountForm().bind({ ...discount.attributes });
-  res.render("operations/update", {
-    title: discount.toJSON().title,
-    form: discountForm.toHTML(uiFields),
-  });
+
+  if (discount) {
+    const discountForm = createDiscountForm().bind({ ...discount.attributes });
+    res.render("operations/update", {
+      title: discount.toJSON().title,
+      form: discountForm.toHTML(uiFields),
+    });
+  }
 });
 
 router.post("/:id/update", async (req, res) => {
-  const discountForm = createDiscountForm();
-  discountForm.handle(req, {
-    success: async (form) => {
-      const discount = await updateDiscount(req.params.id, form.data);
-      req.flash(
-        variables.success,
-        messages.updateSuccess(titles.discount, discount.get("title"))
-      );
-      res.redirect("/products/discounts");
-    },
-    error: async (form) => {
-      res.render("operations/update", {
-        form: form.toHTML(uiFields),
-      });
-    },
-  });
+  const discount = await getDiscountById(req.params.id);
+
+  if (discount) {
+    const discountForm = createDiscountForm();
+    discountForm.handle(req, {
+      success: async (form) => {
+        const updatedDiscount = await updateDiscount(req.params.id, form.data);
+        req.flash(
+          variables.success,
+          messages.updateSuccess(titles.discount, updatedDiscount.get("title"))
+        );
+        res.redirect("/products/discounts");
+      },
+      error: async (form) => {
+        res.render("operations/update", {
+          title: discount.toJSON().title,
+          form: form.toHTML(uiFields),
+        });
+      },
+    });
+  }
 });
 
 router.get("/:id/delete", async (req, res) => {

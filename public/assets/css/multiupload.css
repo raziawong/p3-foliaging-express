@@ -1,0 +1,14 @@
+.uploadcare--widget__button.uploadcare--widget__button_type_open {
+    background-color: transparent;
+    color: #157cfc;
+}
+
+.uploadcare--widget__button.uploadcare--widget__button_type_open:hover {
+    color: #fff;
+}
+
+.uploadcare--button_primary {
+    background: #157cfc;
+    border-color: #157cfc;
+    color: #fff;
+}
