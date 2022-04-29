@@ -5,7 +5,12 @@ const {
   getDiscountById,
   updateDiscount,
 } = require("../../database/access/discounts");
-const { messages, titles, variables } = require("../../helpers/const");
+const {
+  messages,
+  titles,
+  variables,
+  fetchErrorHandler,
+} = require("../../helpers/const");
 const { createDiscountForm, uiFields } = require("../../helpers/form");
 
 router.get("/", async (req, res, next) => {

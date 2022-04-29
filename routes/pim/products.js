@@ -11,7 +11,12 @@ const {
   getAllPlantersOpts,
   getAllSuppliesOpts,
 } = require("../../database/access/products");
-const { messages, titles, variables } = require("../../helpers/const");
+const {
+  messages,
+  titles,
+  variables,
+  fetchErrorHandler,
+} = require("../../helpers/const");
 const {
   createProductForm,
   uiFields,

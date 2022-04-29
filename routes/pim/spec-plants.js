@@ -10,7 +10,12 @@ const {
   addPlant,
   updatePlant,
 } = require("../../database/access/plants");
-const { messages, titles, variables } = require("../../helpers/const");
+const {
+  messages,
+  titles,
+  variables,
+  fetchErrorHandler,
+} = require("../../helpers/const");
 const { createPlantForm, uiFields } = require("../../helpers/form");
 
 router.get("/", async (req, res, next) => {
