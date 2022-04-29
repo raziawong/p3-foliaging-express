@@ -11,7 +11,6 @@ const {
   setCSRFToken,
   setFlashMessages,
   handleErrors,
-  handleCSRFError,
 } = require("./middleware");
 
 const app = express();
@@ -34,7 +33,7 @@ app.use(setCSRF);
 app.use(setCSRFToken);
 app.use(flash());
 app.use(setFlashMessages);
-app.use(handleCSRFError);
+app.use(handleErrors);
 
 const ims = {
   specifications: require("./routes/pim/specifications"),
@@ -51,7 +50,10 @@ const ims = {
   app.use("/specifications", ims.specifications);
   app.use("/users", ims.users);
 
-  app.use(handleErrors);
+  app.use((req, res, next) => {
+    res.status(404);
+    res.render("errors/404");
+  });
 })();
 
 app.listen(process.env.PORT, () => {

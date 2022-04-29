@@ -47,17 +47,11 @@ const checkIfAuthenticated = (req, res, next) => {
   }
 };
 
-const handleCSRFError = (err, req, res, next) => {
+const handleErrors = (err, req, res, next) => {
   if (err && err.code == "EBADCSRFTOKEN") {
     req.flash(variables.error, "The form has expired. Please try again");
     res.redirect("back");
-  } else {
-    next();
-  }
-};
-
-const handleErrors = (err, req, res, next) => {
-  if (err) {
+  } else if (err) {
     res.status(err.status || 500);
     res.render("errors/404");
   } else {
@@ -72,6 +66,5 @@ module.exports = {
   setCSRFToken,
   setFlashMessages,
   checkIfAuthenticated,
-  handleCSRFError,
   handleErrors,
 };
