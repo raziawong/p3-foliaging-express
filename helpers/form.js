@@ -9,7 +9,7 @@ var uiFields = (name, object) => {
     oWidget.classes = [
       ...oWidget.classes,
       "rounded-sm bg-gray-200 border-transparent focus:border-gray-200 focus:bg-zinc-800 focus:text-zinc-50",
-      "dark:bg-gray-600 dark:text-zinc-50 dark:focus:border-zinc-50 dark:focus:text-zinc-50",
+      "dark:bg-zinc-600 dark:text-zinc-50 dark:focus:border-zinc-50 dark:focus:text-zinc-50",
     ];
     if (oWidget.type !== "checkbox") {
       oWidget.classes.push("w-full p-2");
@@ -356,6 +356,31 @@ const createSupplyForm = (type) => {
   );
 };
 
+const createSystemRegistrationForm = () => {
+  return forms.create(
+    {
+      username: fields.string({
+        required: true,
+        errorAfterField: true,
+      }),
+      email: fields.string({
+        required: true,
+        errorAfterField: true,
+      }),
+      password: fields.password({
+        required: true,
+        errorAfterField: true,
+      }),
+      confirm_password: fields.password({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.matchField("password")],
+      }),
+    },
+    { validatePastFirstError: true }
+  );
+};
+
 module.exports = {
   uiFields,
   createProductForm,
@@ -364,4 +389,5 @@ module.exports = {
   createPlantForm,
   createPlanterForm,
   createSupplyForm,
+  createSystemRegistrationForm,
 };

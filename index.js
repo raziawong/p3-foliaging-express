@@ -39,6 +39,7 @@ app.use(handleCSRFError);
 const ims = {
   specifications: require("./routes/pim/specifications"),
   products: require("./routes/pim/products"),
+  users: require("./routes/pim/users"),
 };
 
 (async function () {
@@ -48,6 +49,7 @@ const ims = {
 
   app.use("/products", ims.products);
   app.use("/specifications", ims.specifications);
+  app.use("/users", ims.users);
 
   app.use(handleErrors);
 })();
