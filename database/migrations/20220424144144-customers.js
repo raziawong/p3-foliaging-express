@@ -15,42 +15,21 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable("users", {
+  return db.createTable("customers", {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     username: { type: "string", length: 20, unique: true, notNull: true },
+    first_name: { type: "string", length: 50, notNull: false },
+    last_name: { type: "string", length: 50, notNull: false },
     email: { type: "string", length: 320, unique: true, notNull: true },
     password: { type: "string", length: 150, notNull: true },
+    contact_number: { type: "string", length: 15, notNull: false },
     created_date: { type: "datetime", notNull: true },
     modified_date: { type: "datetime", notNull: true },
-    account_type_id: {
-      type: "int",
-      unsigned: true,
-      notNull: true,
-      foreignKey: {
-        name: "FK_users_account_types_account_type_id",
-        table: "account_types",
-        mapping: "id",
-        rules: {
-          onDelete: "RESTRICT",
-          onUpdate: "RESTRICT",
-        },
-      },
-    },
   });
 };
 
 exports.down = function (db) {
-  const foreignKeys = ["FK_users_account_types_account_type_id"];
-  const promises = foreignKeys.map((fk) => db.removeForeignKey("users", fk));
-  let ret = null;
-  try {
-    ret = Promise.all(promises).then(() => {
-      db.dropTable("users");
-    });
-  } catch (err) {
-    console.log("Encountered error when dropping <users> table");
-  }
-  return ret;
+  return db.dropTable("customers");
 };
 
 exports._meta = {
