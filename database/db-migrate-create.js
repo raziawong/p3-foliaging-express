@@ -56,6 +56,7 @@ main = () => {
   setTimeout(() => doDBMCreate("plants-traits"), 9000);
   setTimeout(() => doDBMCreate("products-contraint-check"), 9000);
   setTimeout(() => doDBMCreate("plants-traits-data"), 10500);
+  setTimeout(() => doDBMCreate("delete-data"), 12000);
 };
 
 main();
