@@ -21,21 +21,25 @@ const prodInfo = {
 (async function () {
   router.use("/discounts", prodInfo.discounts);
 
-  router.get("/", async (req, res) => {
+  router.get("/", async (req, res, next) => {
     let items = await getAllProducts();
-    items = items.toJSON().map((item) => {
-      item.specification = item.plant_id
-        ? item.plant
-        : item.planter_id
-        ? item.planter
-        : item.supply_id
-        ? item.supply
-        : {};
-      return item;
-    });
-    res.render("listing/products", {
-      products: items,
-    });
+    if (items) {
+      items = items.toJSON().map((item) => {
+        item.specification = item.plant_id
+          ? item.plant
+          : item.planter_id
+          ? item.planter
+          : item.supply_id
+          ? item.supply
+          : {};
+        return item;
+      });
+      res.render("listing/products", {
+        products: items,
+      });
+    } else {
+      fetchErrorHandler(next, "products");
+    }
   });
 
   router.get("/create", async (req, res) => {
@@ -84,7 +88,7 @@ const prodInfo = {
     });
   });
 
-  router.get("/:id/update", async (req, res) => {
+  router.get("/:id/update", async (req, res, next) => {
     const product = await getProductById(req.params.id);
 
     if (product) {
@@ -108,14 +112,16 @@ const prodInfo = {
         title: product.toJSON().title,
         form: productForm.toHTML(uiFields),
       });
+    } else {
+      fetchErrorHandler(next, "product", req.params.id);
     }
   });
 
-  router.post("/:id/update", async (req, res) => {
+  router.post("/:id/update", async (req, res, next) => {
     const product = await getProductById(req.params.id);
 
     if (product) {
-      let productForm = createProductForm(
+      const productForm = createProductForm(
         await getAllPlantsOpts(),
         await getAllPlantersOpts(),
         await getAllSuppliesOpts(),
@@ -141,16 +147,20 @@ const prodInfo = {
           });
         },
       });
+    } else {
+      fetchErrorHandler(next, "product", req.params.id);
     }
   });
 
-  router.get("/:id/delete", async (req, res) => {
+  router.get("/:id/delete", async (req, res, next) => {
     const item = await getProductById(req.params.id);
     if (item) {
       res.render("operations/delete", {
         title: item.toJSON().title,
         homePath: "/products",
       });
+    } else {
+      fetchErrorHandler(next, "product", req.params.id);
     }
   });
 

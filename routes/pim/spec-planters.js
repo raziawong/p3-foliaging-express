@@ -10,11 +10,15 @@ const {
 const { messages, titles, variables } = require("../../helpers/const");
 const { uiFields, createPlanterForm } = require("../../helpers/form");
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   const items = await getAllPlanters();
-  res.render("listing/planters", {
-    planters: items.toJSON(),
-  });
+  if (items) {
+    res.render("listing/planters", {
+      planters: items.toJSON(),
+    });
+  } else {
+    fetchErrorHandler(next, "planters");
+  }
 });
 
 router.get("/create", async (req, res) => {
@@ -50,47 +54,61 @@ router.post("/create", async (req, res) => {
   });
 });
 
-router.get("/:id/update", async (req, res) => {
+router.get("/:id/update", async (req, res, next) => {
   const planter = await getPlanterById(req.params.id);
-  let planterForm = createPlanterForm(
-    await getAllPlanterTypesOpts(),
-    await getAllPlanterMaterialsOpts()
-  );
-  planterForm = planterForm.bind({ ...planter.attributes });
-  res.render("operations/update", {
-    title: planter.toJSON().name,
-    form: planterForm.toHTML(uiFields),
-  });
+  if (planter) {
+    let planterForm = createPlanterForm(
+      await getAllPlanterTypesOpts(),
+      await getAllPlanterMaterialsOpts()
+    );
+    planterForm = planterForm.bind({ ...planter.attributes });
+    res.render("operations/update", {
+      title: planter.toJSON().name,
+      form: planterForm.toHTML(uiFields),
+    });
+  } else {
+    fetchErrorHandler(next, "planters", req.params.id);
+  }
 });
 
-router.post("/:id/update", async (req, res) => {
-  const planterForm = createPlanterForm(
-    await getAllPlanterTypesOpts(),
-    await getAllPlanterMaterialsOpts()
-  );
-  planterForm.handle(req, {
-    success: async (form) => {
-      const planter = await updatePlanter(req.params.id, form.data);
-      req.flash(
-        variables.success,
-        messages.updateSuccess(titles.planter, planter.get("name"))
-      );
-      res.redirect("/specifications/planters");
-    },
-    error: async (form) => {
-      res.render("operations/update", {
-        form: form.toHTML(uiFields),
-      });
-    },
-  });
+router.post("/:id/update", async (req, res, next) => {
+  const planter = await getPlanterById(req.params.id);
+
+  if (planter) {
+    const planterForm = createPlanterForm(
+      await getAllPlanterTypesOpts(),
+      await getAllPlanterMaterialsOpts()
+    );
+    planterForm.handle(req, {
+      success: async (form) => {
+        const updatedPlanter = await updatePlanter(planter, form.data);
+        req.flash(
+          variables.success,
+          messages.updateSuccess(titles.planter, updatedPlanter.get("name"))
+        );
+        res.redirect("/specifications/planters");
+      },
+      error: async (form) => {
+        res.render("operations/update", {
+          form: form.toHTML(uiFields),
+        });
+      },
+    });
+  } else {
+    fetchErrorHandler(next, "planters", req.params.id);
+  }
 });
 
-router.get("/:id/delete", async (req, res) => {
+router.get("/:id/delete", async (req, res, next) => {
   const item = await getPlanterById(req.params.id);
-  res.render("operations/delete", {
-    title: item.toJSON().name,
-    homePath: "/specifications/planters",
-  });
+  if (item) {
+    res.render("operations/delete", {
+      title: item.toJSON().name,
+      homePath: "/specifications/planters",
+    });
+  } else {
+    fetchErrorHandler(next, "planters", req.params.id);
+  }
 });
 
 router.post("/:id/delete", async (req, res) => {

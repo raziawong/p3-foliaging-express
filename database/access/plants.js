@@ -7,47 +7,60 @@ const {
   Trait,
 } = require("../models");
 
-const getPlantById = async (id) => {
-  return await Plant.where({ id }).fetch({
-    require: false,
-    withRelated: ["species", "light", "water", "care", "traits"],
-  });
-};
 const getAllPlants = async () => {
-  return await Plant.fetchAll({
-    withRelated: ["species", "light", "water", "care"],
-  });
+  try {
+    return await Plant.fetchAll({
+      withRelated: ["species", "light", "water", "care"],
+    });
+  } catch (err) {}
+  return false;
+};
+const getPlantById = async (id) => {
+  try {
+    return await Plant.where({ id }).fetch({
+      require: false,
+      withRelated: ["species", "light", "water", "care", "traits"],
+    });
+  } catch (err) {}
+  return false;
 };
 const addPlant = async (data) => {
-  const { traits, ...inputs } = data;
-  const plant = new Plant().set(inputs);
-  await plant.save();
-  if (traits) {
-    await plant.traits().attach(traits.split(","));
-  }
-
-  return plant;
-};
-const updatePlant = async (id, data) => {
-  const plant = await getPlantById(id);
-  if (plant) {
+  try {
     const { traits, ...inputs } = data;
-    plant.set(inputs);
+    const plant = new Plant().set(inputs);
     await plant.save();
-
     if (traits) {
-      const selected = traits.split(",");
-      const existing = await plant.related("traits").pluck("id");
-      const remove = existing.filter((id) => selected.includes(id) === false);
-      await plant.traits().detach(remove);
-      await plant.traits().attach(selected);
+      await plant.traits().attach(traits.split(","));
     }
-  }
-  return plant;
+    return plant;
+  } catch (err) {}
+  return false;
+};
+const updatePlant = async (plant, data) => {
+  try {
+    if (plant) {
+      const { traits, ...inputs } = data;
+      plant.set(inputs);
+      await plant.save();
+
+      if (traits) {
+        const selected = traits.split(",");
+        const existing = await plant.related("traits").pluck("id");
+        const remove = existing.filter((id) => selected.includes(id) === false);
+        await plant.traits().detach(remove);
+        await plant.traits().attach(selected);
+      }
+    }
+    return plant;
+  } catch (err) {}
+  return false;
 };
 
 const getAllSpecies = async () => {
-  return await Species.fetchAll();
+  try {
+    return await Species.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getAllSpeciesOpts = async () => {
   return await getAllSpecies().then((resp) =>
@@ -56,7 +69,10 @@ const getAllSpeciesOpts = async () => {
 };
 
 const getAllLightRequirements = async () => {
-  return await LightRequirement.fetchAll();
+  try {
+    return await LightRequirement.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getAllLightRequirementsOpts = async () => {
   return await getAllLightRequirements().then((resp) =>
@@ -65,7 +81,10 @@ const getAllLightRequirementsOpts = async () => {
 };
 
 const getAllWaterFrequencies = async () => {
-  return await WaterFrequency.fetchAll();
+  try {
+    return await WaterFrequency.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getAllWaterFrequenciesOpts = async () => {
   return await getAllWaterFrequencies().then((resp) =>
@@ -74,7 +93,10 @@ const getAllWaterFrequenciesOpts = async () => {
 };
 
 const getAllCareLevels = async () => {
-  return await CareLevel.fetchAll();
+  try {
+    return await CareLevel.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getAllCareLevelsOpts = async () => {
   return await getAllCareLevels().then((resp) =>
@@ -83,7 +105,10 @@ const getAllCareLevelsOpts = async () => {
 };
 
 const getAllTraits = async () => {
-  return await Trait.fetchAll();
+  try {
+    return await Trait.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getAllTraitsOpts = async () => {
   return await getAllTraits().then((resp) =>

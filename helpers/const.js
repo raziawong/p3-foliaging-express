@@ -19,10 +19,18 @@ const messages = {
   deleteSuccess: (title, name) => `${title}, ${name}, has been deleted`,
   deleteError: (title) =>
     `${title} delete operation encountered an error, please try again.`,
+  fetchError: (name, id) => `Cannot get ${name} ${id ? "with id " + id : ""}`,
+};
+
+const fetchErrorHandler = (next, name, id) => {
+  const err = new Error(messages.fetchError(name), id || "");
+  err.status = 404;
+  next(err);
 };
 
 module.exports = {
   titles,
   variables,
   messages,
+  fetchErrorHandler,
 };

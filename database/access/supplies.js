@@ -1,30 +1,44 @@
 const { Supply, SupplyType } = require("../models");
 
-const getSupplyById = async (id) => {
-  return await Supply.where({ id }).fetch({
-    require: false,
-    withRelated: ["type"],
-  });
-};
 const getAllSupplies = async () => {
-  return await Supply.fetchAll({
-    withRelated: ["type"],
-  });
+  try {
+    return await Supply.fetchAll({
+      withRelated: ["type"],
+    });
+  } catch (err) {}
+  return false;
+};
+const getSupplyById = async (id) => {
+  try {
+    return await Supply.where({ id }).fetch({
+      require: false,
+      withRelated: ["type"],
+    });
+  } catch (err) {}
+  return false;
 };
 const addSupply = async (data) => {
-  const supply = new Supply().set(data);
-  await supply.save();
-  return supply;
+  try {
+    const supply = new Supply().set(data);
+    await supply.save();
+    return supply;
+  } catch (err) {}
+  return false;
 };
-const updateSupply = async (id, data) => {
-  const supply = await getSupplyById(id);
-  supply.set(data);
-  await supply.save();
-  return supply;
+const updateSupply = async (supply, data) => {
+  try {
+    supply.set(data);
+    await supply.save();
+    return supply;
+  } catch (err) {}
+  return false;
 };
 
 const getAllSupplyTypes = async () => {
-  return await SupplyType.fetchAll();
+  try {
+    return await SupplyType.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getAllSupplyTypesOpts = async () => {
   return await getAllSupplyTypes().then((resp) =>

@@ -6,14 +6,23 @@ const {
   addSupply,
   updateSupply,
 } = require("../../database/access/supplies");
-const { messages, titles, variables } = require("../../helpers/const");
+const {
+  messages,
+  titles,
+  variables,
+  fetchErrorHandler,
+} = require("../../helpers/const");
 const { createSupplyForm, uiFields } = require("../../helpers/form");
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   const items = await getAllSupplies();
-  res.render("listing/supplies", {
-    supplies: items.toJSON(),
-  });
+  if (items) {
+    res.render("listing/supplies", {
+      supplies: items.toJSON(),
+    });
+  } else {
+    fetchErrorHandler(next, "supplies");
+  }
 });
 
 router.get("/create", async (req, res) => {
@@ -44,41 +53,55 @@ router.post("/create", async (req, res) => {
   });
 });
 
-router.get("/:id/update", async (req, res) => {
+router.get("/:id/update", async (req, res, next) => {
   const supply = await getSupplyById(req.params.id);
-  let supplyForm = createSupplyForm(await getAllSupplyTypesOpts());
-  supplyForm = supplyForm.bind({ ...supply.attributes });
-  res.render("operations/update", {
-    title: supply.toJSON().name,
-    form: supplyForm.toHTML(uiFields),
-  });
+  if (supply) {
+    let supplyForm = createSupplyForm(await getAllSupplyTypesOpts());
+    supplyForm = supplyForm.bind({ ...supply.attributes });
+    res.render("operations/update", {
+      title: supply.toJSON().name,
+      form: supplyForm.toHTML(uiFields),
+    });
+  } else {
+    fetchErrorHandler(next, "supply", req.params.id);
+  }
 });
 
-router.post("/:id/update", async (req, res) => {
-  const supplyForm = createSupplyForm(await getAllSupplyTypesOpts());
-  supplyForm.handle(req, {
-    success: async (form) => {
-      const supply = await updateSupply(req.params.id, form.data);
-      req.flash(
-        variables.success,
-        messages.updateSuccess(titles.supply, supply.get("name"))
-      );
-      res.redirect("/specifications/supplies");
-    },
-    error: async (form) => {
-      res.render("operations/update", {
-        form: form.toHTML(uiFields),
-      });
-    },
-  });
+router.post("/:id/update", async (req, res, next) => {
+  const supply = await getSupplyById(req.params.id);
+
+  if (supply) {
+    const supplyForm = createSupplyForm(await getAllSupplyTypesOpts());
+    supplyForm.handle(req, {
+      success: async (form) => {
+        const updatedSupply = await updateSupply(supply, form.data);
+        req.flash(
+          variables.success,
+          messages.updateSuccess(titles.supply, updatedSupply.get("name"))
+        );
+        res.redirect("/specifications/supplies");
+      },
+      error: async (form) => {
+        res.render("operations/update", {
+          form: form.toHTML(uiFields),
+        });
+      },
+    });
+  } else {
+    fetchErrorHandler(next, "supply", req.params.id);
+  }
 });
 
-router.get("/:id/delete", async (req, res) => {
+router.get("/:id/delete", async (req, res, next) => {
   const item = await getSupplyById(req.params.id);
-  res.render("operations/delete", {
-    title: item.toJSON().name,
-    homePath: "/specifications/supplies",
-  });
+  if (item) {
+    res.render("operations/delete", {
+      title: item.toJSON().name,
+      homePath: "/specifications/supplies",
+    });
+  } else {
+    fetchErrorHandler(next, "supply", req.params.id);
+  }
 });
 
 router.post("/:id/delete", async (req, res) => {

@@ -1,30 +1,43 @@
 const { Planter, PlanterType, PlanterMaterial } = require("../models");
 
-const getPlanterById = async (id) => {
-  return await Planter.where({ id }).fetch({
-    require: false,
-    withRelated: ["type", "material"],
-  });
-};
 const getAllPlanters = async () => {
   return await Planter.fetchAll({
     withRelated: ["type", "material"],
   });
 };
-const addPlanter = async (data) => {
-  const planter = new Planter().set(data);
-  await planter.save();
-  return planter;
+const getPlanterById = async (id) => {
+  try {
+    return await Planter.where({ id }).fetch({
+      require: false,
+      withRelated: ["type", "material"],
+    });
+  } catch (err) {}
+  return false;
 };
-const updatePlanter = async (id, data) => {
-  const planter = await getPlanterById(id);
-  planter.set(data);
-  await planter.save();
-  return planter;
+const addPlanter = async (data) => {
+  try {
+    const planter = new Planter().set(data);
+    await planter.save();
+    return planter;
+  } catch (err) {}
+  return false;
+};
+const updatePlanter = async (planter, data) => {
+  try {
+    if (planter) {
+      planter.set(data);
+      await planter.save();
+    }
+    return planter;
+  } catch (err) {}
+  return false;
 };
 
 const getAllPlanterTypes = async () => {
-  return await PlanterType.fetchAll();
+  try {
+    return await PlanterType.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getAllPlanterTypesOpts = async () => {
   return await getAllPlanterTypes().then((resp) =>
@@ -33,7 +46,10 @@ const getAllPlanterTypesOpts = async () => {
 };
 
 const getAllPlanterMaterials = async () => {
-  return await PlanterMaterial.fetchAll();
+  try {
+    return await PlanterMaterial.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getAllPlanterMaterialsOpts = async () => {
   return await getAllPlanterMaterials().then((resp) =>

@@ -5,9 +5,12 @@ const { getAllPlants } = require("./plants");
 const { getAllSupplies } = require("./supplies");
 
 const getAllProducts = async () => {
-  return await Product.fetchAll({
-    withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
-  });
+  try {
+    return await Product.fetchAll({
+      withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
+    });
+  } catch (err) {}
+  return false;
 };
 const getProductById = async (id) => {
   try {
@@ -16,34 +19,44 @@ const getProductById = async (id) => {
       withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
     });
   } catch (err) {}
-
   return false;
 };
 const addProduct = async (data) => {
-  const { discounts, ...inputs } = data;
-  const product = new Product().set(inputs);
-  await product.save();
-  if (discounts) {
-    await product.discounts().attach(discounts.split(","));
-  }
-  return product;
+  try {
+    const { discounts, ...inputs } = data;
+    const product = new Product().set(inputs);
+    await product.save();
+    if (discounts) {
+      await product.discounts().attach(discounts.split(","));
+    }
+    return product;
+  } catch (err) {}
+  return false;
 };
 const updateProduct = async (product, data) => {
-  const { discounts, ...inputs } = data;
-  product.set(inputs);
-  await product.save();
-  if (discounts) {
-    const selected = discounts.split(",");
-    const existing = await product.related("discounts").pluck("id");
-    const remove = existing.filter((id) => selected.includes(id) === false);
-    await product.discounts().detach(remove);
-    await product.discounts().attach(selected);
-  }
-  return product;
+  try {
+    if (product) {
+      const { discounts, ...inputs } = data;
+      product.set(inputs);
+      await product.save();
+      if (discounts) {
+        const selected = discounts.split(",");
+        const existing = await product.related("discounts").pluck("id");
+        const remove = existing.filter((id) => selected.includes(id) === false);
+        await product.discounts().detach(remove);
+        await product.discounts().attach(selected);
+      }
+    }
+    return product;
+  } catch (err) {}
+  return false;
 };
 
 const getAllColors = async () => {
-  return await Color.fetchAll();
+  try {
+    return await Color.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getAllColorsOpts = async () => {
   const opts = await getAllColors().then((resp) =>
@@ -54,7 +67,10 @@ const getAllColorsOpts = async () => {
 };
 
 const getAllSizes = async () => {
-  return await Size.fetchAll();
+  try {
+    return await Size.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getAllSizesOpts = async () => {
   const opts = await getAllSizes().then((resp) =>

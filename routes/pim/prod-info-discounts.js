@@ -8,11 +8,15 @@ const {
 const { messages, titles, variables } = require("../../helpers/const");
 const { createDiscountForm, uiFields } = require("../../helpers/form");
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   const items = await getAllDiscounts();
-  res.render("listing/discounts", {
-    discounts: items.toJSON(),
-  });
+  if (items) {
+    res.render("listing/discounts", {
+      discounts: items.toJSON(),
+    });
+  } else {
+    fetchErrorHandler(next, "discounts");
+  }
 });
 
 router.get("/create", async (req, res) => {
@@ -43,7 +47,7 @@ router.post("/create", async (req, res) => {
   });
 });
 
-router.get("/:id/update", async (req, res) => {
+router.get("/:id/update", async (req, res, next) => {
   const discount = await getDiscountById(req.params.id);
 
   if (discount) {
@@ -52,17 +56,19 @@ router.get("/:id/update", async (req, res) => {
       title: discount.toJSON().title,
       form: discountForm.toHTML(uiFields),
     });
+  } else {
+    fetchErrorHandler(next, "discount", req.params.id);
   }
 });
 
-router.post("/:id/update", async (req, res) => {
+router.post("/:id/update", async (req, res, next) => {
   const discount = await getDiscountById(req.params.id);
 
   if (discount) {
     const discountForm = createDiscountForm();
     discountForm.handle(req, {
       success: async (form) => {
-        const updatedDiscount = await updateDiscount(req.params.id, form.data);
+        const updatedDiscount = await updateDiscount(discount, form.data);
         req.flash(
           variables.success,
           messages.updateSuccess(titles.discount, updatedDiscount.get("title"))
@@ -76,15 +82,21 @@ router.post("/:id/update", async (req, res) => {
         });
       },
     });
+  } else {
+    fetchErrorHandler(next, "discount", req.params.id);
   }
 });
 
-router.get("/:id/delete", async (req, res) => {
+router.get("/:id/delete", async (req, res, next) => {
   const item = await getDiscountById(req.params.id);
-  res.render("operations/delete", {
-    title: item.toJSON().title,
-    homePath: "/products/discounts",
-  });
+  if (item) {
+    res.render("operations/delete", {
+      title: item.toJSON().title,
+      homePath: "/products/discounts",
+    });
+  } else {
+    fetchErrorHandler(next, "discount", req.params.id);
+  }
 });
 
 router.post("/:id/delete", async (req, res) => {

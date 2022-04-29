@@ -4,20 +4,30 @@ const getAllDiscounts = async () => {
   return await Discount.fetchAll();
 };
 const getDiscountById = async (id) => {
-  return await Discount.where({ id }).fetch({
-    require: true,
-  });
+  try {
+    return await Discount.where({ id }).fetch({
+      require: true,
+    });
+  } catch (err) {}
+  return false;
 };
 const addDiscount = async (data) => {
-  const discount = new Discount().set(data);
-  await discount.save();
-  return discount;
+  try {
+    const discount = new Discount().set(data);
+    await discount.save();
+    return discount;
+  } catch (err) {}
+  return false;
 };
-const updateDiscount = async (id, data) => {
-  const discount = await getDiscountById(id);
-  discount.set(data);
-  await discount.save();
-  return discount;
+const updateDiscount = async (discount, data) => {
+  try {
+    if (discount) {
+      discount.set(data);
+      await discount.save();
+    }
+    return discount;
+  } catch (err) {}
+  return false;
 };
 
 module.exports = {
