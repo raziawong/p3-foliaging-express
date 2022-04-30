@@ -86,6 +86,18 @@ const main = () => {
     };
   };
 
+  const handleAlertInteractions = () => {
+    var alert = document.getElementById("alert");
+    var close = document.getElementById("close-modal");
+    Alert.style.transform = "translateY(0%)";
+    function closeAlert() {
+      Alert.style.transform = "translateY(-200%)";
+      setTimeout(function () {
+        Alert.style.transform = "translateY(0%)";
+      }, 1000);
+    }
+  };
+
   init();
 };
 

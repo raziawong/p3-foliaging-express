@@ -1,0 +1,24 @@
+{{#if success_messages}}
+<div class="flex items-center justify-center w-full sm:px-6 pt-10">
+    {{#each success_messages}}
+    <div role="status"
+        class="transition duration-150 ease-in-out w-full lg:w-11/12 mx-auto bg-white dark:bg-stone-800 shadow rounded py-0">
+        <div class="flex flex-row items-center">
+            <div class="mr-3 p-4 bg-emerald-700 rounded md:rounded-tr-none md:rounded-br-none text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" width="20"
+                    height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <circle cx="12" cy="12" r="9" />
+                    <line x1="12" y1="8" x2="12.01" y2="8" />
+                    <polyline points="11 12 12 12 12 16 13 16" />
+                </svg>
+            </div>
+            <p
+                class="text-sm lg:text-base text-emerald-800 dark:text-emerald-200 lg:pt-1 xl:pt-0 sm:mb-0 mb-2 text-center sm:text-left">
+                {{this}}</p>
+        </div>
+    </div>
+    {{/each}}
+</div>
+{{/if}}
