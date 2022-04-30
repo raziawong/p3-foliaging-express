@@ -122,8 +122,26 @@ const createSystemLoginForm = () => {
   );
 };
 
+const updatePasswordForm = () => {
+  return forms.create(
+    {
+      password: fields.password({
+        required: true,
+        errorAfterField: true,
+      }),
+      confirm_password: fields.password({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.matchField("password")],
+      }),
+    },
+    { validatePastFirstError: true }
+  );
+};
+
 module.exports = {
   uiFields,
   createSystemRegistrationForm,
   createSystemLoginForm,
+  updatePasswordForm,
 };
