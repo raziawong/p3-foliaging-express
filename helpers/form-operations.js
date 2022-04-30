@@ -1,4 +1,5 @@
 const forms = require("forms");
+const { messages } = require("./const");
 const { fields, validators, widgets } = forms;
 
 var uiFields = (name, object) => {
@@ -9,7 +10,7 @@ var uiFields = (name, object) => {
     oWidget.classes = [
       ...oWidget.classes,
       "rounded-sm bg-gray-200 border-transparent focus:border-gray-200 focus:bg-zinc-800 focus:text-zinc-50",
-      "dark:bg-gray-600 dark:text-zinc-50 dark:focus:border-zinc-50 dark:focus:text-zinc-50",
+      "dark:bg-zinc-600 dark:text-zinc-50 dark:focus:border-zinc-50 dark:focus:text-zinc-50",
     ];
     if (oWidget.type !== "checkbox") {
       oWidget.classes.push("w-full p-2");
@@ -39,7 +40,7 @@ var uiFields = (name, object) => {
       : "basis-full lg:basis-1/2 self-center";
   const widget = oWidget.toHTML(name, object);
   return (
-    `<div class="${wrapClass}"><div class="form-control m-2">` +
+    `<div class="${wrapClass}"><div class="form-control mx-2 my-4">` +
     label +
     widget +
     error +
@@ -58,7 +59,7 @@ const createProductForm = (
   return forms.create(
     {
       uploadcare_group_id: fields.string({
-        required: validators.required("Please upload at least one image"),
+        required: validators.required(messages.imageRequired),
         widget: widgets.hidden(),
       }),
       title: fields.string({

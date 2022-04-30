@@ -45,6 +45,7 @@ main = () => {
   setTimeout(() => doDBMCreate("planters-data"), 4500);
   setTimeout(() => doDBMCreate("supplies-data"), 4500);
   setTimeout(() => doDBMCreate("discounts"), 4500);
+  setTimeout(() => doDBMCreate("customers"), 4500);
   setTimeout(() => doDBMCreate("users"), 4500);
   setTimeout(() => doDBMCreate("addresses"), 6000);
   setTimeout(() => doDBMCreate("orders"), 7500);
@@ -55,6 +56,7 @@ main = () => {
   setTimeout(() => doDBMCreate("plants-traits"), 9000);
   setTimeout(() => doDBMCreate("products-contraint-check"), 9000);
   setTimeout(() => doDBMCreate("plants-traits-data"), 10500);
+  setTimeout(() => doDBMCreate("delete-data"), 12000);
 };
 
 main();

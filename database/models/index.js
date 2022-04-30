@@ -1,5 +1,27 @@
 const bookshelf = require("../bookshelf");
 
+const AccountType = bookshelf.model("AccountType", {
+  tableName: "account_types",
+  users: function () {
+    return this.hasMany("User");
+  },
+});
+const User = bookshelf.model("User", {
+  tableName: "users",
+  initialize: function () {
+    this.on("creating", (model, attributes) => {
+      attributes.created_date = new Date();
+      attributes.modified_date = new Date();
+    });
+    this.on("updating", (model, attributes) => {
+      attributes.modified_date = new Date();
+    });
+  },
+  type: function () {
+    return this.belongsTo("AccountType");
+  },
+});
+
 const LightRequirement = bookshelf.model("LightRequirement", {
   tableName: "light_requirements",
   plants: function () {
@@ -183,12 +205,6 @@ const Product = bookshelf.model("Product", {
   },
 });
 
-const AccountType = bookshelf.model("AccountType", {
-  tableName: "account_types",
-  users: function () {
-    return this.hasMany("User");
-  },
-});
 const AddressType = bookshelf.model("AddressType", {
   tableName: "address_types",
   addresses: function () {
@@ -204,11 +220,17 @@ const Address = bookshelf.model("Address", {
     return this.belongsTo("User");
   },
 });
-const User = bookshelf.model("User", {
-  tableName: "users",
-  type: function () {
-    return this.belongsTo("AccountType");
+const Customer = bookshelf.model("Customer", {
+  initialize: function () {
+    this.on("creating", (model, attributes) => {
+      attributes.created_date = new Date();
+      attributes.modified_date = new Date();
+    });
+    this.on("updating", (model, attributes) => {
+      attributes.modified_date = new Date();
+    });
   },
+  tableName: "customers",
   addresses: function () {
     return this.hasMany("Address");
   },
@@ -238,7 +260,7 @@ const Order = bookshelf.model("Order", {
     return this.belongsTo("OrderStatus");
   },
   customer: function () {
-    return this.belongsTo("User");
+    return this.belongsTo("Customer");
   },
   items: function () {
     return this.hasMany("OrderedItem");
@@ -253,8 +275,8 @@ const OrderedItem = bookshelf.model("OrderedItem", {
   order: function () {
     return this.belongsTo("Order");
   },
-  user: function () {
-    return this.belongsTo("User");
+  customer: function () {
+    return this.belongsTo("Customer");
   },
 });
 
@@ -263,12 +285,14 @@ const CartItem = bookshelf.model("CartItem", {
   product: function () {
     return this.belongsTo("Product");
   },
-  user: function () {
-    return this.belongsTo("User");
+  customer: function () {
+    return this.belongsTo("Customer");
   },
 });
 
 module.exports = {
+  User,
+  AccountType,
   LightRequirement,
   WaterFrequency,
   CareLevel,
@@ -284,10 +308,9 @@ module.exports = {
   Size,
   Discount,
   Product,
-  AccountType,
   AddressType,
   Address,
-  User,
+  Customer,
   OrderStatus,
   PaymentDetail,
   Order,

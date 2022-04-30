@@ -12,7 +12,7 @@ const {
   variables,
   fetchErrorHandler,
 } = require("../../helpers/const");
-const { createSupplyForm, uiFields } = require("../../helpers/form");
+const { createSupplyForm, uiFields } = require("../../helpers/form-operations");
 
 router.get("/", async (req, res, next) => {
   const items = await getAllSupplies();

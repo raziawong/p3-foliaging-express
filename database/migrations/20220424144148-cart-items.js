@@ -23,7 +23,7 @@ exports.up = function (db) {
       unsigned: true,
       notNull: true,
       foreignKey: {
-        name: "FK_cart_items_products_users_product_id",
+        name: "FK_cart_items_products_customers_product_id",
         table: "products",
         mapping: "id",
         rules: {
@@ -32,13 +32,13 @@ exports.up = function (db) {
         },
       },
     },
-    user_id: {
+    customer_id: {
       type: "int",
       unsigned: true,
       notNull: true,
       foreignKey: {
-        name: "FK_cart_items_products_users_user_id",
-        table: "users",
+        name: "FK_cart_items_products_customers_user_id",
+        table: "customers",
         mapping: "id",
         rules: {
           onDelete: "CASCADE",
@@ -51,8 +51,8 @@ exports.up = function (db) {
 
 exports.down = function (db) {
   const foreignKeys = [
-    "FK_cart_items_products_users_product_id",
-    "FK_cart_items_products_users_user_id",
+    "FK_cart_items_products_customers_product_id",
+    "FK_cart_items_products_customers_user_id",
   ];
   const promises = foreignKeys.map((fk) =>
     db.removeForeignKey("cart_items", fk)

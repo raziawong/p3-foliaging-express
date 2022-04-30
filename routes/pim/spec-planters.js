@@ -13,7 +13,10 @@ const {
   variables,
   fetchErrorHandler,
 } = require("../../helpers/const");
-const { uiFields, createPlanterForm } = require("../../helpers/form");
+const {
+  uiFields,
+  createPlanterForm,
+} = require("../../helpers/form-operations");
 
 router.get("/", async (req, res, next) => {
   const items = await getAllPlanters();

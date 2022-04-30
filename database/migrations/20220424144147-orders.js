@@ -38,8 +38,8 @@ exports.up = function (db) {
       unsigned: true,
       notNull: true,
       foreignKey: {
-        name: "FK_orders_users_customer_id",
-        table: "users",
+        name: "FK_orders_customers_customer_id",
+        table: "customers",
         mapping: "id",
         rules: {
           onDelete: "RESTRICT",
@@ -53,7 +53,7 @@ exports.up = function (db) {
 exports.down = function (db) {
   const foreignKeys = [
     "FK_orders_order_statuses_status_id",
-    "FK_orders_users_customer_id",
+    "FK_orders_customers_customer_id",
   ];
   const promises = foreignKeys.map((fk) => db.removeForeignKey("orders", fk));
   let ret = null;

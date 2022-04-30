@@ -21,7 +21,7 @@ const {
   createProductForm,
   uiFields,
   updateProductForm,
-} = require("../../helpers/form");
+} = require("../../helpers/form-operations");
 
 const prodInfo = {
   discounts: require("./prod-info-discounts"),
