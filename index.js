@@ -40,7 +40,7 @@ const pim = {
   specifications: require("./routes/pim/specifications"),
   products: require("./routes/pim/products"),
   accounts: require("./routes/pim/accounts"),
-  users: require("./routes/pim/users"),
+  user: require("./routes/pim/user"),
 };
 
 (async function () {
@@ -55,7 +55,7 @@ const pim = {
   app.use("/products", checkIfAuthenticated, pim.products);
   app.use("/specifications", checkIfAuthenticated, pim.specifications);
   app.use("/accounts", pim.accounts);
-  app.use("/users", pim.users);
+  app.use("/user", pim.user);
 
   app.use((req, res, next) => {
     res.status(404);

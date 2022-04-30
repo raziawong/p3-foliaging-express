@@ -35,7 +35,7 @@ router.post("/login", async (req, res) => {
             email: user.get("email"),
             type: user.related("type").get("type"),
           };
-          res.redirect("/users/profile");
+          res.redirect("/user/profile");
         } else {
           req.flash(variables.error, messages.authError);
           res.redirect("/accounts/login");
@@ -49,6 +49,11 @@ router.post("/login", async (req, res) => {
       });
     },
   });
+});
+
+router.get("/logout", (req, res) => {
+  req.session.user = null;
+  res.redirect("/users/login");
 });
 
 router.get("/register", (req, res) => {

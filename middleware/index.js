@@ -17,7 +17,6 @@ const initSession = () => {
 };
 
 const setUser = (req, res, next) => {
-  //res.app.locals.user = req.session.user;
   res.locals.user = req.session.user;
   next();
 };

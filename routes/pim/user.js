@@ -9,7 +9,7 @@ router.get("/profile", (req, res) => {
     req.flash(variables.error, messages.accessError);
     res.redirect("/accounts/login");
   } else {
-    res.render("users/profile", {
+    res.render("user/profile", {
       user: userSession,
       form: updatePasswordForm().toHTML(uiFields),
     });
@@ -29,10 +29,10 @@ router.post("/profile", async (req, res) => {
           variables.success,
           messages.updateSuccess(titles.user, updatedUser.name)
         );
-        res.redirect("/users/profile");
+        res.redirect("/user/profile");
       },
       error: async (form) => {
-        res.render("users/profile", {
+        res.render("user/profile", {
           user: user,
           form: form.toHTML(uiFields),
         });
