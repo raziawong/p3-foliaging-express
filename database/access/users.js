@@ -10,6 +10,14 @@ const searchUser = async (query) => {
   return false;
 };
 
+const getAllUsers = async () => {
+  try {
+    return await User.fetchAll({
+      withRelated: ["type"],
+    });
+  } catch (err) {}
+  return false;
+};
 const getUserById = async (id) => {
   try {
     return await User.where({ id }).fetch({
@@ -50,6 +58,7 @@ const getAllAccountTypesOpts = async () => {
 
 module.exports = {
   searchUser,
+  getAllUsers,
   getUserById,
   addUser,
   updateUser,
