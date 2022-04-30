@@ -44,7 +44,7 @@ const checkIfAuthenticated = (req, res, next) => {
     next();
   } else {
     req.flash(variables.error, messages.accessError);
-    res.redirect("/users/login");
+    res.redirect("/accounts/login");
   }
 };
 

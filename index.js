@@ -11,6 +11,7 @@ const {
   setCSRFToken,
   setFlashMessages,
   handleErrors,
+  checkIfAuthenticated,
 } = require("./middleware");
 
 const app = express();
@@ -39,16 +40,22 @@ const pim = {
   specifications: require("./routes/pim/specifications"),
   products: require("./routes/pim/products"),
   accounts: require("./routes/pim/accounts"),
+  users: require("./routes/pim/users"),
 };
 
 (async function () {
   app.get("/", function (req, res) {
-    res.redirect("/landing");
+    if (req.session.user) {
+      res.redirect("/products");
+    } else {
+      res.redirect("/accounts/login");
+    }
   });
 
-  app.use("/products", pim.products);
-  app.use("/specifications", pim.specifications);
+  app.use("/products", checkIfAuthenticated, pim.products);
+  app.use("/specifications", checkIfAuthenticated, pim.specifications);
   app.use("/accounts", pim.accounts);
+  app.use("/users", pim.users);
 
   app.use((req, res, next) => {
     res.status(404);
