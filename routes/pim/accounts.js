@@ -53,7 +53,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.session.user = null;
-  res.redirect("/users/login");
+  res.redirect("/user/login");
 });
 
 router.get("/register", (req, res) => {
