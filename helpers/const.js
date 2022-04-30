@@ -6,6 +6,7 @@ const titles = {
   plant: "Plant Specification",
   planter: "Planter Specification",
   supply: "Supply Specification",
+  user: "User",
 };
 const variables = {
   success: "success_messages",
