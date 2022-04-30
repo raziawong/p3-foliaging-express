@@ -1,7 +1,10 @@
 const { Discount } = require("../models");
 
 const getAllDiscounts = async () => {
-  return await Discount.fetchAll();
+  try {
+    return await Discount.fetchAll();
+  } catch (err) {}
+  return false;
 };
 const getDiscountById = async (id) => {
   try {

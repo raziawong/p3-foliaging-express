@@ -1,9 +1,12 @@
 const { Planter, PlanterType, PlanterMaterial } = require("../models");
 
 const getAllPlanters = async () => {
-  return await Planter.fetchAll({
-    withRelated: ["type", "material"],
-  });
+  try {
+    return await Planter.fetchAll({
+      withRelated: ["type", "material"],
+    });
+  } catch (err) {}
+  return false;
 };
 const getPlanterById = async (id) => {
   try {
