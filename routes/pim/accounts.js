@@ -33,8 +33,9 @@ router.post("/login", async (req, res) => {
             id: user.get("id"),
             username: user.get("username"),
             email: user.get("email"),
+            type: user.related("type").get("type"),
           };
-          res.redirect("/accounts/profile");
+          res.redirect("/users/profile");
         } else {
           req.flash(variables.error, messages.authError);
           res.redirect("/accounts/login");

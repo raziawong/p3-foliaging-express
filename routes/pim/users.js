@@ -1,24 +1,19 @@
+const router = require("express").Router();
 const { getUserById, updateUser } = require("../../database/access/users");
 const { messages, variables, titles } = require("../../helpers/const");
 const { updatePasswordForm, uiFields } = require("../../helpers/form-accounts");
 
-const router = require("express").Router();
-
 router.get("/profile", (req, res) => {
-  const user = req.session.user;
-  //   if (!user) {
-  //     req.flash(variables.error, messages.accessError);
-  //     res.redirect("/accounts/login");
-  //   } else {
-  //     res.render("users/profile", {
-  //       user: user,
-  //     });
-  //   }
-
-  res.render("users/profile", {
-    user: user,
-    form: updatePasswordForm().toHTML(uiFields),
-  });
+  const userSession = req.session.user;
+  if (!userSession) {
+    req.flash(variables.error, messages.accessError);
+    res.redirect("/accounts/login");
+  } else {
+    res.render("users/profile", {
+      user: userSession,
+      form: updatePasswordForm().toHTML(uiFields),
+    });
+  }
 });
 
 router.post("/profile", async (req, res) => {
@@ -39,7 +34,7 @@ router.post("/profile", async (req, res) => {
       error: async (form) => {
         res.render("users/profile", {
           user: user,
-          form: passwordForm.toHTML(uiFields),
+          form: form.toHTML(uiFields),
         });
       },
     });

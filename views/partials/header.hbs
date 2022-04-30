@@ -148,8 +148,8 @@
     </div>
   </div>
 </div>
-<!-- Mobile starts -->
-<!-- Desktop ends -->
+<!-- Mobile ends -->
+<!-- Desktop starts -->
 <nav id="desktop-nav" class="w-full mx-auto bg-white dark:bg-neutral-800 shadow z-20 relative">
   <div class="justify-between container px-4 h-16 flex items-center lg:items-stretch mx-auto">
     <div class="flex items-center">
@@ -177,11 +177,11 @@
           <ul class="bg-white dark:bg-neutral-700 shadow rounded py-1 w-32 left-0 mt-16 -ml-4 absolute hidden top-0">
             <li
               class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-3 hover:text-amber-200 px-3 font-normal">
-              <a href="/products">Listing</a>
+              <a class="w-full" href="/products">Listing</a>
             </li>
             <li
               class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-3 hover:text-amber-200 px-3 font-normal">
-              <a href="/products/discounts">Discounts</a>
+              <a class="w-full" href="/products/discounts">Discounts</a>
             </li>
           </ul>
         </li>
@@ -205,15 +205,15 @@
           <ul class="bg-white dark:bg-neutral-700 shadow rounded py-1 w-32 left-0 mt-16 -ml-4 absolute hidden top-0">
             <li
               class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-3 hover:text-amber-200 px-3 font-normal">
-              <a href="/specifications/plants">Plants</a>
+              <a class="w-full" href="/specifications/plants">Plants</a>
             </li>
             <li
               class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-3 hover:text-amber-200 px-3 font-normal">
-              <a href="/specifications/planters">Planters</a>
+              <a class="w-full" href="/specifications/planters">Planters</a>
             </li>
             <li
               class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-3 hover:text-amber-200 px-3 font-normal">
-              <a href="/specifications/supplies">Supplies</a>
+              <a class="w-full" href="/specifications/supplies">Supplies</a>
             </li>
           </ul>
         </li>
@@ -226,7 +226,7 @@
           <div aria-haspopup="true" class="nav-menu cursor-pointer w-full flex items-center justify-end relative">
             <button aria-haspopup="true"
               class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 hover:text-amber-200 rounded flex items-center">
-              <p class="text-gray-800 dark:text-zinc-300 text-sm ml-2">Jane Doe</p>
+              <p class="text-gray-800 dark:text-zinc-300 text-sm ml-2">{{req.locals.user.username}}</p>
             </button>
             <ul class="p-2 w-40 border-r bg-white dark:bg-neutral-700 absolute rounded z-40 left-0 shadow mt-52 hidden">
               <li
@@ -239,8 +239,9 @@
                     <circle cx="12" cy="7" r="4" />
                     <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                   </svg>
-                  <a href="javascript:void(0)" class="ml-2">My Profile</a>
+                  <a href="/users/profile" class="w-full ml-2">My Profile</a>
                 </div>
+                {{!--
               </li>
               <li
                 class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-amber-200 focus:outline-none flex items-center">
@@ -265,7 +266,7 @@
                   <circle cx="12" cy="12" r="3" />
                 </svg>
                 <a href="javascript:void(0)" class="ml-2">Account Settings</a>
-              </li>
+              </li> --}}
             </ul>
           </div>
         </div>
