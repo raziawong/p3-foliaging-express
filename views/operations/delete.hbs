@@ -1,29 +1,31 @@
 {{#extends "base"}}
 
 {{#block "content"}}
-<div tabindex="0" aria-label="action panel"
-  class="focus:outline-none w-8/12 mx-auto mb-4 md:w-5/12 shadow sm:px-10 sm:py-6 pt-10 pb-4 px-4 bg-white dark:bg-zinc-800 rounded-md">
-  <form method="POST">
-    <input type="hidden" name="_csrf" value="{{csrfToken}}" />
-    <div class="flex pb-3 items-center">
-      <p tabindex="0" class="focus:outline-none text-lg text-gray-800 dark:text-gray-100 font-semibold">
-        Delete <strong>{{title}}</strong>?
+<div class="flex items-center justify-center w-full sm:px-6 pt-10">
+  <div tabindex="0" aria-label="action panel"
+    class="focus:outline-none w-8/12 mx-auto mb-4 md:w-5/12 shadow sm:px-10 sm:py-6 pt-10 pb-4 px-4 bg-white dark:bg-zinc-800 rounded-md">
+    <form method="POST">
+      <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+      <div class="flex pb-3 items-center">
+        <p tabindex="0" class="focus:outline-none text-lg font-semibold text-gray-800 dark:text-gray-100 font-semibold">
+          Delete {{title}}?
+        </p>
+      </div>
+      <p tabindex="0" class="focus:outline-none text-sm text-gray-600 dark:text-gray-400 pb-3 font-normal">
+        Please note that this action is not reversible
       </p>
-    </div>
-    <p tabindex="0" class="focus:outline-none text-sm text-gray-600 dark:text-gray-400 pb-3 font-normal">
-      Please note that this action is not reversible
-    </p>
-    <div class="flex justify-around">
-      <button type="submit"
-        class="m-2 p-2 flex text-xs items-center bg-white dark:bg-zinc-700 dark:text-yellow-200 transition duration-150 ease-in-out hover:bg-yellow-600 hover:text-slate-50 hover:border-slate-50 rounded border border-yellow-600 text-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-        Confirm
-      </button>
-      <a href="{{homePath}}"
-        class="m-2 p-2 flex text-xs items-center bg-white dark:bg-zinc-700 dark:text-sky-200 transition duration-150 ease-in-out hover:bg-sky-600 hover:text-slate-50 hover:border-slate-50 rounded border border-sky-600 text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-        Cancel
-      </a>
-    </div>
-  </form>
+      <div class="flex justify-around">
+        <button type="submit"
+          class="m-2 p-2 flex text-xs items-center bg-white dark:bg-zinc-700 dark:text-yellow-200 transition duration-150 ease-in-out hover:bg-yellow-600 hover:text-slate-50 hover:border-slate-50 rounded border border-yellow-600 text-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+          Confirm
+        </button>
+        <a href="{{homePath}}"
+          class="m-2 p-2 flex text-xs items-center bg-white dark:bg-zinc-700 dark:text-sky-200 transition duration-150 ease-in-out hover:bg-sky-600 hover:text-slate-50 hover:border-slate-50 rounded border border-sky-600 text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
 </div>
 {{/block}}
 
