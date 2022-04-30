@@ -39,7 +39,7 @@ var uiFields = (name, object) => {
       : "basis-full lg:basis-1/2 self-center";
   const widget = oWidget.toHTML(name, object);
   return (
-    `<div class="${wrapClass}"><div class="form-control m-2">` +
+    `<div class="${wrapClass}"><div class="form-control mx-2 my-4">` +
     label +
     widget +
     error +
