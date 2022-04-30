@@ -64,10 +64,7 @@ router.post("/register", async (req, res) => {
       let { confirm_password, password, ...inputs } = form.data;
       password = getHashPassword(password);
       const user = await addUser({ ...inputs, password });
-      req.flash(
-        variables.success,
-        messages.registerSuccess(user.get("username"))
-      );
+      req.flash(variables.success, messages.registerSuccess(user.username));
       res.redirect("/accounts/login");
     },
     error: (form) => {
