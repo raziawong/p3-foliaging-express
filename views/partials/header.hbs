@@ -12,7 +12,7 @@
             <img src="/assets/img/logo.png" class="w-9/12" alt="foliaging">
           </div>
           <button id="sb-close"
-            class="hidden text-gray-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 rounded">
+            class="hidden text-gray-800 dark:text-zinc-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 rounded">
             <svg xmlns="http://www.w3.org/2000/svg" aria-label="close" class="icon icon-tabler icon-tabler-x" width="24"
               height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round"
               stroke-linejoin="round">
@@ -25,11 +25,11 @@
         <ul class="f-m-m">
           {{#if user}}
           <li class="w-full text-gray-700 pt-14">
-            <p class="text-gray-700 dark:text-zinc-300 ml-3 text-lg">Hi, {{user.username}}</p>
+            <p class="text-gray-700 dark:text-zinc-100 ml-3 text-lg">Hi, {{user.username}}</p>
           </li>
           <li class="w-full text-gray-700 py-8 border-b border-gray-300">
             <div class="flex items-center justify-around">
-              <a href="/user/profile" class="text-gray-700 dark:text-zinc-300 ml-3 text-lg">
+              <a href="/user/profile" class="text-gray-700 dark:text-zinc-100 ml-3 text-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="30" height="30"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
                   stroke-linejoin="round">
@@ -38,7 +38,7 @@
                   <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                 </svg>
               </a>
-              <a href="/accounts/logout" class="text-gray-700 dark:text-zinc-300 ml-3 text-lg">
+              <a href="/accounts/logout" class="text-gray-700 dark:text-zinc-100 ml-3 text-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="30"
                   height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
                   stroke-linecap="round" stroke-linejoin="round">
@@ -95,10 +95,10 @@
                   </svg>
                 </div> --}}
 
-                <a href="javascript:void(0)" class="text-gray-700 dark:text-zinc-300 ml-3 text-lg">Products</a>
+                <a href="javascript:void(0)" class="text-gray-700 dark:text-zinc-100 ml-3 text-lg">Products</a>
               </div>
               <button
-                class="mobile-item-expand ml-4 text-gray-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
+                class="mobile-item-expand ml-4 text-gray-800 dark:text-zinc-50 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="14"
                   height="14" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
                   stroke-linecap="round" stroke-linejoin="round">
@@ -107,7 +107,7 @@
                 </svg>
               </button>
               <button
-                class="mobile-item-close hidden ml-4 text-gray-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
+                class="mobile-item-close hidden ml-4 text-gray-800 dark:text-zinc-50 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
                 <svg xmlns="http://www.w3.org/2000/svg"
                   class="icon icon-tabler icon-tabler-chevron-down transform rotate-180" width="14" height="14"
                   viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -119,10 +119,10 @@
             </div>
             <div class="mobile-items hidden">
               <ul class="my-3">
-                <li class="text-sm text-gray-800 dark:text-zinc-200 hover:text-amber-200 py-2 px-6">
+                <li class="text-sm text-gray-800 dark:text-zinc-50 hover:text-amber-200 py-2 px-6">
                   <a href="/products">Listing</a>
                 </li>
-                <li class="text-sm text-gray-800 dark:text-zinc-200 hover:text-amber-200 py-2 px-6">
+                <li class="text-sm text-gray-800 dark:text-zinc-50 hover:text-amber-200 py-2 px-6">
                   <a href="/products/discounts">Discounts</a>
                 </li>
               </ul>
@@ -145,11 +145,11 @@
           <li class="text-gray-800 pt-8">
             <div class="flex items-center">
               <div class="flex items-center">
-                <a href="javascript:void(0)" class="text-gray-800 dark:text-zinc-200 ml-3 text-lg">Specifications</a>
+                <a href="javascript:void(0)" class="text-gray-800 dark:text-zinc-50 ml-3 text-lg">Specifications</a>
               </div>
               <div>
                 <button
-                  class="mobile-item-expand ml-4 text-gray-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
+                  class="mobile-item-expand ml-4 text-gray-800 dark:text-zinc-50 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="14"
                     height="14" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -158,7 +158,7 @@
                   </svg>
                 </button>
                 <button
-                  class="mobile-item-close hidden ml-4 text-gray-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
+                  class="mobile-item-close hidden ml-4 text-gray-800 dark:text-zinc-50 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded">
                   <svg xmlns="http://www.w3.org/2000/svg"
                     class="icon icon-tabler icon-tabler-chevron-down transform rotate-180" width="14" height="14"
                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -171,13 +171,13 @@
             </div>
             <div class="mobile-items hidden">
               <ul class="my-3">
-                <li class="text-sm text-gray-800 dark:text-zinc-200 hover:text-amber-200 py-2 px-6">
+                <li class="text-sm text-gray-800 dark:text-zinc-50 hover:text-amber-200 py-2 px-6">
                   <a href="/specifications/plants">Plants</a>
                 </li>
-                <li class="text-sm text-gray-800 dark:text-zinc-200 hover:text-amber-200 py-2 px-6">
+                <li class="text-sm text-gray-800 dark:text-zinc-50 hover:text-amber-200 py-2 px-6">
                   <a href="/specifications/planters">Planters</a>
                 </li>
-                <li class="text-sm text-gray-800 dark:text-zinc-200 hover:text-amber-200 py-2 px-6">
+                <li class="text-sm text-gray-800 dark:text-zinc-50 hover:text-amber-200 py-2 px-6">
                   <a href="/specifications/supplies">Supplies</a>
                 </li>
               </ul>
@@ -191,7 +191,7 @@
 <!-- Mobile ends -->
 <!-- Desktop starts -->
 <nav id="desktop-nav" class="w-full mx-auto bg-white dark:bg-neutral-800 shadow z-20 relative">
-  <div class="justify-between container px-4 h-16 flex items-center lg:items-stretch mx-auto">
+  <div class="justify-between container px-2 h-[10vh] flex items-center lg:items-stretch mx-auto">
     <div class="flex items-center">
       <div aria-label="Home" role="img" class="mr-10 flex items-center">
         <img src="/assets/img/logo.png" class="w-5/12" alt="foliaging">
@@ -202,7 +202,7 @@
           <a href="javascript:void(0)"> Dashboard</a>
         </li> --}}
         <li
-          class="nav-menu hover:text-amber-200 cursor-pointer h-full flex items-center text-sm text-gray-800 dark:text-zinc-300 mx-10 tracking-normal relative">
+          class="nav-menu hover:text-amber-200 cursor-pointer h-full flex items-center text-sm text-gray-800 dark:text-zinc-100 mx-10 tracking-normal relative">
           <a href="javascript:void(0)" class="flex items-center ">
             Products
             <span class="ml-2">
@@ -216,11 +216,11 @@
           </a>
           <ul class="bg-white dark:bg-neutral-700 shadow rounded py-1 w-32 left-0 mt-16 -ml-4 absolute hidden top-0">
             <li
-              class="w-full cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal hover:text-amber-200 font-normal">
+              class="w-full cursor-pointer text-gray-600 dark:text-zinc-50 text-sm leading-3 tracking-normal hover:text-amber-200 font-normal">
               <a class="block p-3" href="/products">Listing</a>
             </li>
             <li
-              class="w-full cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal hover:text-amber-200 font-normal">
+              class="w-full cursor-pointer text-gray-600 dark:text-zinc-50 text-sm leading-3 tracking-normal hover:text-amber-200 font-normal">
               <a class="block p-3" href="/products/discounts">Discounts</a>
             </li>
           </ul>
@@ -230,7 +230,7 @@
           <a href="javascript:void(0)"> Performance</a>
         </li> --}}
         <li
-          class="nav-menu hover:text-amber-200 cursor-pointer h-full flex items-center text-sm text-gray-800 dark:text-zinc-300 tracking-normal relative">
+          class="nav-menu hover:text-amber-200 cursor-pointer h-full flex items-center text-sm text-gray-800 dark:text-zinc-100 tracking-normal relative">
           <a href="javascript:void(0)" class="flex items-center">
             Specifications
             <span class="ml-2">
@@ -244,15 +244,15 @@
           </a>
           <ul class="bg-white dark:bg-neutral-700 shadow rounded py-1 w-32 left-0 mt-16 -ml-4 absolute hidden top-0">
             <li
-              class="w-full cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal hover:text-amber-200 font-normal">
+              class="w-full cursor-pointer text-gray-600 dark:text-zinc-50 text-sm leading-3 tracking-normal hover:text-amber-200 font-normal">
               <a class="block p-3" href="/specifications/plants">Plants</a>
             </li>
             <li
-              class="w-full cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal hover:text-amber-200 font-normal">
+              class="w-full cursor-pointer text-gray-600 dark:text-zinc-50 text-sm leading-3 tracking-normal hover:text-amber-200 font-normal">
               <a class="block p-3" href="/specifications/planters">Planters</a>
             </li>
             <li
-              class="w-full cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal hover:text-amber-200 font-normal">
+              class="w-full cursor-pointer text-gray-600 dark:text-zinc-50 text-sm leading-3 tracking-normal hover:text-amber-200 font-normal">
               <a class="block p-3" href="/specifications/supplies">Supplies</a>
             </li>
           </ul>
@@ -267,11 +267,11 @@
           <div aria-haspopup="true" class="nav-menu cursor-pointer w-full flex items-center justify-center relative">
             <button aria-haspopup="true"
               class="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 hover:text-amber-200 rounded flex items-center">
-              <p class="text-gray-800 dark:text-zinc-300 text-sm ml-2">Hi, {{user.username}}</p>
+              <p class="text-gray-800 dark:text-zinc-100 text-sm ml-2">Hi, {{user.username}}</p>
             </button>
             <ul class="p-2 w-40 border-r bg-white dark:bg-neutral-700 absolute rounded z-40 left-0 shadow mt-40 hidden">
               <li
-                class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal py-2 hover:text-amber-200 focus:outline-none">
+                class="cursor-pointer text-gray-600 dark:text-zinc-50 text-sm leading-3 tracking-normal py-2 hover:text-amber-200 focus:outline-none">
                 <div class="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="20"
                     height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
@@ -284,7 +284,7 @@
                 </div>
               </li>
               <li
-                class="cursor-pointer text-gray-600 dark:text-zinc-200 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-amber-200 focus:outline-none flex items-center">
+                class="cursor-pointer text-gray-600 dark:text-zinc-50 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-amber-200 focus:outline-none flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="20"
                   height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
                   stroke-linecap="round" stroke-linejoin="round">
@@ -314,7 +314,7 @@
     <div class="visible xl:hidden flex items-center">
       <div>
         <button id="hamburger"
-          class="text-gray-800 dark:text-zinc-300 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">
+          class="text-gray-800 dark:text-zinc-100 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">
           <svg xmlns="http://www.w3.org/2000/svg" aria-label="menu" class="icon icon-tabler icon-tabler-menu-2"
             width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
             stroke-linecap="round" stroke-linejoin="round">

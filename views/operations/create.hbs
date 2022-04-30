@@ -21,8 +21,8 @@
 {{/if}}
 
 {{#block "content"}}
-<div class="w-full sm:px-6 pt-10">
-  <div class="px-4 md:px-10 py-4 md:py-7 bg-gray-100 dark:bg-zinc-700 rounded-tl-lg rounded-tr-lg">
+<div class="w-full sm:px-6 pt-10 pb-8">
+  <div class="px-4 md:px-10 py-4 md:py-7 bg-gray-100/[0.8] dark:bg-gray-700/[0.8] rounded-tl-lg rounded-tr-lg">
     <div class="sm:flex items-center justify-between">
       <p tabindex="0"
         class="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800 dark:text-white ">
@@ -30,7 +30,7 @@
       </p>
     </div>
   </div>
-  <div class="bg-white dark:bg-zinc-800 shadow px-4 md:px-10 pt-4 md:pt-7 pb-5">
+  <div class="bg-white/[0.8] dark:bg-zinc-800/[0.8] shadow px-4 md:px-10 pt-4 md:pt-7 pb-5">
     <form class="w-full flex flex-row flex-wrap" method="POST">
       <input type="hidden" name="_csrf" value="{{csrfToken}}" />
       {{#if needImage}}
