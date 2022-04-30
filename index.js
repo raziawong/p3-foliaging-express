@@ -52,10 +52,10 @@ const pim = {
     }
   });
 
-  app.use("/products", checkIfAuthenticated, pim.products);
-  app.use("/specifications", checkIfAuthenticated, pim.specifications);
+  app.use("/products", pim.products);
+  app.use("/specifications", pim.specifications);
   app.use("/accounts", pim.accounts);
-  app.use("/user", pim.user);
+  app.use("/user", checkIfAuthenticated, pim.user);
 
   app.use((req, res, next) => {
     res.status(404);

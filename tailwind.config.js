@@ -13,5 +13,10 @@ module.exports = {
     fontFamily: {
       serif: ["Lato", ...defaultTheme.fontFamily.serif],
     },
+    extend: {
+      backgroundImage: {
+        "plant-pattern": "url('/assets/img/background.png')",
+      },
+    },
   },
 };
