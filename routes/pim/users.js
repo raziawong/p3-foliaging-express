@@ -1,14 +1,17 @@
-const router = require("express").Router();
-const {
-  createSystemRegistrationForm,
-  uiFields,
-} = require("../../helpers/form");
+const { messages, variables } = require("../../helpers/const");
 
-router.get("/register", (req, res) => {
-  const registerForm = createSystemRegistrationForm();
-  res.render("users/register", {
-    form: registerForm.toHTML(uiFields),
-  });
+const router = require("express").Router();
+
+router.get("/profile", (req, res) => {
+  const user = req.session.user;
+  if (!user) {
+    req.flash(variables.error, messages.accessError);
+    res.redirect("/accounts/login");
+  } else {
+    res.render("users/profile", {
+      user: user,
+    });
+  }
 });
 
 module.exports = router;

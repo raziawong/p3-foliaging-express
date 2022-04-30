@@ -8,6 +8,15 @@ const AccountType = bookshelf.model("AccountType", {
 });
 const User = bookshelf.model("User", {
   tableName: "users",
+  initialize: function () {
+    this.on("creating", (model, attributes) => {
+      attributes.created_date = new Date();
+      attributes.modified_date = new Date();
+    });
+    this.on("updating", (model, attributes) => {
+      attributes.modified_date = new Date();
+    });
+  },
   type: function () {
     return this.belongsTo("AccountType");
   },
@@ -212,6 +221,15 @@ const Address = bookshelf.model("Address", {
   },
 });
 const Customer = bookshelf.model("Customer", {
+  initialize: function () {
+    this.on("creating", (model, attributes) => {
+      attributes.created_date = new Date();
+      attributes.modified_date = new Date();
+    });
+    this.on("updating", (model, attributes) => {
+      attributes.modified_date = new Date();
+    });
+  },
   tableName: "customers",
   addresses: function () {
     return this.hasMany("Address");

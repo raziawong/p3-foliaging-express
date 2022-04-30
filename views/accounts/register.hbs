@@ -8,6 +8,7 @@
                 class="pb-8 focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800 dark:text-white ">
                 Register an account
             </p>
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
             {{{form}}}
             {{!-- <div>
                 <label id="email" class="text-sm font-medium leading-none text-gray-800">

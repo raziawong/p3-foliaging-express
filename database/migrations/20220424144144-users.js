@@ -19,13 +19,14 @@ exports.up = function (db) {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     username: { type: "string", length: 20, unique: true, notNull: true },
     email: { type: "string", length: 320, unique: true, notNull: true },
-    password: { type: "string", length: 150, notNull: true },
+    password: { type: "string", length: 256, notNull: true },
     created_date: { type: "datetime", notNull: true },
     modified_date: { type: "datetime", notNull: true },
     account_type_id: {
       type: "int",
       unsigned: true,
       notNull: true,
+      defaultValue: 2,
       foreignKey: {
         name: "FK_users_account_types_account_type_id",
         table: "account_types",

@@ -28,17 +28,17 @@ app.use(
 
 app.use(cors());
 app.use(initSession());
+app.use(flash());
+app.use(setFlashMessages);
 app.use(setUser);
 app.use(setCSRF);
 app.use(setCSRFToken);
-app.use(flash());
-app.use(setFlashMessages);
 app.use(handleErrors);
 
-const ims = {
+const pim = {
   specifications: require("./routes/pim/specifications"),
   products: require("./routes/pim/products"),
-  users: require("./routes/pim/users"),
+  accounts: require("./routes/pim/accounts"),
 };
 
 (async function () {
@@ -46,9 +46,9 @@ const ims = {
     res.redirect("/landing");
   });
 
-  app.use("/products", ims.products);
-  app.use("/specifications", ims.specifications);
-  app.use("/users", ims.users);
+  app.use("/products", pim.products);
+  app.use("/specifications", pim.specifications);
+  app.use("/accounts", pim.accounts);
 
   app.use((req, res, next) => {
     res.status(404);

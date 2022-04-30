@@ -11,7 +11,10 @@ const {
   variables,
   fetchErrorHandler,
 } = require("../../helpers/const");
-const { createDiscountForm, uiFields } = require("../../helpers/form");
+const {
+  createDiscountForm,
+  uiFields,
+} = require("../../helpers/form-operations");
 
 router.get("/", async (req, res, next) => {
   const items = await getAllDiscounts();

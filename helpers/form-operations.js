@@ -1,4 +1,5 @@
 const forms = require("forms");
+const { messages } = require("./const");
 const { fields, validators, widgets } = forms;
 
 var uiFields = (name, object) => {
@@ -58,7 +59,7 @@ const createProductForm = (
   return forms.create(
     {
       uploadcare_group_id: fields.string({
-        required: validators.required("Please upload at least one image"),
+        required: validators.required(messages.imageRequired),
         widget: widgets.hidden(),
       }),
       title: fields.string({
@@ -356,31 +357,6 @@ const createSupplyForm = (type) => {
   );
 };
 
-const createSystemRegistrationForm = () => {
-  return forms.create(
-    {
-      username: fields.string({
-        required: true,
-        errorAfterField: true,
-      }),
-      email: fields.string({
-        required: true,
-        errorAfterField: true,
-      }),
-      password: fields.password({
-        required: true,
-        errorAfterField: true,
-      }),
-      confirm_password: fields.password({
-        required: true,
-        errorAfterField: true,
-        validators: [validators.matchField("password")],
-      }),
-    },
-    { validatePastFirstError: true }
-  );
-};
-
 module.exports = {
   uiFields,
   createProductForm,
@@ -389,5 +365,4 @@ module.exports = {
   createPlantForm,
   createPlanterForm,
   createSupplyForm,
-  createSystemRegistrationForm,
 };
