@@ -48,6 +48,60 @@ var uiFields = (name, object) => {
   );
 };
 
+const createSearchForm = (specifications, discounts, colors, sizes) => {
+  return forms.create(
+    {
+      title: fields.string(),
+      specification: fields.string({
+        label: "Specification",
+        widget: widgets.select(),
+        choices: specifications,
+      }),
+      min_price: fields.number({
+        label: "Min. Price",
+        errorAfterField: true,
+        validators: [
+          validators.min(1),
+          validators.regexp(regexp.floatTwo, messages.decimal2Places),
+        ],
+      }),
+      max_price: fields.number({
+        label: "Max. Price",
+        errorAfterField: true,
+        validators: [
+          validators.min(1),
+          validators.regexp(regexp.floatTwo, messages.decimal2Places),
+        ],
+      }),
+      min_stock: fields.number({
+        label: "Min. Stock",
+        errorAfterField: true,
+        validators: [validators.min(1), validators.integer()],
+      }),
+      max_stock: fields.number({
+        label: "Max. Stock",
+        errorAfterField: true,
+        validators: [validators.min(1), validators.integer()],
+      }),
+      color_id: fields.string({
+        label: "Colors",
+        widget: widgets.select(),
+        choices: colors,
+      }),
+      size_id: fields.string({
+        label: "Sizes",
+        widget: widgets.select(),
+        choices: sizes,
+      }),
+      discounts: fields.string({
+        widget: widgets.multipleSelect(),
+        choices: discounts,
+      }),
+    },
+    { validatePastFirstError: true }
+  );
+};
+
 const createProductForm = (
   plants,
   planters,
@@ -151,7 +205,7 @@ const updateProductForm = (discounts, colors, sizes) => {
   return forms.create(
     {
       uploadcare_group_id: fields.string({
-        required: validators.required("Please upload at least one image"),
+        required: validators.required(messages.required),
         widget: widgets.hidden(),
       }),
       title: fields.string({
@@ -383,6 +437,7 @@ const createSupplyForm = (type) => {
 
 module.exports = {
   uiFields,
+  createSearchForm,
   createProductForm,
   updateProductForm,
   createDiscountForm,

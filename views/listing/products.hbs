@@ -1,6 +1,43 @@
 {{#extends "base"}}
 {{#block "content"}}
-<div class="w-full sm:px-6 pt-10 pt-8">
+
+<div class="w-full sm:px-6 pt-10">
+  <div class="px-4 md:px-10 py-4 md:py-7 bg-gray-100/[0.8] dark:bg-zinc-800/[0.8] rounded-tl-lg rounded-tr-lg">
+    <button
+      class="px-6 py-2 flex items-center bg-white dark:bg-zinc-700 dark:text-sky-200 transition duration-150 ease-in-out hover:bg-sky-600 hover:text-slate-50 hover:border-slate-50 rounded border border-sky-600 text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+      type="button" data-bs-toggle="collapse" data-bs-target="#productSearch" aria-expanded="false"
+      aria-controls="productSearch">
+      <span class="flex items-center justify-center text-sm font-medium leading-tight uppercase">
+        Search Fields
+        <span class="ml-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="14"
+            height="14" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </span>
+      </span>
+    </button>
+    <div class="collapse" id="productSearch">
+      <form class="w-full flex flex-row flex-wrap" method="GET">
+        {{{form}}}
+        <div class="basis-full flex justify-end">
+          <a href="/products"
+            class="focus:ring-2 focus:ring-offset-2 focus:ring-zinc-100 mt-6 px-6 py-3 bg-sky-600 hover:bg-cyan-300 focus:outline-none rounded mr-2">
+            <span class="text-sm font-medium leading-tight uppercase text-white">Reset</span>
+          </a>
+          <button type="submit"
+            class="focus:ring-2 focus:ring-offset-2 focus:ring-zinc-100 mt-6 px-6 py-3 bg-yellow-600 hover:bg-amber-300 focus:outline-none rounded">
+            <span class="text-sm font-medium leading-tight uppercase text-white">Search</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="w-full sm:px-6 pt-4 pb-8">
   <div class="px-4 md:px-10 py-4 md:py-7 bg-gray-100/[0.8] dark:bg-zinc-800/[0.8] rounded-tl-lg rounded-tr-lg">
     <div class="sm:flex items-center justify-between">
       <p tabindex="0"

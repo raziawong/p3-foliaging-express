@@ -10,6 +10,8 @@ const {
   getAllPlantsOpts,
   getAllPlantersOpts,
   getAllSuppliesOpts,
+  searchProducts,
+  getAllSpecificationsOpts,
 } = require("../../database/access/products");
 const {
   messages,
@@ -21,6 +23,7 @@ const {
   createProductForm,
   uiFields,
   updateProductForm,
+  createSearchForm,
 } = require("../../helpers/form-operations");
 
 const prodInfo = {
@@ -31,9 +34,8 @@ const prodInfo = {
   router.use("/discounts", prodInfo.discounts);
 
   router.get("/", async (req, res, next) => {
-    let items = await getAllProducts();
-    if (items) {
-      items = items.toJSON().map((item) => {
+    const consolidateSpecs = (products) => {
+      products = products.map((item) => {
         item.specification = item.plant_id
           ? item.plant
           : item.planter_id
@@ -43,12 +45,99 @@ const prodInfo = {
           : {};
         return item;
       });
+      return products;
+    };
+    const showAllProducts = async (form) => {
+      let products = await getAllProducts();
+      if (products) {
+        products = consolidateSpecs(products.toJSON());
+        res.render("listing/products", {
+          form: form.toHTML(uiFields),
+          products: products,
+        });
+      } else {
+        fetchErrorHandler(next, "products");
+      }
+    };
+    const showQueriedProducts = async (form) => {
+      const queries = req.query;
+      const builder = (qb) => {
+        if (queries.title) {
+          qb.where("title", "LIKE", "%" + queries.title + "%");
+        }
+        if (queries.specification) {
+          const specs = queries.specification.split("_");
+          const id =
+            specs[0] === "plants"
+              ? "plant_id"
+              : specs[0] === "planters"
+              ? "planter_id"
+              : "supply_id";
+
+          qb.join(specs[0], id, specs[0].concat(".id")).where(
+            specs[0].concat(".name"),
+            "=",
+            specs[1]
+          );
+        }
+        if (queries.min_price) {
+          qb.where("price", ">=", queries.min_price * 100);
+        }
+        if (queries.max_price) {
+          qb.where("price", "<=", queries.max_price * 100);
+        }
+        if (queries.min_stock) {
+          qb.where("stock", ">=", queries.min_stock);
+        }
+        if (queries.max_stock) {
+          qb.where("stock", "<=", queries.max_stock);
+        }
+        if (queries.color_id) {
+          qb.join("colors", "colors.id", "color_id").where(
+            "id",
+            "=",
+            queries.color_id
+          );
+        }
+        if (queries.size_id) {
+          qb.join("sizes", "sizes.id", "size_id").where(
+            "id",
+            "=",
+            queries.size_id
+          );
+        }
+        if (queries.discounts) {
+          qb.join("discounts_products", "products.id", "product_id").where(
+            "discount_id",
+            "in",
+            queries.discounts.split(",")
+          );
+        }
+      };
+      const products = await searchProducts(builder);
       res.render("listing/products", {
-        products: items,
+        form: form.toHTML(uiFields),
+        products: products.toJSON(),
       });
-    } else {
-      fetchErrorHandler(next, "products");
-    }
+    };
+
+    const searchForm = createSearchForm(
+      await getAllSpecificationsOpts(),
+      await getAllDiscountsOpts(),
+      await getAllColorsOpts(),
+      await getAllSizesOpts()
+    );
+    searchForm.handle(req, {
+      empty: (form) => {
+        showAllProducts(form);
+      },
+      success: async (form) => {
+        showQueriedProducts(form);
+      },
+      error: (form) => {
+        showAllProducts(form);
+      },
+    });
   });
 
   router.get("/create", async (req, res) => {
@@ -113,7 +202,6 @@ const prodInfo = {
     const product = await getProductById(req.params.id);
 
     if (product) {
-      const { discounts, ...dbData } = product.attributes;
       const productObj = product.toJSON();
       let productForm = updateProductForm(
         await getAllDiscountsOpts(),
@@ -122,7 +210,7 @@ const prodInfo = {
       );
       let selected = await product.related("discounts").pluck("id");
       productForm = productForm.bind({
-        ...dbData,
+        ...product.attributes,
         discounts: selected,
       });
       const specification =

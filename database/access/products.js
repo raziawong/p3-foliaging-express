@@ -4,6 +4,16 @@ const { getAllPlanters } = require("./planters");
 const { getAllPlants } = require("./plants");
 const { getAllSupplies } = require("./supplies");
 
+const searchProducts = async (queryBuilder) => {
+  try {
+    return await Product.query(queryBuilder).fetchAll({
+      require: false,
+      withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
+    });
+  } catch (err) {}
+  return false;
+};
+
 const getAllProducts = async () => {
   try {
     return await Product.fetchAll({
@@ -107,8 +117,27 @@ const getAllSuppliesOpts = async () => {
   opts.unshift(["", "None"]);
   return opts;
 };
+const getAllSpecificationsOpts = async () => {
+  const promises = [
+    Promise.resolve(["", "None"]),
+    ...(await getAllPlants().then((resp) =>
+      resp.map((o) => ["plants_" + o.get("name"), "Plant: " + o.get("name")])
+    )),
+    ...(await getAllPlanters().then((resp) =>
+      resp.map((o) => [
+        "planters_" + o.get("name"),
+        "Planter: " + o.get("name"),
+      ])
+    )),
+    ...(await getAllSupplies().then((resp) =>
+      resp.map((o) => ["supplies_" + o.get("name"), "Supply: " + o.get("name")])
+    )),
+  ];
+  return Promise.all(promises).then((resp) => resp);
+};
 
 module.exports = {
+  searchProducts,
   getAllProducts,
   getProductById,
   addProduct,
@@ -121,4 +150,5 @@ module.exports = {
   getAllPlantsOpts,
   getAllPlantersOpts,
   getAllSuppliesOpts,
+  getAllSpecificationsOpts,
 };
