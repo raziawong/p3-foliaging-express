@@ -43,6 +43,10 @@ const pim = {
   user: require("./routes/pim/user"),
 };
 
+const api = {
+  products: require("./routes/api/products"),
+};
+
 (async function () {
   app.get("/", function (req, res) {
     if (req.session.user) {
@@ -56,10 +60,15 @@ const pim = {
   app.use("/specifications", checkIfAuthenticated, pim.specifications);
   app.use("/accounts", pim.accounts);
   app.use("/user", checkIfAuthenticated, pim.user);
+  app.use("/api/products", express.json(), api.products);
 
   app.use((req, res, next) => {
-    res.status(404);
-    res.render("errors/404");
+    if (!req.path.startsWith("/api")) {
+      res.status(404);
+      res.render("errors/404");
+    } else {
+      next();
+    }
   });
 })();
 
