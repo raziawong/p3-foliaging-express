@@ -9,8 +9,8 @@ var uiFields = (name, object) => {
       oWidget.classes && oWidget.length ? oWidget.classes.split(",") : [];
     oWidget.classes = [
       ...oWidget.classes,
-      "rounded-sm bg-gray-200 border-transparent focus:border-gray-200 focus:bg-zinc-800 focus:text-zinc-50",
-      "dark:bg-zinc-600 dark:text-zinc-50 dark:focus:border-zinc-50 dark:focus:text-zinc-50",
+      "rounded-sm focus:border-gray-200 bg-zinc-400 text-zinc-50",
+      "dark:bg-zinc-700 dark:focus:border-gray-50",
     ];
     if (oWidget.type !== "checkbox") {
       oWidget.classes.push("w-full p-2");
