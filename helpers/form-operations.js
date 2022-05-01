@@ -7,18 +7,19 @@ var uiFields = (name, object) => {
   if (!Array.isArray(oWidget.classes)) {
     oWidget.classes =
       oWidget.classes && oWidget.length ? oWidget.classes.split(",") : [];
-    oWidget.classes = [
-      ...oWidget.classes,
-      "rounded-sm focus:border-gray-200 bg-zinc-400 text-zinc-50 text-sm",
-      "dark:bg-slate-500 dark:focus:border-gray-50",
-    ];
-    if (oWidget.type !== "checkbox") {
-      oWidget.classes.push("w-full p-2");
-    } else if (oWidget.type === "textarea") {
-      oWidget.classes.push("h-24");
-    } else if (oWidget.type === "checkbox") {
-      oWidget.classes.push("mx-2");
-    }
+  }
+
+  oWidget.classes = [
+    ...oWidget.classes,
+    "rounded-sm focus:border-gray-200 bg-zinc-400 text-zinc-50 text-sm",
+    "dark:bg-slate-500 dark:focus:border-gray-50",
+  ];
+  if (oWidget.type !== "checkbox") {
+    oWidget.classes.push("w-full p-2");
+  } else if (oWidget.type === "textarea") {
+    oWidget.classes.push("h-24");
+  } else if (oWidget.type === "checkbox") {
+    oWidget.classes.push("mx-2");
   }
 
   const errorClass = object.error ? "border-red-800 dark:border-red-300" : "";

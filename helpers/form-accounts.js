@@ -8,26 +8,22 @@ var uiFields = (name, object) => {
   if (!Array.isArray(oWidget.classes)) {
     oWidget.classes =
       oWidget.classes && oWidget.length ? oWidget.classes.split(",") : [];
-    oWidget.classes = [
-      ...oWidget.classes,
-      "rounded-sm focus:border-gray-200 bg-zinc-400 text-zinc-50",
-      "dark:bg-zinc-700 dark:focus:border-gray-50",
-    ];
-    if (oWidget.type !== "checkbox") {
-      oWidget.classes.push("w-full p-2");
-    } else if (oWidget.type === "textarea") {
-      oWidget.classes.push("h-24");
-    } else if (oWidget.type === "checkbox") {
-      oWidget.classes.push("mx-2");
-    }
   }
+
+  oWidget.classes = [
+    ...oWidget.classes,
+    "w-full p-2 rounded-sm focus:border-gray-200 bg-zinc-400 text-zinc-50 text-sm",
+    "dark:bg-slate-500 dark:focus:border-gray-50",
+  ];
 
   const errorClass = object.error ? "border-red-800 dark:border-red-300" : "";
   if (errorClass) {
     oWidget.classes.push(errorClass);
   }
 
-  object.cssClasses = { label: ["label dark:text-zinc-100"] };
+  object.cssClasses = {
+    label: ["label text-sm pb-1 dark:text-zinc-100"],
+  };
   const label = object.labelHTML(name);
   const error = object.error
     ? `<label class="text-red-800 dark:text-red-300 prose-sm">` +
@@ -35,17 +31,9 @@ var uiFields = (name, object) => {
       "</label>"
     : "";
 
-  const wrapClass =
-    oWidget.type === "hidden"
-      ? "basis-full self-start"
-      : "basis-full lg:basis-1/2 self-center";
   const widget = oWidget.toHTML(name, object);
   return (
-    `<div class="${wrapClass}"><div class="form-control mx-2 my-4">` +
-    label +
-    widget +
-    error +
-    "</div></div>"
+    `<div class="form-control mx-2 my-4">` + label + widget + error + "</div>"
   );
 };
 

@@ -21,7 +21,7 @@
                 class="py-4 focus:outline-none text-base sm:text-md md:text-lg lg:text-xl font-bold leading-normal text-gray-800 dark:text-white">
                 Change Password
             </p>
-            <form method="POST">
+            <form class="w-full flex flex-col" method="POST">
                 <input type="hidden" name="_csrf" value="{{csrfToken}}" />
                 {{{form}}}
                 <div class="mt-8">
