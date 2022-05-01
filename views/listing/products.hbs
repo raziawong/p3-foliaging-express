@@ -7,7 +7,7 @@
       class="px-6 py-2 flex items-center bg-white dark:bg-zinc-700 dark:text-sky-200 transition duration-150 ease-in-out hover:bg-sky-600 hover:text-slate-50 hover:border-slate-50 rounded border border-sky-600 text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
       type="button" data-bs-toggle="collapse" data-bs-target="#productSearch" aria-expanded="false"
       aria-controls="productSearch">
-      <span class="flex items-center justify-center text-sm font-medium leading-tight uppercase">
+      <span class="flex items-center justify-center text-xs md:text-sm leading-tight uppercase">
         Search Fields
         <span class="ml-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="14"
@@ -24,12 +24,12 @@
         {{{form}}}
         <div class="basis-full flex justify-end">
           <a href="/products"
-            class="focus:ring-2 focus:ring-offset-2 focus:ring-zinc-100 mt-6 px-6 py-3 bg-sky-600 hover:bg-cyan-300 focus:outline-none rounded mr-2">
-            <span class="text-sm font-medium leading-tight uppercase text-white">Reset</span>
+            class="focus:ring-2 focus:ring-offset-2 focus:ring-zinc-100 mt-6 px-5 py-2 bg-sky-600 hover:bg-cyan-300 focus:outline-none rounded mr-2">
+            <span class="text-xs md:text-sm leading-tight uppercase text-white">Reset</span>
           </a>
           <button type="submit"
-            class="focus:ring-2 focus:ring-offset-2 focus:ring-zinc-100 mt-6 px-6 py-3 bg-yellow-600 hover:bg-amber-300 focus:outline-none rounded">
-            <span class="text-sm font-medium leading-tight uppercase text-white">Search</span>
+            class="focus:ring-2 focus:ring-offset-2 focus:ring-zinc-100 mt-6 px-5 py-2 bg-yellow-600 hover:bg-amber-300 focus:outline-none rounded">
+            <span class="text-xs md:text-sm leading-tight uppercase text-white">Search</span>
           </button>
         </div>
       </form>
@@ -46,7 +46,7 @@
       <div>
         <a href="./products/create"
           class="focus:ring-2 focus:ring-offset-2 focus:ring-zinc-100 inline-flex sm:ml-3 mt-4 sm:mt-0 items-start justify-start px-6 py-3 bg-yellow-600 hover:bg-amber-300 focus:outline-none rounded">
-          <span class="text-sm font-medium leading-none text-white">Add New</span>
+          <span class="text-xs md:text-sm leading-tight uppercase text-white">Add New</span>
         </a>
       </div>
     </div>
@@ -116,7 +116,7 @@
                 <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
                 <line x1="16" y1="5" x2="19" y2="8" />
               </svg>
-              <span class="pl-1">Edit</span>
+              <span class="pl-1 uppercase">Edit</span>
             </a>
             <a href="./products/{{this.id}}/delete"
               class="m-2 p-2 flex text-xs items-center bg-white dark:bg-zinc-700 dark:text-rose-200 transition duration-150 ease-in-out hover:bg-rose-600 hover:text-slate-50 hover:border-slate-50 rounded border border-rose-600 text-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
@@ -130,7 +130,7 @@
                 <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
                 <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
               </svg>
-              <span class="pl-1">Delete</span>
+              <span class="pl-1 uppercase">Delete</span>
             </a>
           </td>
         </tr>

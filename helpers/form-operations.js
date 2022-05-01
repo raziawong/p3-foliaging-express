@@ -9,8 +9,8 @@ var uiFields = (name, object) => {
       oWidget.classes && oWidget.length ? oWidget.classes.split(",") : [];
     oWidget.classes = [
       ...oWidget.classes,
-      "rounded-sm focus:border-gray-200 bg-zinc-400 text-zinc-50",
-      "dark:bg-zinc-700 dark:focus:border-gray-50",
+      "rounded-sm focus:border-gray-200 bg-zinc-400 text-zinc-50 text-sm",
+      "dark:bg-slate-500 dark:focus:border-gray-50",
     ];
     if (oWidget.type !== "checkbox") {
       oWidget.classes.push("w-full p-2");
@@ -26,7 +26,9 @@ var uiFields = (name, object) => {
     oWidget.classes.push(errorClass);
   }
 
-  object.cssClasses = { label: ["label dark:text-zinc-100"] };
+  object.cssClasses = {
+    label: ["label text-sm pb-1 dark:text-zinc-100"],
+  };
   const label = object.labelHTML(name);
   const error = object.error
     ? `<label class="text-red-800 dark:text-red-300 prose-sm">` +
