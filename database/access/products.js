@@ -10,8 +10,11 @@ const searchProducts = async (queryBuilder) => {
       require: false,
       withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
     });
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
 
 const getAllProducts = async () => {
@@ -19,18 +22,26 @@ const getAllProducts = async () => {
     return await Product.fetchAll({
       withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
     });
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getProductById = async (id) => {
   try {
     return await Product.where({ id }).fetch({
       require: true,
       withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
     });
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const addProduct = async (data) => {
   try {
     const { discounts, ...inputs } = data;
@@ -40,9 +51,13 @@ const addProduct = async (data) => {
       await product.discounts().attach(discounts.split(","));
     }
     return product;
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const updateProduct = async (product, data) => {
   try {
     if (product) {
@@ -58,16 +73,23 @@ const updateProduct = async (product, data) => {
       }
     }
     return product;
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
 
 const getAllColors = async () => {
   try {
     return await Color.fetchAll();
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getAllColorsOpts = async () => {
   const opts = await getAllColors().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("color")])
@@ -79,9 +101,13 @@ const getAllColorsOpts = async () => {
 const getAllSizes = async () => {
   try {
     return await Size.fetchAll();
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getAllSizesOpts = async () => {
   const opts = await getAllSizes().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("size")])
@@ -96,6 +122,7 @@ const getAllDiscountsOpts = async () => {
   );
   return opts;
 };
+
 const getAllPlantsOpts = async () => {
   const opts = await getAllPlants().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("name")])
@@ -103,6 +130,7 @@ const getAllPlantsOpts = async () => {
   opts.unshift(["", "None"]);
   return opts;
 };
+
 const getAllPlantersOpts = async () => {
   const opts = await getAllPlanters().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("name")])
@@ -110,6 +138,7 @@ const getAllPlantersOpts = async () => {
   opts.unshift(["", "None"]);
   return opts;
 };
+
 const getAllSuppliesOpts = async () => {
   const opts = await getAllSupplies().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("name")])
@@ -117,6 +146,7 @@ const getAllSuppliesOpts = async () => {
   opts.unshift(["", "None"]);
   return opts;
 };
+
 const getAllSpecificationsOpts = async () => {
   const promises = [
     Promise.resolve(["", "None"]),

@@ -12,18 +12,26 @@ const getAllPlants = async () => {
     return await Plant.fetchAll({
       withRelated: ["species", "light", "water", "care"],
     });
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getPlantById = async (id) => {
   try {
     return await Plant.where({ id }).fetch({
       require: false,
       withRelated: ["species", "light", "water", "care", "traits"],
     });
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const addPlant = async (data) => {
   try {
     const { traits, ...inputs } = data;
@@ -33,9 +41,13 @@ const addPlant = async (data) => {
       await plant.traits().attach(traits.split(","));
     }
     return plant;
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const updatePlant = async (plant, data) => {
   try {
     if (plant) {
@@ -52,16 +64,23 @@ const updatePlant = async (plant, data) => {
       }
     }
     return plant;
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
 
 const getAllSpecies = async () => {
   try {
     return await Species.fetchAll();
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getAllSpeciesOpts = async () => {
   return await getAllSpecies().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("name")])
@@ -71,9 +90,13 @@ const getAllSpeciesOpts = async () => {
 const getAllLightRequirements = async () => {
   try {
     return await LightRequirement.fetchAll();
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getAllLightRequirementsOpts = async () => {
   return await getAllLightRequirements().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("requirement")])
@@ -83,9 +106,13 @@ const getAllLightRequirementsOpts = async () => {
 const getAllWaterFrequencies = async () => {
   try {
     return await WaterFrequency.fetchAll();
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getAllWaterFrequenciesOpts = async () => {
   return await getAllWaterFrequencies().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("frequency")])
@@ -95,9 +122,13 @@ const getAllWaterFrequenciesOpts = async () => {
 const getAllCareLevels = async () => {
   try {
     return await CareLevel.fetchAll();
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getAllCareLevelsOpts = async () => {
   return await getAllCareLevels().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("level")])
@@ -107,9 +138,13 @@ const getAllCareLevelsOpts = async () => {
 const getAllTraits = async () => {
   try {
     return await Trait.fetchAll();
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getAllTraitsOpts = async () => {
   return await getAllTraits().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("trait")])

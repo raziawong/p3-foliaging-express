@@ -9,6 +9,7 @@ const getShoppingCart = async (customerId) => {
       withRelated: ["product", "customers"],
     });
   } catch (err) {
+    console.error(err);
   } finally {
     return false;
   }
@@ -24,6 +25,7 @@ const getCartItemByCustomerAndProduct = async (customerId, productId) => {
       withRelated: ["product", "customers"],
     });
   } catch (err) {
+    console.error(err);
   } finally {
     return false;
   }
@@ -39,6 +41,7 @@ const addCartItem = async (customerId, productId, quantity) => {
     await cartItem.save();
     return cartItem;
   } catch (err) {
+    console.error(err);
   } finally {
     return false;
   }
@@ -53,6 +56,7 @@ const deleteCartItem = async (customerId, productId) => {
     }
     return false;
   } catch (err) {
+    console.error(err);
   } finally {
     return false;
   }
@@ -68,6 +72,7 @@ const updateCartItemQuantity = async (customerId, productId, newQuantity) => {
     }
     return false;
   } catch (err) {
+    console.error(err);
   } finally {
     return false;
   }

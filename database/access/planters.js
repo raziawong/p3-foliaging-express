@@ -5,26 +5,38 @@ const getAllPlanters = async () => {
     return await Planter.fetchAll({
       withRelated: ["type", "material"],
     });
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getPlanterById = async (id) => {
   try {
     return await Planter.where({ id }).fetch({
       require: false,
       withRelated: ["type", "material"],
     });
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const addPlanter = async (data) => {
   try {
     const planter = new Planter().set(data);
     await planter.save();
     return planter;
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const updatePlanter = async (planter, data) => {
   try {
     if (planter) {
@@ -32,16 +44,23 @@ const updatePlanter = async (planter, data) => {
       await planter.save();
     }
     return planter;
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
 
 const getAllPlanterTypes = async () => {
   try {
     return await PlanterType.fetchAll();
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getAllPlanterTypesOpts = async () => {
   return await getAllPlanterTypes().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("type")])
@@ -51,9 +70,13 @@ const getAllPlanterTypesOpts = async () => {
 const getAllPlanterMaterials = async () => {
   try {
     return await PlanterMaterial.fetchAll();
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const getAllPlanterMaterialsOpts = async () => {
   return await getAllPlanterMaterials().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("material")])
