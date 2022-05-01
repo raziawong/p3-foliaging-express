@@ -1,5 +1,5 @@
 const forms = require("forms");
-const { messages } = require("./const");
+const { messages, regexp } = require("./const");
 const { fields, validators, widgets } = forms;
 
 var uiFields = (name, object) => {
@@ -88,15 +88,18 @@ const createProductForm = (
       stock: fields.number({
         required: true,
         errorAfterField: true,
-        validators: [validators.min(1)],
-        widget: widgets.number(),
+        validators: [validators.min(1), validators.integer()],
+        widget: widgets.text(),
       }),
       price: fields.number({
         label: "Price ($)",
         required: true,
         errorAfterField: true,
-        validators: [validators.min(1)],
-        widget: widgets.number(),
+        validators: [
+          validators.min(1),
+          validators.regexp(regexp.floatTwo, messages.decimal2Places),
+        ],
+        widget: widgets.text(),
       }),
       discounts: fields.string({
         widget: widgets.multipleSelect(),
@@ -115,20 +118,29 @@ const createProductForm = (
       height: fields.number({
         label: "Height (cm)",
         errorAfterField: true,
-        validators: [validators.min(1)],
-        widget: widgets.number(),
+        validators: [
+          validators.min(1),
+          validators.regexp(regexp.floatTwo, messages.decimal2Places),
+        ],
+        widget: widgets.text(),
       }),
       width: fields.number({
         label: "Width / Circumference (cm)",
         errorAfterField: true,
-        validators: [validators.min(1)],
-        widget: widgets.number(),
+        validators: [
+          validators.min(1),
+          validators.regexp(regexp.floatTwo, messages.decimal2Places),
+        ],
+        widget: widgets.text(),
       }),
       weight: fields.number({
         label: "Weight (kg)",
         errorAfterField: true,
-        validators: [validators.min(1)],
-        widget: widgets.number(),
+        validators: [
+          validators.min(1),
+          validators.regexp(regexp.floatTwo, messages.decimal2Places),
+        ],
+        widget: widgets.text(),
       }),
     },
     { validatePastFirstError: true }
@@ -150,15 +162,18 @@ const updateProductForm = (discounts, colors, sizes) => {
       stock: fields.number({
         required: true,
         errorAfterField: true,
-        validators: [validators.min(1)],
-        widget: widgets.number(),
+        validators: [validators.min(1), validators.integer()],
+        widget: widgets.text(),
       }),
       price: fields.number({
         label: "Price ($)",
         required: true,
         errorAfterField: true,
-        validators: [validators.min(1)],
-        widget: widgets.number(),
+        validators: [
+          validators.min(1),
+          validators.regexp(regexp.floatTwo, messages.decimal2Places),
+        ],
+        widget: widgets.text(),
       }),
       discounts: fields.string({
         widget: widgets.multipleSelect(),
@@ -177,20 +192,29 @@ const updateProductForm = (discounts, colors, sizes) => {
       height: fields.number({
         label: "Height (cm)",
         errorAfterField: true,
-        validators: [validators.min(1)],
-        widget: widgets.number(),
+        validators: [
+          validators.min(1),
+          validators.regexp(regexp.floatTwo, messages.decimal2Places),
+        ],
+        widget: widgets.text(),
       }),
       width: fields.number({
         label: "Width / Circumference (cm)",
         errorAfterField: true,
-        validators: [validators.min(1)],
-        widget: widgets.number(),
+        validators: [
+          validators.min(1),
+          validators.regexp(regexp.floatTwo, messages.decimal2Places),
+        ],
+        widget: widgets.text(),
       }),
       weight: fields.number({
         label: "Weight (kg)",
         errorAfterField: true,
-        validators: [validators.min(1)],
-        widget: widgets.number(),
+        validators: [
+          validators.min(1),
+          validators.regexp(regexp.floatTwo, messages.decimal2Places),
+        ],
+        widget: widgets.text(),
       }),
     },
     { validatePastFirstError: true }
@@ -213,7 +237,7 @@ const createDiscountForm = () => {
         required: true,
         errorAfterField: true,
         validators: [validators.min(1), validators.max(99)],
-        widget: widgets.number(),
+        widget: widgets.text(),
       }),
       start_date: fields.date({
         required: true,

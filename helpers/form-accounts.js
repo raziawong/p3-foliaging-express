@@ -1,6 +1,6 @@
 const forms = require("forms");
 const { searchUser } = require("../database/access/users");
-const { messages } = require("./const");
+const { messages, regexp } = require("./const");
 const { fields, validators, widgets } = forms;
 
 var uiFields = (name, object) => {
@@ -94,6 +94,9 @@ const createSystemRegistrationForm = () => {
       password: fields.password({
         required: true,
         errorAfterField: true,
+        validators: [
+          validators.regexp(regexp.password, messages.passwordStrength),
+        ],
       }),
       confirm_password: fields.password({
         required: true,
@@ -128,6 +131,9 @@ const updatePasswordForm = () => {
       password: fields.password({
         required: true,
         errorAfterField: true,
+        validators: [
+          validators.regexp(regexp.password, messages.passwordStrength),
+        ],
       }),
       confirm_password: fields.password({
         required: true,

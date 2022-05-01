@@ -31,7 +31,14 @@ const messages = {
     `${title} delete operation encountered an error, please try again.`,
   fetchError: (name, id) => `Cannot get ${name} ${id ? "with id " + id : ""}`,
   imageRequired: "Please upload at least one image",
+  passwordStrength:
+    "Password must be at least 8 characters long and contain at least 1 symbol, 1 uppercase, 1 lowercase and 1 number",
+  decimal2Places: "Up to 2 decimal places only",
   csrfExpired: "Please try again, the form has expired",
+};
+const regexp = {
+  password: new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/),
+  floatTwo: new RegExp(/^\d*(\.\d{1,2})?$/),
 };
 
 const getHashPassword = (password) => {
@@ -50,6 +57,7 @@ module.exports = {
   titles,
   variables,
   messages,
+  regexp,
   getHashPassword,
   fetchErrorHandler,
 };
