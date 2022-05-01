@@ -125,7 +125,7 @@ const prodInfo = {
         ...dbData,
         discounts: selected,
       });
-      let specification =
+      const specification =
         productObj.plant || productObj.planter || productObj.supply;
       res.render("operations/update", {
         needImage: true,
@@ -143,10 +143,7 @@ const prodInfo = {
     const product = await getProductById(req.params.id);
 
     if (product) {
-      const productForm = createProductForm(
-        await getAllPlantsOpts(),
-        await getAllPlantersOpts(),
-        await getAllSuppliesOpts(),
+      const productForm = updateProductForm(
         await getAllDiscountsOpts(),
         await getAllColorsOpts(),
         await getAllSizesOpts()
@@ -161,10 +158,14 @@ const prodInfo = {
           res.redirect("/products");
         },
         error: async (form) => {
+          const productObj = product.toJSON();
+          const specification =
+            productObj.plant || productObj.planter || productObj.supply;
           res.render("operations/update", {
             needImage: true,
             publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
-            title: product.toJSON().title,
+            specification: specification.name,
+            title: productObj.title,
             form: form.toHTML(uiFields),
           });
         },
