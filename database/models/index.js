@@ -1,3 +1,4 @@
+const dayjs = require("dayjs");
 const bookshelf = require("../bookshelf");
 
 const AccountType = bookshelf.model("AccountType", {
@@ -136,6 +137,15 @@ const Discount = bookshelf.model("Discount", {
   },
   products: function () {
     return this.belongsToMany("Product");
+  },
+  parse: function (resp) {
+    if (resp.start_date) {
+      resp.start_date = dayjs(resp.start_date).format("DD MMM YYYY");
+    }
+    if (resp.end_date) {
+      resp.end_date = dayjs(resp.end_date).format("DD MMM YYYY");
+    }
+    return resp;
   },
 });
 const Product = bookshelf.model("Product", {
