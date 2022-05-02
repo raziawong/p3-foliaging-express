@@ -12,6 +12,7 @@ const {
   setFlashMessages,
   handleErrors,
   checkIfAuthenticated,
+  checkIfAuthenticatedJWT,
 } = require("./middleware");
 
 const app = express();
@@ -64,7 +65,11 @@ const api = {
   app.use("/user", checkIfAuthenticated, pim.user);
   app.use("/api/products", express.json(), api.products);
   app.use("/api/accounts", express.json(), api.accounts);
-  app.use("/api/user", express.json(), api.customerActions);
+  app.use(
+    "/api/user",
+    [checkIfAuthenticatedJWT, express.json()],
+    api.customerActions
+  );
 
   app.use((req, res, next) => {
     if (!req.path.startsWith("/api")) {

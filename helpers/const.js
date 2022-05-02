@@ -40,6 +40,14 @@ const messages = {
   csrfExpired: "Please try again, the form has expired",
 };
 
+const apiMessages = {
+  registeredSuccess: "registered success",
+  loginSuccess: "login success",
+  logoutSuccess: "logout success",
+  authError: "login details provided is invalid",
+  jwtRefreshExpired: "refresh token has expired",
+};
+
 const regexp = {
   password: new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/),
   floatTwo: new RegExp(/^\d*(\.\d{1,2})?$/),
@@ -64,6 +72,7 @@ module.exports = {
   titles,
   variables,
   messages,
+  apiMessages,
   regexp,
   getHashPassword,
   generateAccessToken,
