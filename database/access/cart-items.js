@@ -10,7 +10,6 @@ const getShoppingCart = async (customerId) => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -26,7 +25,6 @@ const getCartItemByCustomerAndProduct = async (customerId, productId) => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -42,7 +40,6 @@ const addCartItem = async (customerId, productId, quantity) => {
     return cartItem;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -57,7 +54,6 @@ const deleteCartItem = async (customerId, productId) => {
     return false;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -73,7 +69,6 @@ const updateCartItemQuantity = async (customerId, productId, newQuantity) => {
     return false;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };

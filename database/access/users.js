@@ -8,7 +8,6 @@ const searchUser = async (query) => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -20,7 +19,6 @@ const getAllUsers = async () => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -33,7 +31,6 @@ const getUserById = async (id) => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -57,7 +54,6 @@ const updateUser = async (user, data) => {
     return user;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -67,7 +63,6 @@ const getAllAccountTypes = async () => {
     return await AccountType.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };

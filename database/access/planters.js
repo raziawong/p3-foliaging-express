@@ -7,7 +7,6 @@ const getAllPlanters = async () => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -20,7 +19,6 @@ const getPlanterById = async (id) => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -32,7 +30,6 @@ const addPlanter = async (data) => {
     return planter;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -46,7 +43,6 @@ const updatePlanter = async (planter, data) => {
     return planter;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -56,7 +52,6 @@ const getAllPlanterTypes = async () => {
     return await PlanterType.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -72,7 +67,6 @@ const getAllPlanterMaterials = async () => {
     return await PlanterMaterial.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };

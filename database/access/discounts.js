@@ -5,7 +5,6 @@ const getAllDiscounts = async () => {
     return await Discount.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -17,7 +16,6 @@ const getDiscountById = async (id) => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -29,7 +27,6 @@ const addDiscount = async (data) => {
     return discount;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -43,7 +40,6 @@ const updateDiscount = async (discount, data) => {
     return discount;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };

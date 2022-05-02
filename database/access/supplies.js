@@ -7,7 +7,6 @@ const getAllSupplies = async () => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -20,7 +19,6 @@ const getSupplyById = async (id) => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -32,7 +30,6 @@ const addSupply = async (data) => {
     return supply;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -44,7 +41,6 @@ const updateSupply = async (supply, data) => {
     return supply;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -54,7 +50,6 @@ const getAllSupplyTypes = async () => {
     return await SupplyType.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };

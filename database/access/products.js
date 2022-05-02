@@ -12,7 +12,6 @@ const searchProducts = async (queryBuilder) => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -24,7 +23,6 @@ const getAllProducts = async () => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -37,7 +35,6 @@ const getProductById = async (id) => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -53,7 +50,6 @@ const addProduct = async (data) => {
     return product;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -75,7 +71,6 @@ const updateProduct = async (product, data) => {
     return product;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -85,7 +80,6 @@ const getAllColors = async () => {
     return await Color.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -103,7 +97,6 @@ const getAllSizes = async () => {
     return await Size.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };

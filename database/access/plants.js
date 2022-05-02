@@ -14,7 +14,6 @@ const getAllPlants = async () => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -27,7 +26,6 @@ const getPlantById = async (id) => {
     });
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -43,7 +41,6 @@ const addPlant = async (data) => {
     return plant;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -66,7 +63,6 @@ const updatePlant = async (plant, data) => {
     return plant;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -76,7 +72,6 @@ const getAllSpecies = async () => {
     return await Species.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -92,7 +87,6 @@ const getAllLightRequirements = async () => {
     return await LightRequirement.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -108,7 +102,6 @@ const getAllWaterFrequencies = async () => {
     return await WaterFrequency.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -124,7 +117,6 @@ const getAllCareLevels = async () => {
     return await CareLevel.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
@@ -140,7 +132,6 @@ const getAllTraits = async () => {
     return await Trait.fetchAll();
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
