@@ -56,6 +56,9 @@ const regexp = {
 const getHashPassword = (password) =>
   crypto.createHash("sha256").update(password).digest("base64");
 
+const generateSignature = (secret, expire) =>
+  crypto.createHmac("sha256", secret).update(expire).digest("hex");
+
 const generateAccessToken = (user, secret, expiresIn) => {
   return jwt.sign({ ...user }, secret, {
     expiresIn: expiresIn,
@@ -75,6 +78,7 @@ module.exports = {
   apiMessages,
   regexp,
   getHashPassword,
+  generateSignature,
   generateAccessToken,
   fetchErrorHandler,
 };

@@ -194,7 +194,7 @@ const createProductForm = (
         label: "Weight (kg)",
         errorAfterField: true,
         validators: [
-          validators.min(1),
+          validators.min(0.1),
           validators.regexp(regexp.floatTwo, messages.decimal2Places),
         ],
         widget: widgets.text(),
@@ -268,7 +268,7 @@ const updateProductForm = (discounts, colors, sizes) => {
         label: "Weight (kg)",
         errorAfterField: true,
         validators: [
-          validators.min(1),
+          validators.min(0.1),
           validators.regexp(regexp.floatTwo, messages.decimal2Places),
         ],
         widget: widgets.text(),

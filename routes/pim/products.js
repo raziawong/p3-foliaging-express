@@ -18,6 +18,7 @@ const {
   titles,
   variables,
   fetchErrorHandler,
+  generateSignature,
 } = require("../../helpers/const");
 const {
   createProductForm,
@@ -29,6 +30,8 @@ const {
 const prodInfo = {
   discounts: require("./prod-info-discounts"),
 };
+
+const expiryTS = (Math.round(Date.now() / 1000) + 3600).toString();
 
 (async function () {
   router.use("/discounts", prodInfo.discounts);
@@ -152,6 +155,8 @@ const prodInfo = {
     res.render("operations/create", {
       needImage: true,
       publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
+      signature: generateSignature(process.env.UPLOADCARE_SECRET_KEY, expiryTS),
+      signatureExpiry: expiryTS,
       title: titles.product,
       form: productForm.toHTML(uiFields),
     });
@@ -162,6 +167,11 @@ const prodInfo = {
       res.render("operations/create", {
         needImage: true,
         publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
+        signature: generateSignature(
+          process.env.UPLOADCARE_SECRET_KEY,
+          expiryTS
+        ),
+        signatureExpiry: expiryTS,
         title: titles.product,
         form: form.toHTML(uiFields),
       });
@@ -218,6 +228,11 @@ const prodInfo = {
       res.render("operations/update", {
         needImage: true,
         publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
+        signature: generateSignature(
+          process.env.UPLOADCARE_SECRET_KEY,
+          expiryTS
+        ),
+        signatureExpiry: expiryTS,
         specification: specification.name,
         title: productObj.title,
         form: productForm.toHTML(uiFields),
@@ -252,6 +267,11 @@ const prodInfo = {
           res.render("operations/update", {
             needImage: true,
             publicKey: process.env.UPLOADCARE_PUBLIC_KEY,
+            signature: generateSignature(
+              process.env.UPLOADCARE_SECRET_KEY,
+              expiryTS
+            ),
+            signatureExpiry: expiryTS,
             specification: specification.name,
             title: productObj.title,
             form: form.toHTML(uiFields),

@@ -40,7 +40,8 @@
             ease-in-out hover:bg-sky-600 hover:text-slate-50 hover:border-slate-50 rounded border border-sky-600
             text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
             <input type="hidden" role="uploadcare-uploader" data-images-only="true" data-public-key={{publicKey}}
-              data-multiple="true" data-tabs="file camera url facebook gdrive gphotos dropbox instagram"
+              data-secure-signature={{signature}} data-secure-expire={{signatureExpiry}} data-multiple="true"
+              data-tabs="file camera url facebook gdrive gphotos dropbox instagram"
               data-effects="crop, rotate, flip, blur, mirror, sharp, invert, enhance, grayscale" />
           </p>
         </div>
