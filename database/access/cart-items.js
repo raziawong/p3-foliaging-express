@@ -1,9 +1,9 @@
 const { CartItem } = require("../models");
 
-const getShoppingCart = async (customerId) => {
+const getShoppingCart = async (cid) => {
   try {
     return await CartItem.where({
-      customer_id: customerId,
+      customer_id: cid,
     }).fetchAll({
       require: false,
       withRelated: ["product", "customer"],
@@ -14,11 +14,11 @@ const getShoppingCart = async (customerId) => {
   }
 };
 
-const getCartItemByCustomerAndProduct = async (customerId, productId) => {
+const getCartItemByCustomerAndProduct = async (cid, pid) => {
   try {
     return await CartItem.where({
-      customer_id: customerId,
-      product_id: productId,
+      customer_id: cid,
+      product_id: pid,
     }).fetch({
       require: false,
       withRelated: ["product", "customer"],
@@ -29,11 +29,11 @@ const getCartItemByCustomerAndProduct = async (customerId, productId) => {
   }
 };
 
-const addCartItem = async (customerId, productId, quantity) => {
+const addCartItem = async (cid, pid, quantity) => {
   try {
     const cartItem = new CartItem({
-      customer_id: customerId,
-      product_id: productId,
+      customer_id: cid,
+      product_id: pid,
       quantity: quantity,
     });
     await cartItem.save();
@@ -46,12 +46,9 @@ const addCartItem = async (customerId, productId, quantity) => {
   }
 };
 
-const deleteCartItem = async (customerId, productId) => {
+const deleteCartItem = async (cid, pid) => {
   try {
-    const cartItem = await getCartItemByCustomerAndProduct(
-      customerId,
-      productId
-    );
+    const cartItem = await getCartItemByCustomerAndProduct(cid, pid);
     if (cartItem) {
       return await cartItem.destroy();
     }
@@ -62,12 +59,9 @@ const deleteCartItem = async (customerId, productId) => {
   }
 };
 
-const updateCartItemQuantity = async (customerId, productId, newQuantity) => {
+const updateCartItemQuantity = async (cid, pid, newQuantity) => {
   try {
-    const cartItem = await getCartItemByCustomerAndProduct(
-      customerId,
-      productId
-    );
+    const cartItem = await getCartItemByCustomerAndProduct(cid, pid);
     if (cartItem) {
       cartItem.set("quantity", newQuantity);
       cartItem.save();
