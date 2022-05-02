@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 
 const titles = {
   product: "Product Item",
@@ -47,6 +48,12 @@ const getHashPassword = (password) => {
   return hash;
 };
 
+const generateAccessToken = (username, id, email) => {
+  return jwt.sign({ username, id, email }, process.env.TOKEN_SECRET, {
+    expiresIn: process.env.TOKEN_EXPIRY,
+  });
+};
+
 const fetchErrorHandler = (next, name, id) => {
   const err = new Error(messages.fetchError(name), id || "");
   err.status = 404;
@@ -59,5 +66,6 @@ module.exports = {
   messages,
   regexp,
   getHashPassword,
+  generateAccessToken,
   fetchErrorHandler,
 };
