@@ -6,7 +6,7 @@ const getShoppingCart = async (customerId) => {
       customer_id: customerId,
     }).fetchAll({
       require: false,
-      withRelated: ["product", "customers"],
+      withRelated: ["product", "customer"],
     });
   } catch (err) {
     console.error(err);
@@ -21,7 +21,7 @@ const getCartItemByCustomerAndProduct = async (customerId, productId) => {
       product_id: productId,
     }).fetch({
       require: false,
-      withRelated: ["product", "customers"],
+      withRelated: ["product", "customer"],
     });
   } catch (err) {
     console.error(err);
@@ -37,7 +37,9 @@ const addCartItem = async (customerId, productId, quantity) => {
       quantity: quantity,
     });
     await cartItem.save();
-    return cartItem;
+    return cartItem.fetch({
+      withRelated: ["product", "customer"],
+    });
   } catch (err) {
     console.error(err);
     return false;
@@ -46,10 +48,12 @@ const addCartItem = async (customerId, productId, quantity) => {
 
 const deleteCartItem = async (customerId, productId) => {
   try {
-    const cartItem = await getCartItemByUserAndProduct(customerId, productId);
+    const cartItem = await getCartItemByCustomerAndProduct(
+      customerId,
+      productId
+    );
     if (cartItem) {
-      await cartItem.destroy();
-      return true;
+      return await cartItem.destroy();
     }
     return false;
   } catch (err) {
@@ -60,11 +64,14 @@ const deleteCartItem = async (customerId, productId) => {
 
 const updateCartItemQuantity = async (customerId, productId, newQuantity) => {
   try {
-    const cartItem = await getCartItemByUserAndProduct(customerId, productId);
+    const cartItem = await getCartItemByCustomerAndProduct(
+      customerId,
+      productId
+    );
     if (cartItem) {
       cartItem.set("quantity", newQuantity);
       cartItem.save();
-      return true;
+      return cartItem;
     }
     return false;
   } catch (err) {

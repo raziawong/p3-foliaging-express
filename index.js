@@ -46,6 +46,7 @@ const pim = {
 const api = {
   products: require("./routes/api/products"),
   accounts: require("./routes/api/accounts"),
+  customerActions: require("./routes/api/customer"),
 };
 
 (async function () {
@@ -57,12 +58,13 @@ const api = {
     }
   });
 
-  app.use("/products", checkIfAuthenticated, pim.products);
-  app.use("/specifications", checkIfAuthenticated, pim.specifications);
+  app.use("/products", pim.products);
+  app.use("/specifications", pim.specifications);
   app.use("/accounts", pim.accounts);
   app.use("/user", checkIfAuthenticated, pim.user);
   app.use("/api/products", express.json(), api.products);
   app.use("/api/accounts", express.json(), api.accounts);
+  app.use("/api/user", express.json(), api.customerActions);
 
   app.use((req, res, next) => {
     if (!req.path.startsWith("/api")) {
