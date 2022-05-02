@@ -68,6 +68,7 @@ exports.down = function (db) {
   const foreignKeys = [
     "FK_orders_order_statuses_status_id",
     "FK_orders_customers_customer_id",
+    "FK_orders_addresses_address_id",
   ];
   const promises = foreignKeys.map((fk) => db.removeForeignKey("orders", fk));
   let ret = null;
