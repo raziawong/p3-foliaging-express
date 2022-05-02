@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const jwt = require("jsonwebtoken");
 const {
   variables,
   messages,
@@ -7,10 +8,11 @@ const {
 } = require("../../helpers/const");
 const { searchCustomer } = require("../../database/access/customers");
 const { createLoginForm } = require("../../helpers/form-validate-api");
+const { checkIfAuthenticatedJWT } = require("../../middleware");
+const { BlacklistedToken } = require("../../database/models");
 const {
-  checkIfAuthenticated,
-  checkIfAuthenticatedJWT,
-} = require("../../middleware");
+  addBlacklistToken,
+} = require("../../database/access/blacklisted-token");
 
 router.post("/login", (req, res) => {
   const loginForm = createLoginForm();
@@ -23,21 +25,28 @@ router.post("/login", (req, res) => {
       });
 
       if (!customer) {
-        res.status(401);
-        res.send({ error: messages.authError });
+        res.sendStatus(401);
       } else {
         if (customer.get("password") === getHashPassword(password)) {
-          const accessToken = generateAccessToken(customer);
-          res.send({ accessToken });
+          const { username, email, id } = customer.attributes;
+          const accessToken = generateAccessToken(
+            { username, email, id },
+            process.env.TOKEN_SECRET,
+            process.env.TOKEN_EXPIRY
+          );
+          const refreshToken = generateAccessToken(
+            { username, email, id },
+            process.env.REFRESH_TOKEN_SECRET,
+            process.env.REFRESH_TOKEN_EXPIRY
+          );
+          res.send({ accessToken, refreshToken });
         } else {
-          res.status(401);
-          res.send({ error: messages.authError });
+          res.sendStatus(401);
         }
       }
     },
     empty: () => {
-      res.status(401);
-      res.send({ error: messages.authError });
+      res.sendStatus(401);
     },
     error: (form) => {
       let errors = {};
@@ -52,9 +61,55 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.post("/logout", async (req, res) => {
+  const refreshToken = req.body.refreshToken;
+
+  if (!refreshToken) {
+    res.sendStatus(401);
+  } else {
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      async (err, payload) => {
+        if (err) {
+          return res.sendStatus(403);
+        }
+
+        await addBlacklistToken({ token: refreshToken });
+        res.send({ message: "logged out" });
+      }
+    );
+  }
+});
+
+router.post("/refresh", async (req, res) => {
+  const refreshToken = req.body.refreshToken;
+
+  if (!refreshToken) {
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      (err, payload) => {
+        if (err) {
+          return res.sendStatus(403);
+        }
+
+        const accessToken = generateAccessToken(
+          payload,
+          process.env.TOKEN_SECRET,
+          process.env.TOKEN_EXPIRY
+        );
+        res.send({ accessToken });
+      }
+    );
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 router.get("/profile", checkIfAuthenticatedJWT, async (req, res) => {
   const customer = req.user;
-  res.send(user);
+  res.send(customer);
 });
 
 module.exports = router;

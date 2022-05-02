@@ -9,10 +9,12 @@ const titles = {
   supply: "Supply Specification",
   user: "User",
 };
+
 const variables = {
   success: "success_messages",
   error: "error_messages",
 };
+
 const messages = {
   accessError: "Please login to access this page",
   authError: "Please try again, login or password provided is invalid",
@@ -37,20 +39,18 @@ const messages = {
   decimal2Places: "Up to 2 decimal places only",
   csrfExpired: "Please try again, the form has expired",
 };
+
 const regexp = {
   password: new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/),
   floatTwo: new RegExp(/^\d*(\.\d{1,2})?$/),
 };
 
-const getHashPassword = (password) => {
-  const sha256 = crypto.createHash("sha256");
-  const hash = sha256.update(password).digest("base64");
-  return hash;
-};
+const getHashPassword = (password) =>
+  crypto.createHash("sha256").update(password).digest("base64");
 
-const generateAccessToken = (username, id, email) => {
-  return jwt.sign({ username, id, email }, process.env.TOKEN_SECRET, {
-    expiresIn: process.env.TOKEN_EXPIRY,
+const generateAccessToken = (user, secret, expiresIn) => {
+  return jwt.sign({ ...user }, secret, {
+    expiresIn: expiresIn,
   });
 };
 
