@@ -30,6 +30,7 @@ exports.down = function (db) {
     "cart_items",
     "customers",
     "users",
+    "blacklisted_tokens",
   ];
   const promises = tables.map((name) => {
     const sql = `DELETE FROM ${name}`;

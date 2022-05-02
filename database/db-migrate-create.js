@@ -37,6 +37,7 @@ main = () => {
   doDBMCreate("address-types-data");
   doDBMCreate("sizes");
   doDBMCreate("sizes-data");
+  doDBMCreate("blacklisted-tokens");
   setTimeout(() => doDBMCreate("supplies"), 1500);
   setTimeout(() => doDBMCreate("planters"), 1500);
   setTimeout(() => doDBMCreate("plants"), 1500);
