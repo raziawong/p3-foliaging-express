@@ -300,6 +300,15 @@ const CartItem = bookshelf.model("CartItem", {
   },
 });
 
+const BlacklistedToken = bookshelf.model("BlacklistedToken", {
+  tableName: "blacklisted_tokens",
+  initialize: function () {
+    this.on("creating", (model, attributes) => {
+      attributes.created_date = new Date();
+    });
+  },
+});
+
 module.exports = {
   User,
   AccountType,
@@ -326,4 +335,5 @@ module.exports = {
   Order,
   OrderedItem,
   CartItem,
+  BlacklistedToken,
 };

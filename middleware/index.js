@@ -3,6 +3,7 @@ const FileStore = require("session-file-store")(session);
 const csrf = require("csurf");
 const { variables, messages } = require("../helpers/const");
 const csrfInstance = csrf();
+const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 
@@ -22,7 +23,11 @@ const setUser = (req, res, next) => {
 };
 
 const setCSRF = (req, res, next) => {
-  csrfInstance(req, res, next);
+  if (!req.path.startsWith("/api")) {
+    csrfInstance(req, res, next);
+  } else {
+    next();
+  }
 };
 
 const setCSRFToken = (req, res, next) => {
@@ -47,6 +52,23 @@ const checkIfAuthenticated = (req, res, next) => {
   }
 };
 
+const checkIfAuthenticatedJWT = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, payload) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.user = payload;
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
+};
+
 const handleErrors = (err, req, res, next) => {
   if (err && err.code == "EBADCSRFTOKEN") {
     req.flash(variables.error, messages.csrfExpired);
@@ -66,5 +88,6 @@ module.exports = {
   setCSRFToken,
   setFlashMessages,
   checkIfAuthenticated,
+  checkIfAuthenticatedJWT,
   handleErrors,
 };

@@ -6,8 +6,10 @@ const searchUser = async (query) => {
       require: false,
       withRelated: ["type"],
     });
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 };
 
 const getAllUsers = async () => {
@@ -15,41 +17,56 @@ const getAllUsers = async () => {
     return await User.fetchAll({
       withRelated: ["type"],
     });
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 };
+
 const getUserById = async (id) => {
   try {
     return await User.where({ id }).fetch({
       require: false,
       withRelated: ["type"],
     });
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 };
+
 const addUser = async (data) => {
   try {
     const user = new User().set(data);
     await user.save();
     return user;
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    return false;
+  }
 };
+
 const updateUser = async (user, data) => {
   try {
     user.set(data);
     await user.save();
     return user;
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 };
 
 const getAllAccountTypes = async () => {
   try {
     return await AccountType.fetchAll();
-  } catch (err) {}
-  return false;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 };
+
 const getAllAccountTypesOpts = async () => {
   return await getAllAccountTypes().then((resp) =>
     resp.map((o) => [o.get("id"), o.get("type")])

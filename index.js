@@ -12,6 +12,7 @@ const {
   setFlashMessages,
   handleErrors,
   checkIfAuthenticated,
+  checkIfAuthenticatedJWT,
 } = require("./middleware");
 
 const app = express();
@@ -43,6 +44,12 @@ const pim = {
   user: require("./routes/pim/user"),
 };
 
+const api = {
+  products: require("./routes/api/products"),
+  accounts: require("./routes/api/accounts"),
+  customerActions: require("./routes/api/customer"),
+};
+
 (async function () {
   app.get("/", function (req, res) {
     if (req.session.user) {
@@ -52,14 +59,25 @@ const pim = {
     }
   });
 
-  app.use("/products", checkIfAuthenticated, pim.products);
-  app.use("/specifications", checkIfAuthenticated, pim.specifications);
+  app.use("/products", pim.products);
+  app.use("/specifications", pim.specifications);
   app.use("/accounts", pim.accounts);
   app.use("/user", checkIfAuthenticated, pim.user);
+  app.use("/api/products", express.json(), api.products);
+  app.use("/api/accounts", express.json(), api.accounts);
+  app.use(
+    "/api/user",
+    [checkIfAuthenticatedJWT, express.json()],
+    api.customerActions
+  );
 
   app.use((req, res, next) => {
-    res.status(404);
-    res.render("errors/404");
+    if (!req.path.startsWith("/api")) {
+      res.status(404);
+      res.render("errors/404");
+    } else {
+      next();
+    }
   });
 })();
 

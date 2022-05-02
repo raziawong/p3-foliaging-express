@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 
 const titles = {
   product: "Product Item",
@@ -8,10 +9,12 @@ const titles = {
   supply: "Supply Specification",
   user: "User",
 };
+
 const variables = {
   success: "success_messages",
   error: "error_messages",
 };
+
 const messages = {
   accessError: "Please login to access this page",
   authError: "Please try again, login or password provided is invalid",
@@ -36,15 +39,27 @@ const messages = {
   decimal2Places: "Up to 2 decimal places only",
   csrfExpired: "Please try again, the form has expired",
 };
+
+const apiMessages = {
+  registeredSuccess: "registered success",
+  loginSuccess: "login success",
+  logoutSuccess: "logout success",
+  authError: "login details provided is invalid",
+  jwtRefreshExpired: "refresh token has expired",
+};
+
 const regexp = {
   password: new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/),
   floatTwo: new RegExp(/^\d*(\.\d{1,2})?$/),
 };
 
-const getHashPassword = (password) => {
-  const sha256 = crypto.createHash("sha256");
-  const hash = sha256.update(password).digest("base64");
-  return hash;
+const getHashPassword = (password) =>
+  crypto.createHash("sha256").update(password).digest("base64");
+
+const generateAccessToken = (user, secret, expiresIn) => {
+  return jwt.sign({ ...user }, secret, {
+    expiresIn: expiresIn,
+  });
 };
 
 const fetchErrorHandler = (next, name, id) => {
@@ -57,7 +72,9 @@ module.exports = {
   titles,
   variables,
   messages,
+  apiMessages,
   regexp,
   getHashPassword,
+  generateAccessToken,
   fetchErrorHandler,
 };
