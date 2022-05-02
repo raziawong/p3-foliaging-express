@@ -6,7 +6,7 @@ router.get("/", async (req, res) => {
   let resp = {};
 
   if (cid) {
-    resp = new CartServices(cid).getCart();
+    resp = await new CartServices(cid).getCart();
   }
 
   res.send({ items: resp });
