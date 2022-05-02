@@ -13,7 +13,6 @@ const {
   createLoginForm,
   createRegistrationForm,
 } = require("../../helpers/form-validate-api");
-const { checkIfAuthenticatedJWT } = require("../../middleware");
 const {
   getBlacklistedToken,
   addBlacklistedToken,
@@ -124,11 +123,6 @@ router.post("/refresh", async (req, res) => {
   } else {
     res.sendStatus(401);
   }
-});
-
-router.get("/profile", checkIfAuthenticatedJWT, async (req, res) => {
-  const customer = req.user;
-  res.send({ user: customer });
 });
 
 router.post("/register", async (req, res) => {
