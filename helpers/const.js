@@ -46,6 +46,7 @@ const apiMessages = {
   logoutSuccess: "logout success",
   authError: "login details provided is invalid",
   jwtRefreshExpired: "refresh token has expired",
+  notAcceptable: "missing data to continue",
 };
 
 const regexp = {

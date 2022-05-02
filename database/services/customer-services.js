@@ -3,12 +3,9 @@ const {
   getAddressById,
   archiveAddress,
   deleteAddress,
+  updateAddress,
 } = require("../access/addresses");
-const {
-  getCustomerById,
-  addCustomer,
-  updateCustomer,
-} = require("../access/customers");
+const { getCustomerById, updateCustomer } = require("../access/customers");
 
 class CustomerServices {
   constructor(cid) {
@@ -19,35 +16,57 @@ class CustomerServices {
     return await getCustomerById(this.cid);
   }
 
-  async createAccount(data) {
-    return await addCustomer(data);
-  }
-
-  async updateAccount(cid, data) {
-    const customer = await getCustomerById(cid);
+  async updateAccount(data) {
+    const customer = await this.getCustomer();
     if (customer) {
-      return await updateCustomer(customer, data);
+      const updated = await updateCustomer(customer, data);
+      const { password, ...data } = updated.attributes;
+      return data;
     }
     return false;
   }
 
-  async addAddress(cid, data) {
-    const customer = await getCustomerById(cid);
+  async hasAddress(aid) {
+    const customer = await this.getCustomer();
+    const addresses = customer.related("address");
+
+    if (addresses && addresses.pluck("id").includes(aid)) {
+      return true;
+    }
+    return false;
+  }
+
+  async addAddress(data) {
+    const customer = await this.getCustomer();
     if (customer) {
-      return await addAddressForCustomer(cid, data);
+      await addAddressForCustomer(customer.get("id"), data);
+      return await this.getCustomer();
+    }
+    return false;
+  }
+
+  async updateAddress(aid, data) {
+    if (await hasAddress(aid)) {
+      await updateAddress(data);
+      return await this.getCustomer();
     }
     return false;
   }
 
   async removeAddress(aid) {
-    const address = await getAddressById(aid);
+    if (await hasAddress(aid)) {
+      const address = await getAddressById(aid);
 
-    if (address) {
-      if (address.related("orders")) {
-        return await archiveAddress(address);
-      } else {
-        return await deleteAddress(aid);
+      if (address) {
+        if (address.related("orders")) {
+          await archiveAddress(address);
+          return await this.getCustomer();
+        } else {
+          await deleteAddress(aid);
+          return await this.getCustomer();
+        }
       }
+      return false;
     }
     return false;
   }
