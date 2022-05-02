@@ -25,8 +25,9 @@ const setUser = (req, res, next) => {
 const setCSRF = (req, res, next) => {
   if (!req.path.startsWith("/api")) {
     csrfInstance(req, res, next);
+  } else {
+    next();
   }
-  next();
 };
 
 const setCSRFToken = (req, res, next) => {
