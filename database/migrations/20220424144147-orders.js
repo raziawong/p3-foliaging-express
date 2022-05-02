@@ -47,6 +47,20 @@ exports.up = function (db) {
         },
       },
     },
+    address_id: {
+      type: "int",
+      unsigned: true,
+      notNull: true,
+      foreignKey: {
+        name: "FK_orders_addresses_address_id",
+        table: "addresses",
+        mapping: "id",
+        rules: {
+          onDelete: "RESTRICT",
+          onUpdate: "RESTRICT",
+        },
+      },
+    },
   });
 };
 
