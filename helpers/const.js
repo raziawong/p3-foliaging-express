@@ -13,6 +13,7 @@ const titles = {
 const variables = {
   success: "success_messages",
   error: "error_messages",
+  currency: "SGD",
 };
 
 const messages = {
@@ -47,6 +48,8 @@ const apiMessages = {
   authError: "login details provided is invalid",
   jwtRefreshExpired: "refresh token has expired",
   notAcceptable: "missing data to continue",
+  paymentSuccess: "payment has been accepted",
+  paymentCancelled: "payment has been cancelled",
 };
 
 const regexp = {

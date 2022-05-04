@@ -36,6 +36,18 @@ class CustomerServices {
     return false;
   }
 
+  async getAddresses() {
+    const customer = await this.getCustomer();
+    return customer.related("addresses");
+  }
+
+  async getAddress(aid) {
+    if (await hasAddress(aid)) {
+      return await getAddressById(aid);
+    }
+    return false;
+  }
+
   async addAddress(data) {
     const customer = await this.getCustomer();
     if (customer) {

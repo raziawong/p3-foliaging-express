@@ -5,10 +5,12 @@ const router = require("express").Router();
 
 const userActions = {
   cart: require("./customer-cart"),
+  checkout: require("./customer-checkout"),
 };
 
 (async function () {
   router.use("/cart", userActions.cart);
+  router.use("/checkout", userActions.checkout);
 
   router.get("/profile", async (req, res) => {
     const customer = req.user || {};
