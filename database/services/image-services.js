@@ -36,7 +36,7 @@ class ImageServices {
 
   async getImagesUrls() {
     const groupInfo = await this.getImagesGroupInfo();
-    let urls = [];
+    let urls = false;
 
     if (groupInfo.files && groupInfo.files.length) {
       urls = groupInfo.files.map((file) => file["original_file_url"]);
