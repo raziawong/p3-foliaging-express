@@ -31,6 +31,20 @@ const userActions = {
     res.send({ user: resp });
   });
 
+  router.get("/addresses", async (req, res) => {
+    const customer = req.user || null;
+    let resp = {};
+
+    if (customer && customer.id) {
+      resp = await new CustomerServices(customer.id).getAddresses();
+    } else {
+      res.status(406);
+      res.send({ error: apiMessages.notAcceptable });
+    }
+
+    res.send({ user: resp });
+  });
+
   router.post("/address/add", async (req, res) => {
     const customer = req.user || null;
     let resp = {};
