@@ -111,13 +111,12 @@ router.post("/:id/delete", async (req, res) => {
   try {
     if (item) {
       await item.destroy();
+      req.flash(variables.success, messages.deleteSuccess(titles.supply, name));
+      res.redirect("/specifications/supplies");
     }
   } catch (err) {
     req.flash(variables.error, messages.deleteError(titles.supply));
     res.redirect(`/specifications/supplies/${req.params.id}/delete`);
-  } finally {
-    req.flash(variables.success, messages.deleteSuccess(titles.supply, name));
-    res.redirect("/specifications/supplies");
   }
 });
 

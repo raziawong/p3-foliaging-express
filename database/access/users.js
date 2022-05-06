@@ -42,7 +42,6 @@ const addUser = async (data) => {
     return user;
   } catch (err) {
     console.error(err);
-  } finally {
     return false;
   }
 };
