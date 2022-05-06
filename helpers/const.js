@@ -39,6 +39,10 @@ const messages = {
     "Password must be at least 8 characters long and contain at least 1 symbol, 1 uppercase, 1 lowercase and 1 number",
   decimal2Places: "Up to 2 decimal places only",
   csrfExpired: "Please try again, the form has expired",
+  shippingAddressInvalid: (cid, aid) =>
+    `Customer with id of ${cid} does not have the shipping address id of ${aid}`,
+  customerInvalid: (cid) => `Customer with id of ${cid} does not exist`,
+  cartEmpty: (cid) => `Customer with id of ${cid} does not have cart items`,
 };
 
 const apiMessages = {

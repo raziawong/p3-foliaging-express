@@ -6,6 +6,8 @@ const {
   updateAddress,
 } = require("../access/addresses");
 const { getCustomerById, updateCustomer } = require("../access/customers");
+const { getAllOrdersByCustomerId } = require("../access/orders");
+const { addOrderToPayment } = require("../access/payment-details");
 
 class CustomerServices {
   constructor(cid) {
@@ -28,10 +30,11 @@ class CustomerServices {
 
   async hasAddress(aid) {
     const customer = await this.getCustomer();
-    const addresses = customer.related("address");
-
-    if (addresses && addresses.pluck("id").includes(aid)) {
-      return true;
+    if (customer) {
+      const addresses = customer.related("addresses");
+      if (addresses && addresses.pluck("id").includes(aid)) {
+        return true;
+      }
     }
     return false;
   }
@@ -78,6 +81,36 @@ class CustomerServices {
           return await this.getCustomer();
         }
       }
+      return false;
+    }
+    return false;
+  }
+
+  async getOrders() {
+    return await getAllOrdersByCustomerId(this.cid);
+  }
+
+  async insertOrderAndPayment(data) {
+    if (data && data.shipping_address_id) {
+      const newOrderStatus = await getOrderStatusForNewOrder();
+      const customer = await this.getCustomer();
+      const hasAddress = await this.hasAddress(data.data.shipping_address_id);
+
+      if (newOrderStatus && hasAddress) {
+        const order = await addOrderForCustomer({
+          customer_id: customer.get("id"),
+          status_id: newOrderStatus.get("id"),
+          ...data,
+        });
+
+        const payment = getPaymentByCustomerEmail(customer.get("email"));
+        if (payment && order) {
+          await addOrderToPayment(payment, order.get("id"));
+        }
+
+        return order;
+      }
+
       return false;
     }
     return false;

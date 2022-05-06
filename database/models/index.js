@@ -269,6 +269,15 @@ const PaymentDetail = bookshelf.model("PaymentDetail", {
 });
 const Order = bookshelf.model("Order", {
   tableName: "orders",
+  initialize: function () {
+    this.on("creating", (model, attributes) => {
+      attributes.ordered_date = new Date();
+      attributes.updated_date = new Date();
+    });
+    this.on("updating", (model, attributes) => {
+      attributes.updated_date = new Date();
+    });
+  },
   status: function () {
     return this.belongsTo("OrderStatus");
   },

@@ -22,6 +22,7 @@ exports.up = function (db) {
     payment_status: { type: "string", length: 20, notNull: true },
     payment_method: { type: "string", length: 20, notNull: true },
     customer_email: { type: "string", length: 320, notNull: true },
+    amount: { type: "bigint", notNull: true },
     order_id: {
       type: "int",
       unsigned: true,

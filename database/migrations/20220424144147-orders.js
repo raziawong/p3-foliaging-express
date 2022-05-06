@@ -19,6 +19,7 @@ exports.up = function (db) {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     total_amount: { type: "bigint", notNull: true },
     ordered_date: { type: "datetime", notNull: true },
+    updated_date: { type: "datetime", notNull: true },
     status_id: {
       type: "int",
       unsigned: true,
