@@ -92,8 +92,8 @@ router.post(
 
     try {
       event = Stripe.webhooks.constructEvent(
-        payloadString,
-        header,
+        req.body,
+        req.headers["stripe-signature"],
         process.env.STRIPE_ENDPOINT_SECRET
       );
     } catch (err) {
@@ -102,29 +102,31 @@ router.post(
       res.send({ error: err.message });
     }
 
-    if (event.type == "charge.succeeded") {
-      const { object: paymentInfo } = event.data;
-      await addPaymentDetail({
-        payment_intent_id: paymentInfo.payment_intent,
-        customer_email: paymentInfo.billing_dettails.email,
-        amount: paymentInfo.amount,
-        payment_status: paymentInfo.status,
-        payment_method: paymentInfo.payment_method_details.type,
-      });
-    } else if (event.type == "checkout.session.completed") {
-      const { object: checkoutInfo } = event.data;
-      const customerService = new CustomerServices(
-        checkoutInfo.client_reference_id
-      );
+    if (event) {
+      if (event.type == "charge.succeeded") {
+        const { object: paymentInfo } = event.data;
+        await addPaymentDetail({
+          payment_intent_id: paymentInfo.payment_intent,
+          customer_email: paymentInfo.billing_dettails.email,
+          amount: paymentInfo.amount,
+          payment_status: paymentInfo.status,
+          payment_method: paymentInfo.payment_method_details.type,
+        });
+      } else if (event.type == "checkout.session.completed") {
+        const { object: checkoutInfo } = event.data;
+        const customerService = new CustomerServices(
+          checkoutInfo.client_reference_id
+        );
 
-      await customerService.insertOrderAndPayment({
-        shipping_address_id: checkoutInfo.shipping_id,
-        total_amount: checkoutInfo.amount_total,
-        items: JSON.parse(checkoutInfo.orders),
-      });
+        await customerService.insertOrderAndPayment({
+          shipping_address_id: checkoutInfo.shipping_id,
+          total_amount: checkoutInfo.amount_total,
+          items: JSON.parse(checkoutInfo.orders),
+        });
+      }
+
+      res.send({ received: true });
     }
-
-    res.send({ received: true });
   }
 );
 
