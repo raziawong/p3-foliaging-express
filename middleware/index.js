@@ -11,7 +11,7 @@ const initSession = () => {
   return session({
     store: new FileStore(),
     secret: process.env.SESSION_SECRET_KEY,
-    resave: false,
+    resave: true,
     cookie: { secure: false, maxAge: 14400000 },
     saveUninitialized: true,
   });
@@ -48,7 +48,9 @@ const checkIfAuthenticated = (req, res, next) => {
     next();
   } else {
     req.flash(variables.error, messages.accessError);
-    res.redirect("/accounts/login");
+    req.session.save(() => {
+      res.redirect("/accounts/login");
+    });
   }
 };
 
@@ -72,7 +74,9 @@ const checkIfAuthenticatedJWT = (req, res, next) => {
 const handleErrors = (err, req, res, next) => {
   if (err && err.code == "EBADCSRFTOKEN") {
     req.flash(variables.error, messages.csrfExpired);
-    res.redirect("back");
+    req.session.save(() => {
+      res.redirect("back");
+    });
   } else if (err) {
     res.status(err.status || 500);
     res.render("errors/404");

@@ -28,7 +28,7 @@ class ImageServices {
 
         return groupInfo.data;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         return false;
       }
     }

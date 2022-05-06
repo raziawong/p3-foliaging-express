@@ -18,6 +18,7 @@ const {
 
 router.get("/", async (req, res, next) => {
   const items = await getAllDiscounts();
+
   if (items) {
     res.render("listing/discounts", {
       discounts: items.toJSON(),
@@ -37,14 +38,18 @@ router.get("/create", async (req, res) => {
 
 router.post("/create", async (req, res) => {
   const discountForm = createDiscountForm();
+
   discountForm.handle(req, {
     success: async (form) => {
       const discount = await addDiscount(form.data);
+
       req.flash(
         variables.success,
         messages.createSuccess(titles.discount, discount.get("title"))
       );
-      res.redirect("/products/discounts");
+      req.session.save(() => {
+        res.redirect("/products/discounts");
+      });
     },
     error: async (form) => {
       res.render("operations/create", {
@@ -81,7 +86,9 @@ router.post("/:id/update", async (req, res, next) => {
           variables.success,
           messages.updateSuccess(titles.discount, updatedDiscount.get("title"))
         );
-        res.redirect("/products/discounts");
+        req.session.save(() => {
+          res.redirect("/products/discounts");
+        });
       },
       error: async (form) => {
         res.render("operations/update", {
@@ -109,20 +116,23 @@ router.get("/:id/delete", async (req, res, next) => {
 
 router.post("/:id/delete", async (req, res) => {
   const item = await getDiscountById(req.params.id);
-  const title = item.get("title");
 
   try {
     if (item) {
       await item.destroy();
       req.flash(
         variables.success,
-        messages.deleteSuccess(titles.discount, title)
+        messages.deleteSuccess(titles.discount, item.get("title"))
       );
-      res.redirect("/products/discounts");
+      req.session.save(() => {
+        res.redirect("/products/discounts");
+      });
     }
   } catch (err) {
     req.flash(variables.error, messages.deleteError(titles.discount));
-    res.redirect(`/discounts/${req.params.id}/delete`);
+    req.session.save(() => {
+      res.redirect(`/discounts/${req.params.id}/delete`);
+    });
   }
 });
 

@@ -117,11 +117,17 @@ const expiryTS = (Math.round(Date.now() / 1000) + 3600).toString();
           );
         }
       };
-      const products = await searchProducts(builder);
-      res.render("listing/products", {
-        form: form.toHTML(uiFields),
-        products: products.toJSON(),
-      });
+      let products = await searchProducts(builder);
+
+      if (products) {
+        products = consolidateSpecs(products.toJSON());
+        res.render("listing/products", {
+          form: form.toHTML(uiFields),
+          products: products,
+        });
+      } else {
+        fetchErrorHandler(next, "products");
+      }
     };
 
     const searchForm = createSearchForm(
@@ -191,15 +197,20 @@ const expiryTS = (Math.round(Date.now() / 1000) + 3600).toString();
           const product = await addProduct(form.data);
           req.flash(
             variables.success,
-            messages.createSuccess(titles.product, product.get("name"))
+            messages.createSuccess(titles.product, product.get("title"))
           );
-          res.redirect("/products");
+
+          req.session.save(() => {
+            res.redirect("/products");
+          });
         } else {
           req.flash(
             variables.error,
             "Either Plant, Planter or Supply needs to be selected"
           );
-          renderForm(form);
+          req.session.save(() => {
+            renderForm(form);
+          });
         }
       },
       error: async (form) => {
@@ -254,11 +265,14 @@ const expiryTS = (Math.round(Date.now() / 1000) + 3600).toString();
       productForm.handle(req, {
         success: async (form) => {
           const updatedProduct = await updateProduct(product, form.data);
+
           req.flash(
             variables.success,
-            messages.updateSuccess(titles.product, updatedProduct.get("name"))
+            messages.updateSuccess(titles.product, updatedProduct.get("title"))
           );
-          res.redirect("/products");
+          req.session.save(() => {
+            res.redirect("/products");
+          });
         },
         error: async (form) => {
           const productObj = product.toJSON();
@@ -297,21 +311,24 @@ const expiryTS = (Math.round(Date.now() / 1000) + 3600).toString();
 
   router.post("/:id/delete", async (req, res) => {
     const item = await getProductById(req.params.id);
-    const title = item.get("title");
 
     try {
       if (item) {
         await item.destroy();
+
+        req.flash(
+          variables.success,
+          messages.deleteSuccess(titles.product, item.get("title"))
+        );
+        req.session.save(() => {
+          res.redirect("/products");
+        });
       }
     } catch (err) {
       req.flash(variables.error, messages.deleteError(titles.product));
-      res.redirect(`/products/${req.params.id}/delete`);
-    } finally {
-      req.flash(
-        variables.success,
-        messages.deleteSuccess(titles.product, title)
-      );
-      res.redirect("/products");
+      req.session.save(() => {
+        res.redirect(`/products/${req.params.id}/delete`);
+      });
     }
   });
 })();

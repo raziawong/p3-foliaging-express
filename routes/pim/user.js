@@ -7,7 +7,9 @@ router.get("/profile", (req, res) => {
   const userSession = req.session.user;
   if (!userSession) {
     req.flash(variables.error, messages.accessError);
-    res.redirect("/accounts/login");
+    req.session.save(() => {
+      res.redirect("/accounts/login");
+    });
   } else {
     res.render("user/profile", {
       user: userSession,
@@ -29,7 +31,9 @@ router.post("/profile", async (req, res) => {
           variables.success,
           messages.updateSuccess(titles.user, updatedUser.name)
         );
-        res.redirect("/user/profile");
+        req.session.save(() => {
+          res.redirect("/user/profile");
+        });
       },
       error: async (form) => {
         res.render("user/profile", {

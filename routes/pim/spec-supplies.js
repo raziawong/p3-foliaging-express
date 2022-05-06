@@ -39,11 +39,14 @@ router.post("/create", async (req, res) => {
   supplyForm.handle(req, {
     success: async (form) => {
       const supply = await addSupply(form.data);
+
       req.flash(
         variables.success,
         messages.createSuccess(titles.supply, supply.get("name"))
       );
-      res.redirect("/specifications/supplies");
+      req.session.save(() => {
+        res.redirect("/specifications/supplies");
+      });
     },
     error: async (form) => {
       res.render("operations/create", {
@@ -55,9 +58,11 @@ router.post("/create", async (req, res) => {
 
 router.get("/:id/update", async (req, res, next) => {
   const supply = await getSupplyById(req.params.id);
+
   if (supply) {
     let supplyForm = createSupplyForm(await getAllSupplyTypesOpts());
     supplyForm = supplyForm.bind({ ...supply.attributes });
+
     res.render("operations/update", {
       title: supply.toJSON().name,
       form: supplyForm.toHTML(uiFields),
@@ -72,6 +77,7 @@ router.post("/:id/update", async (req, res, next) => {
 
   if (supply) {
     const supplyForm = createSupplyForm(await getAllSupplyTypesOpts());
+
     supplyForm.handle(req, {
       success: async (form) => {
         const updatedSupply = await updateSupply(supply, form.data);
@@ -79,7 +85,9 @@ router.post("/:id/update", async (req, res, next) => {
           variables.success,
           messages.updateSuccess(titles.supply, updatedSupply.get("name"))
         );
-        res.redirect("/specifications/supplies");
+        req.session.save(() => {
+          res.redirect("/specifications/supplies");
+        });
       },
       error: async (form) => {
         res.render("operations/update", {
@@ -94,6 +102,7 @@ router.post("/:id/update", async (req, res, next) => {
 
 router.get("/:id/delete", async (req, res, next) => {
   const item = await getSupplyById(req.params.id);
+
   if (item) {
     res.render("operations/delete", {
       title: item.toJSON().name,
@@ -106,17 +115,24 @@ router.get("/:id/delete", async (req, res, next) => {
 
 router.post("/:id/delete", async (req, res) => {
   const item = await getSupplyById(req.params.id);
-  const name = item.get("name");
 
   try {
     if (item) {
       await item.destroy();
-      req.flash(variables.success, messages.deleteSuccess(titles.supply, name));
-      res.redirect("/specifications/supplies");
+
+      req.flash(
+        variables.success,
+        messages.deleteSuccess(titles.supply, item.get("name"))
+      );
+      req.session.save(() => {
+        res.redirect("/specifications/supplies");
+      });
     }
   } catch (err) {
     req.flash(variables.error, messages.deleteError(titles.supply));
-    res.redirect(`/specifications/supplies/${req.params.id}/delete`);
+    req.session.save(() => {
+      res.redirect(`/specifications/supplies/${req.params.id}/delete`);
+    });
   }
 });
 

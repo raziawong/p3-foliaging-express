@@ -20,6 +20,7 @@ const {
 
 router.get("/", async (req, res, next) => {
   const items = await getAllPlanters();
+
   if (items) {
     res.render("listing/planters", {
       planters: items.toJSON(),
@@ -34,6 +35,7 @@ router.get("/create", async (req, res) => {
     await getAllPlanterTypesOpts(),
     await getAllPlanterMaterialsOpts()
   );
+
   res.render("operations/create", {
     title: titles.planter,
     form: planterForm.toHTML(uiFields),
@@ -45,14 +47,18 @@ router.post("/create", async (req, res) => {
     await getAllPlanterTypesOpts(),
     await getAllPlanterMaterialsOpts()
   );
+
   planterForm.handle(req, {
     success: async (form) => {
       const planter = await addPlanter(form.data);
+
       req.flash(
         variables.success,
         messages.createSuccess(titles.planter, planter.get("name"))
       );
-      res.redirect("/specifications/planters");
+      req.session.save(() => {
+        res.redirect("/specifications/planters");
+      });
     },
     error: async (form) => {
       res.render("operations/create", {
@@ -70,6 +76,7 @@ router.get("/:id/update", async (req, res, next) => {
       await getAllPlanterMaterialsOpts()
     );
     planterForm = planterForm.bind({ ...planter.attributes });
+
     res.render("operations/update", {
       title: planter.toJSON().name,
       form: planterForm.toHTML(uiFields),
@@ -87,6 +94,7 @@ router.post("/:id/update", async (req, res, next) => {
       await getAllPlanterTypesOpts(),
       await getAllPlanterMaterialsOpts()
     );
+
     planterForm.handle(req, {
       success: async (form) => {
         const updatedPlanter = await updatePlanter(planter, form.data);
@@ -94,7 +102,9 @@ router.post("/:id/update", async (req, res, next) => {
           variables.success,
           messages.updateSuccess(titles.planter, updatedPlanter.get("name"))
         );
-        res.redirect("/specifications/planters");
+        req.session.save(() => {
+          res.redirect("/specifications/planters");
+        });
       },
       error: async (form) => {
         res.render("operations/update", {
@@ -121,20 +131,24 @@ router.get("/:id/delete", async (req, res, next) => {
 
 router.post("/:id/delete", async (req, res) => {
   const item = await getPlanterById(req.params.id);
-  const name = item.get("name");
 
   try {
     if (item) {
       await item.destroy();
+
       req.flash(
         variables.success,
-        messages.deleteSuccess(titles.planter, name)
+        messages.deleteSuccess(titles.planter, item.get("name"))
       );
-      res.redirect("/specifications/planters");
+      req.session.save(() => {
+        res.redirect("/specifications/planters");
+      });
     }
   } catch (err) {
     req.flash(variables.error, messages.deleteError(titles.planter));
-    res.redirect(`/specifications/planters/${req.params.id}/delete`);
+    req.session.save(() => {
+      res.redirect(`/specifications/planters/${req.params.id}/delete`);
+    });
   }
 });
 

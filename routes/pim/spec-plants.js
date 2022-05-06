@@ -55,11 +55,14 @@ router.post("/create", async (req, res) => {
   plantForm.handle(req, {
     success: async (form) => {
       const plant = await addPlant(form.data);
+
       req.flash(
         variables.success,
         messages.createSuccess(titles.plant, plant.get("name"))
       );
-      res.redirect("/specifications/plants");
+      req.session.save(() => {
+        res.redirect("/specifications/plants");
+      });
     },
     error: async (form) => {
       res.render("operations/create", {
@@ -86,6 +89,7 @@ router.get("/:id/update", async (req, res, next) => {
       ...dbData,
       traits: selected,
     });
+
     res.render("operations/update", {
       title: plant.toJSON().name,
       form: plantForm.toHTML(uiFields),
@@ -106,6 +110,7 @@ router.post("/:id/update", async (req, res, next) => {
       await getAllWaterFrequenciesOpts(),
       await getAllTraitsOpts()
     );
+
     plantForm.handle(req, {
       success: async (form) => {
         const updatedPlant = await updatePlant(plant, form.data);
@@ -113,7 +118,9 @@ router.post("/:id/update", async (req, res, next) => {
           variables.success,
           messages.updateSuccess(titles.plant, updatedPlant.get("name"))
         );
-        res.redirect("/specifications/plants");
+        req.session.save(() => {
+          res.redirect("/specifications/plants");
+        });
       },
       error: async (form) => {
         res.render("operations/update", {
@@ -141,17 +148,24 @@ router.get("/:id/delete", async (req, res, next) => {
 
 router.post("/:id/delete", async (req, res) => {
   const item = await getPlantById(req.params.id);
-  const name = item.get("name");
 
   try {
     if (item) {
       await item.destroy();
-      req.flash(variables.success, messages.deleteSuccess(titles.plant, name));
-      res.redirect("/specifications/plants");
+
+      req.flash(
+        variables.success,
+        messages.deleteSuccess(titles.plant, item.get("name"))
+      );
+      req.session.save(() => {
+        res.redirect("/specifications/plants");
+      });
     }
   } catch (err) {
     req.flash(variables.error, messages.deleteError(titles.plant));
-    res.redirect(`/specifications/plants/${req.params.id}/delete`);
+    req.session.save(() => {
+      res.redirect(`/specifications/plants/${req.params.id}/delete`);
+    });
   }
 });
 
