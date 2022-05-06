@@ -17,14 +17,15 @@ exports.setup = function (options, seedLink) {
 exports.up = function (db) {
   return db.createTable("payment_details", {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
-    stripe_id: { type: "string", length: 150, notNull: true },
+    payment_intent_id: { type: "string", length: 150, notNull: true },
     receipt_url: { type: "string", length: 2048, notNull: true },
     payment_status: { type: "string", length: 20, notNull: true },
     payment_method: { type: "string", length: 20, notNull: true },
+    customer_email: { type: "string", length: 320, notNull: true },
     order_id: {
       type: "int",
       unsigned: true,
-      notNull: true,
+      notNull: false,
       foreignKey: {
         name: "FK_payment_details_orders_order_id",
         table: "orders",
