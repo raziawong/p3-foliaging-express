@@ -46,7 +46,9 @@ const createSystemRegistrationForm = () => {
         validators: [
           async function (form, field, callback) {
             if (field.data) {
-              const user = await searchUser({ username: field.data });
+              const user = await searchUser({
+                where: { username: field.data },
+              });
               if (user) {
                 callback(messages.usernameExists);
               } else {
@@ -65,7 +67,7 @@ const createSystemRegistrationForm = () => {
         validators: [
           async function (form, field, callback) {
             if (field.data) {
-              const user = await searchUser({ email: field.data });
+              const user = await searchUser({ where: { email: field.data } });
               if (user) {
                 callback(messages.emailExists);
               } else {
