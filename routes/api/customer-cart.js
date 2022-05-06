@@ -6,14 +6,14 @@ router.get("/", async (req, res) => {
   let resp = {};
 
   if (cid) {
-    resp = new CartServices(cid).getCart();
+    resp = await new CartServices(cid).getCart();
   }
 
   res.send({ items: resp });
 });
 
 router.post("/add", async (req, res) => {
-  const { cid, pid } = req.query;
+  const { cid, pid } = req.body;
   let resp = {};
 
   if (cid && pid) {
@@ -35,7 +35,7 @@ router.delete("/remove", async (req, res) => {
 });
 
 router.patch("/quantity/update", async (req, res) => {
-  const { cid, pid, quantity } = req.query;
+  const { cid, pid, quantity } = req.body;
   let resp = {};
 
   if (cid && pid) {

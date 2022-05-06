@@ -19,6 +19,7 @@ exports.up = function (db) {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     total_amount: { type: "bigint", notNull: true },
     ordered_date: { type: "datetime", notNull: true },
+    updated_date: { type: "datetime", notNull: true },
     status_id: {
       type: "int",
       unsigned: true,
@@ -47,6 +48,20 @@ exports.up = function (db) {
         },
       },
     },
+    address_id: {
+      type: "int",
+      unsigned: true,
+      notNull: true,
+      foreignKey: {
+        name: "FK_orders_addresses_address_id",
+        table: "addresses",
+        mapping: "id",
+        rules: {
+          onDelete: "RESTRICT",
+          onUpdate: "RESTRICT",
+        },
+      },
+    },
   });
 };
 
@@ -54,6 +69,7 @@ exports.down = function (db) {
   const foreignKeys = [
     "FK_orders_order_statuses_status_id",
     "FK_orders_customers_customer_id",
+    "FK_orders_addresses_address_id",
   ];
   const promises = foreignKeys.map((fk) => db.removeForeignKey("orders", fk));
   let ret = null;

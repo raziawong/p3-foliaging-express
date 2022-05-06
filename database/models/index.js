@@ -229,6 +229,9 @@ const Address = bookshelf.model("Address", {
   user: function () {
     return this.belongsTo("User");
   },
+  orders: function () {
+    return this.hasMany("Order");
+  },
 });
 const Customer = bookshelf.model("Customer", {
   initialize: function () {
@@ -266,11 +269,23 @@ const PaymentDetail = bookshelf.model("PaymentDetail", {
 });
 const Order = bookshelf.model("Order", {
   tableName: "orders",
+  initialize: function () {
+    this.on("creating", (model, attributes) => {
+      attributes.ordered_date = new Date();
+      attributes.updated_date = new Date();
+    });
+    this.on("updating", (model, attributes) => {
+      attributes.updated_date = new Date();
+    });
+  },
   status: function () {
     return this.belongsTo("OrderStatus");
   },
   customer: function () {
     return this.belongsTo("Customer");
+  },
+  adddress: function () {
+    return this.belongsTo("Address");
   },
   items: function () {
     return this.hasMany("OrderedItem");

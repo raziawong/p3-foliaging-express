@@ -12,6 +12,20 @@ const searchCustomer = async (query) => {
   }
 };
 
+const getCustomerById = async (cid) => {
+  try {
+    return await Customer.where({
+      id: cid,
+    }).fetch({
+      require: false,
+      withRelated: ["addresses", "cartItems", "orders"],
+    });
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 const addCustomer = async (data) => {
   try {
     const customer = new Customer().set(data);
@@ -36,6 +50,7 @@ const updateCustomer = async (customer, data) => {
 
 module.exports = {
   searchCustomer,
+  getCustomerById,
   addCustomer,
   updateCustomer,
 };

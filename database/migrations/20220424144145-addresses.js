@@ -22,6 +22,8 @@ exports.up = function (db) {
     floor_number: { type: "string", length: 2, notNull: false },
     unit_number: { type: "string", length: 5, notNull: false },
     postal_code: { type: "string", length: 6, notNull: true },
+    label: { type: "string", length: 20, notNull: true },
+    archived: { type: "boolean", defaultValue: false, notNull: true },
     address_type_id: {
       type: "int",
       unsigned: true,

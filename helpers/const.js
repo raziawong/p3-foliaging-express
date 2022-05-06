@@ -13,6 +13,7 @@ const titles = {
 const variables = {
   success: "success_messages",
   error: "error_messages",
+  currency: "SGD",
 };
 
 const messages = {
@@ -38,6 +39,10 @@ const messages = {
     "Password must be at least 8 characters long and contain at least 1 symbol, 1 uppercase, 1 lowercase and 1 number",
   decimal2Places: "Up to 2 decimal places only",
   csrfExpired: "Please try again, the form has expired",
+  shippingAddressInvalid: (cid, aid) =>
+    `Customer with id of ${cid} does not have the shipping address id of ${aid}`,
+  customerInvalid: (cid) => `Customer with id of ${cid} does not exist`,
+  cartEmpty: (cid) => `Customer with id of ${cid} does not have cart items`,
 };
 
 const apiMessages = {
@@ -46,6 +51,9 @@ const apiMessages = {
   logoutSuccess: "logout success",
   authError: "login details provided is invalid",
   jwtRefreshExpired: "refresh token has expired",
+  notAcceptable: "missing data to continue",
+  paymentSuccess: "payment has been accepted",
+  paymentCancelled: "payment has been cancelled",
 };
 
 const regexp = {

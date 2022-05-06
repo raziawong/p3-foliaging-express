@@ -15,7 +15,7 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  const types = ["admin", "employee"];
+  const types = ["Admin", "Employee"];
   const promises = types.map((t) => db.insert("account_types", ["type"], [t]));
   return Promise.all(promises);
 };

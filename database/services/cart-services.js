@@ -7,36 +7,33 @@ const {
 } = require("../access/cart-items");
 
 class CartServices {
-  constructor(customerId) {
-    this.customerId = customerId;
+  constructor(cid) {
+    this.cid = cid;
   }
 
   async getCart() {
-    return await getShoppingCart(this.customerId);
+    return await getShoppingCart(this.cid);
   }
 
-  async addItemToCart(productId, quantity) {
-    const cartItem = await getCartItemByCustomerAndProduct(
-      this.customerId,
-      productId
-    );
+  async addItemToCart(pid, quantity) {
+    const cartItem = await getCartItemByCustomerAndProduct(this.cid, pid);
     if (cartItem) {
       return await updateCartItemQuantity(
-        this.customerId,
-        productId,
+        this.cid,
+        pid,
         cartItem.get("quantity") + 1
       );
     } else {
-      return await addCartItem(this.customerId, productId, quantity);
+      return await addCartItem(this.cid, pid, quantity);
     }
   }
 
-  async removeItemFromCart(productId) {
-    return await deleteCartItem(this.customerId, productId);
+  async removeItemFromCart(pid) {
+    return await deleteCartItem(this.cid, pid);
   }
 
-  async setItemQuantity(productId, quantity) {
-    return await updateCartItemQuantity(this.customerId, productId, quantity);
+  async setItemQuantity(pid, quantity) {
+    return await updateCartItemQuantity(this.cid, pid, quantity);
   }
 }
 
