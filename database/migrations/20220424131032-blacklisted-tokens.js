@@ -28,7 +28,7 @@ exports.up = function (db) {
 };
 
 exports.down = function (db) {
-  const sql = "DELETE FROM sizes";
+  const sql = "DELETE FROM blacklisted_tokens";
   return db.runSql(sql, function (err) {
     if (err) return console.log(err);
   });
