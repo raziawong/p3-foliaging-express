@@ -2,6 +2,7 @@ const express = require("express");
 const hbs = require("hbs");
 const waxOn = require("wax-on");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const flash = require("express-flash");
 require("dotenv").config();
 const {
@@ -29,6 +30,7 @@ app.use(
 );
 
 app.use(cors());
+app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 app.use(initSession());
 app.use(flash());
 app.use(setFlashMessages);
