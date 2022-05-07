@@ -48,7 +48,7 @@ router.post("/create", async (req, res) => {
         messages.createSuccess(titles.discount, discount.get("title"))
       );
       req.session.save(() => {
-        res.redirect("/products/discounts");
+        res.redirect("/retail/discounts");
       });
     },
     error: async (form) => {
@@ -87,7 +87,7 @@ router.post("/:id/update", async (req, res, next) => {
           messages.updateSuccess(titles.discount, updatedDiscount.get("title"))
         );
         req.session.save(() => {
-          res.redirect("/products/discounts");
+          res.redirect("/retail/discounts");
         });
       },
       error: async (form) => {
@@ -107,7 +107,7 @@ router.get("/:id/delete", async (req, res, next) => {
   if (item) {
     res.render("operations/delete", {
       title: item.toJSON().title,
-      homePath: "/products/discounts",
+      homePath: "/retail/discounts",
     });
   } else {
     fetchErrorHandler(next, "discount", req.params.id);
@@ -125,7 +125,7 @@ router.post("/:id/delete", async (req, res) => {
         messages.deleteSuccess(titles.discount, item.get("title"))
       );
       req.session.save(() => {
-        res.redirect("/products/discounts");
+        res.redirect("/retail/discounts");
       });
     }
   } catch (err) {

@@ -7,7 +7,7 @@ const spec = {
 
 (async function () {
   router.get("/", async (req, res) => {
-    res.redirect("/products");
+    res.redirect("/retail/products");
   });
 
   router.use("/plants", spec.plants);

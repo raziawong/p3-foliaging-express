@@ -40,8 +40,8 @@ app.use(setCSRFToken);
 app.use(handleErrors);
 
 const pim = {
+  retail: require("./routes/pim/retail"),
   specifications: require("./routes/pim/specifications"),
-  products: require("./routes/pim/products"),
   accounts: require("./routes/pim/accounts"),
   user: require("./routes/pim/user"),
 };
@@ -56,13 +56,13 @@ const api = {
 (async function () {
   app.get("/", function (req, res) {
     if (req.session.user) {
-      res.redirect("/products");
+      res.redirect("/retail/products");
     } else {
       res.redirect("/accounts/login");
     }
   });
 
-  app.use("/products", checkIfAuthenticated, pim.products);
+  app.use("/retail", checkIfAuthenticated, pim.retail);
   app.use("/specifications", checkIfAuthenticated, pim.specifications);
   app.use("/accounts", pim.accounts);
   app.use("/user", checkIfAuthenticated, pim.user);
