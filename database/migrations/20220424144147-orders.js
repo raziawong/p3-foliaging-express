@@ -20,6 +20,8 @@ exports.up = function (db) {
     total_amount: { type: "bigint", notNull: true },
     ordered_date: { type: "datetime", notNull: true },
     updated_date: { type: "datetime", notNull: true },
+    delivery_tracking: { type: "string", length: 100, notNull: false },
+    remarks: { type: "text", notNull: false },
     shipping_type_id: {
       type: "int",
       unsigned: true,
