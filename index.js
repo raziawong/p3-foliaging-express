@@ -50,6 +50,7 @@ const api = {
   products: require("./routes/api/products"),
   accounts: require("./routes/api/accounts"),
   customerActions: require("./routes/api/customer"),
+  stripeProcesses: require("./routes/api/stripe"),
 };
 
 (async function () {
@@ -72,6 +73,7 @@ const api = {
     [checkIfAuthenticatedJWT, express.json()],
     api.customerActions
   );
+  app.use("/api/payment", express.json(), api.stripeProcesses);
 
   app.use((req, res, next) => {
     if (!req.path.startsWith("/api")) {

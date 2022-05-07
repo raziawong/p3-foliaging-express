@@ -1,7 +1,6 @@
-const express = require("express");
-const { addPaymentDetail } = require("../../database/access/payment-details");
-const router = express.Router();
+const router = require("express").Router();
 const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const { getAllShippingTypes } = require("../../database/access/orders");
 const CartServices = require("../../database/services/cart-services");
 const CustomerServices = require("../../database/services/customer-services");
 const ImageServices = require("../../database/services/image-services");
@@ -16,6 +15,8 @@ router.get("/", async (req, res) => {
     try {
       const cartItems = await new CartServices(cid).getCart();
       const customerService = await new CustomerServices(cid);
+      let shippingTypes = await getAllShippingTypes();
+
       let hasError = false;
 
       if (!(await customerService.getCustomer())) {
@@ -33,8 +34,11 @@ router.get("/", async (req, res) => {
       }
 
       if (!hasError) {
+        let totalPrice = 0;
+        let shippingOptions = [];
         let lineItems = [];
         let meta = [];
+
         for (let item of cartItems) {
           const pid = item.get("product_id");
 
@@ -44,15 +48,53 @@ router.get("/", async (req, res) => {
             quantity: item.get("quantity"),
             currency: variables.currency,
           };
+
           if (item.related("product").get("uploadcare_group_id")) {
             lineItem["images"] = await new ImageServices(pid).getImagesUrls();
           }
+
+          totalPrice += lineItem.amount * lineItem.quantity;
           lineItems.push(lineItem);
 
           meta.push({
             product_id: pid,
             quantity: item.get("quantity"),
           });
+        }
+
+        if (shippingTypes) {
+          shippingTypes = shippingTypes.toJSON();
+
+          for (const st of shippingTypes) {
+            if (
+              totalPrice >= st.min_cart_amount &&
+              totalPrice <= st.max_cart_amount
+            ) {
+              shippingOptions.push({
+                shipping_rate_data: {
+                  type: "fixed_amount",
+                  fixed_amount: {
+                    amount: st.price,
+                    currency: variables.currency,
+                  },
+                  display_name: st.name,
+                  delivery_estimate: {
+                    minimum: {
+                      unit: "business_day",
+                      value: st.min_day,
+                    },
+                    maximum: {
+                      unit: "business_day",
+                      value: st.max_day,
+                    },
+                  },
+                  metadata: {
+                    type_id: st.id,
+                  },
+                },
+              });
+            }
+          }
         }
 
         let metaData = JSON.stringify(meta);
@@ -70,6 +112,10 @@ router.get("/", async (req, res) => {
           },
         };
 
+        if (shippingOptions.length) {
+          session.shipping_options = shippingOptions;
+        }
+
         const stripeSession = await Stripe.checkout.sessions.create(session);
         res.send(stripeSession);
       }
@@ -82,60 +128,6 @@ router.get("/", async (req, res) => {
     res.status(406);
     res.send({ error: apiMessages.notAcceptable });
   }
-});
-
-router.post(
-  "/process",
-  express.raw({ type: "application/json" }),
-  async (req, res) => {
-    let event;
-
-    try {
-      event = Stripe.webhooks.constructEvent(
-        req.body,
-        req.headers["stripe-signature"],
-        process.env.STRIPE_ENDPOINT_SECRET
-      );
-    } catch (err) {
-      console.error(err.message);
-      res.status(406);
-      res.send({ error: err.message });
-    }
-
-    if (event) {
-      if (event.type == "charge.succeeded") {
-        const { object: paymentInfo } = event.data;
-        await addPaymentDetail({
-          payment_intent_id: paymentInfo.payment_intent,
-          customer_email: paymentInfo.billing_dettails.email,
-          amount: paymentInfo.amount,
-          payment_status: paymentInfo.status,
-          payment_method: paymentInfo.payment_method_details.type,
-        });
-      } else if (event.type == "checkout.session.completed") {
-        const { object: checkoutInfo } = event.data;
-        const customerService = new CustomerServices(
-          checkoutInfo.client_reference_id
-        );
-
-        await customerService.insertOrderAndPayment({
-          shipping_address_id: checkoutInfo.shipping_id,
-          total_amount: checkoutInfo.amount_total,
-          items: JSON.parse(checkoutInfo.orders),
-        });
-      }
-
-      res.send({ received: true });
-    }
-  }
-);
-
-router.get("/success", (req, res) => {
-  res.send({ success: true, message: apiMessages.paymentSuccess });
-});
-
-router.get("/cancel", (req, res) => {
-  res.send({ success: false, message: apiMessages.paymentCancelled });
 });
 
 module.exports = router;

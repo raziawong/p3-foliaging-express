@@ -91,19 +91,28 @@ class CustomerServices {
   }
 
   async insertOrderAndPayment(data) {
-    if (data && data.shipping_address_id) {
+    const { shipping_type_id, shipping_address_id, ...inputs } = data;
+
+    if (data && shipping_address_id) {
       const newOrderStatus = await getOrderStatusForNewOrder();
       const customer = await this.getCustomer();
-      const hasAddress = await this.hasAddress(data.data.shipping_address_id);
+      const hasAddress = await this.hasAddress(shipping_address_id);
 
       if (newOrderStatus && hasAddress) {
-        const order = await addOrderForCustomer({
+        let orderObj = {
           customer_id: customer.get("id"),
           status_id: newOrderStatus.get("id"),
-          ...data,
-        });
+          shipping_address_id,
+          ...inputs,
+        };
 
-        const payment = getPaymentByCustomerEmail(customer.get("email"));
+        if (shipping_type_id) {
+          orderObj.shipping_type_id = shipping_type_id;
+        }
+
+        const order = await addOrderForCustomer(orderObj);
+        const payment = await getPaymentByCustomerEmail(customer.get("email"));
+
         if (payment && order) {
           await addOrderToPayment(payment, order.get("id"));
         }
