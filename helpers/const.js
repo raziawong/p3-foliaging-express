@@ -68,9 +68,7 @@ const generateSignature = (secret, expire) =>
   crypto.createHmac("sha256", secret).update(expire).digest("hex");
 
 const generateAccessToken = (user, secret, expiresIn) => {
-  return jwt.sign({ ...user }, secret, {
-    expiresIn: expiresIn,
-  });
+  return jwt.sign({ ...user }, secret, { expiresIn });
 };
 
 const fetchErrorHandler = (next, name, id) => {

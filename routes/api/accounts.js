@@ -96,7 +96,7 @@ router.post("/logout", async (req, res) => {
 router.post("/refresh", async (req, res) => {
   const refreshToken = req.body.refreshToken;
 
-  if (!refreshToken) {
+  if (refreshToken) {
     const dirtyToken = await getBlacklistedToken(refreshToken);
 
     if (dirtyToken) {
@@ -111,8 +111,9 @@ router.post("/refresh", async (req, res) => {
             return res.sendStatus(403);
           }
 
+          const { username, email, id } = payload;
           const accessToken = generateAccessToken(
-            payload,
+            { username, email, id },
             process.env.TOKEN_SECRET,
             process.env.TOKEN_EXPIRY
           );
