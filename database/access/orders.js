@@ -1,4 +1,4 @@
-const { Order, OrderedItem, OrderStatus } = require("../models");
+const { Order, OrderedItem, OrderStatus, ShippingType } = require("../models");
 
 const getOrderById = async (oid) => {
   try {
@@ -69,10 +69,32 @@ const updateOrderStatus = async (order, sid) => {
   }
 };
 
+const getAllShippingTypes = async () => {
+  try {
+    return await ShippingType.fetchAll();
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
+const getShippingTypeById = async (id) => {
+  try {
+    return await ShippingType.where({ id }).fetch({
+      require: true,
+    });
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 module.exports = {
   getOrderById,
   getAllOrdersByCustomerId,
   addOrderForCustomer,
   getOrderStatusForNewOrder,
   updateOrderStatus,
+  getAllShippingTypes,
+  getShippingTypeById,
 };

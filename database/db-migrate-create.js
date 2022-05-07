@@ -35,6 +35,8 @@ main = () => {
   doDBMCreate("account-types-data");
   doDBMCreate("address-types");
   doDBMCreate("address-types-data");
+  doDBMCreate("shipping-types");
+  doDBMCreate("shipping-types-data");
   doDBMCreate("sizes");
   doDBMCreate("sizes-data");
   doDBMCreate("blacklisted-tokens");

@@ -255,6 +255,12 @@ const Customer = bookshelf.model("Customer", {
   },
 });
 
+const ShippingType = bookshelf.model("ShippingType", {
+  tableName: "shipping_types",
+  orders: function () {
+    return this.hasMany("Order");
+  },
+});
 const OrderStatus = bookshelf.model("OrderStatus", {
   tableName: "order_statuses",
   orders: function () {
@@ -284,7 +290,10 @@ const Order = bookshelf.model("Order", {
   customer: function () {
     return this.belongsTo("Customer");
   },
-  adddress: function () {
+  shipping_type: function () {
+    return this.belongsTo("ShippingType");
+  },
+  shipping_address: function () {
     return this.belongsTo("Address");
   },
   items: function () {
@@ -345,6 +354,7 @@ module.exports = {
   AddressType,
   Address,
   Customer,
+  ShippingType,
   OrderStatus,
   PaymentDetail,
   Order,
