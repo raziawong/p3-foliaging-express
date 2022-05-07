@@ -8,6 +8,7 @@ const titles = {
   planter: "Planter Specification",
   supply: "Supply Specification",
   user: "User",
+  order: "Order",
 };
 
 const variables = {

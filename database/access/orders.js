@@ -1,10 +1,42 @@
 const { Order, OrderedItem, OrderStatus, ShippingType } = require("../models");
 
+const getAllOrders = async () => {
+  try {
+    return await Order.fetchAll({
+      require: false,
+      withRelated: [
+        "status",
+        "customer",
+        "shipping_type",
+        "shipping_address",
+        "items.product",
+        "payments",
+      ],
+    });
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 const getOrderById = async (oid) => {
   try {
     return await Order.where({ id: oid }).fetch({
       require: true,
     });
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
+const updateOrder = async (order, data) => {
+  try {
+    if (order) {
+      order.set(data);
+      await order.save();
+    }
+    return order;
   } catch (err) {
     console.error(err);
     return false;
@@ -90,7 +122,9 @@ const getShippingTypeById = async (id) => {
 };
 
 module.exports = {
+  getAllOrders,
   getOrderById,
+  updateOrder,
   getAllOrdersByCustomerId,
   addOrderForCustomer,
   getOrderStatusForNewOrder,

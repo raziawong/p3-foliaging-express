@@ -380,7 +380,7 @@ const createPlantForm = (
   );
 };
 
-const createPlanterForm = (type, material) => {
+const createPlanterForm = (types, materials) => {
   return forms.create(
     {
       name: fields.string({
@@ -392,13 +392,13 @@ const createPlanterForm = (type, material) => {
         required: true,
         errorAfterField: true,
         widget: widgets.select(),
-        choices: type,
+        choices: types,
       }),
       material_id: fields.string({
         required: true,
         errorAfterField: true,
         widget: widgets.select(),
-        choices: material,
+        choices: materials,
       }),
       description: fields.string({
         errorAfterField: true,
@@ -411,7 +411,7 @@ const createPlanterForm = (type, material) => {
   );
 };
 
-const createSupplyForm = (type) => {
+const createSupplyForm = (types) => {
   return forms.create(
     {
       name: fields.string({
@@ -423,7 +423,7 @@ const createSupplyForm = (type) => {
         required: true,
         errorAfterField: true,
         widget: widgets.select(),
-        choices: type,
+        choices: types,
       }),
       description: fields.string({
         errorAfterField: true,
@@ -431,6 +431,28 @@ const createSupplyForm = (type) => {
         widget: widgets.textarea(),
       }),
       details: fields.string({
+        widget: widgets.textarea(),
+      }),
+    },
+    { validatePastFirstError: true }
+  );
+};
+
+const updateOrderForm = (statuses) => {
+  return forms.create(
+    {
+      status_id: fields.string({
+        required: true,
+        errorAfterField: true,
+        widget: widgets.select(),
+        choices: statuses,
+      }),
+      delivery_tracking: fields.string({
+        errorAfterField: true,
+        validators: [validators.maxlength(100)],
+        widget: widgets.textarea(),
+      }),
+      remarks: fields.string({
         widget: widgets.textarea(),
       }),
     },
@@ -447,4 +469,5 @@ module.exports = {
   createPlantForm,
   createPlanterForm,
   createSupplyForm,
+  updateOrderForm,
 };

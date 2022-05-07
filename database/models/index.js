@@ -309,8 +309,8 @@ const OrderedItem = bookshelf.model("OrderedItem", {
   order: function () {
     return this.belongsTo("Order");
   },
-  customer: function () {
-    return this.belongsTo("Customer");
+  product: function () {
+    return this.belongsTo("product");
   },
 });
 
