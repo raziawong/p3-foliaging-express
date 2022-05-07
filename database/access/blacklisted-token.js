@@ -2,7 +2,7 @@ const { BlacklistedToken } = require("../models");
 
 const getBlacklistedToken = async (token) => {
   try {
-    return await BlacklistedToken().where({ token }).fetch({ require: false });
+    return await BlacklistedToken().where({ token }).fetch({ require: true });
   } catch (err) {
     console.error(err);
     return false;

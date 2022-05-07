@@ -84,10 +84,10 @@ router.post("/logout", async (req, res) => {
       async (err, payload) => {
         if (err) {
           return res.sendStatus(403);
+        } else {
+          await addBlacklistedToken({ token: refreshToken });
+          res.send({ message: apiMessages.logoutSuccess });
         }
-
-        await addBlacklistedToken({ token: refreshToken });
-        res.send({ message: apiMessages.logoutSuccess });
       }
     );
   }
