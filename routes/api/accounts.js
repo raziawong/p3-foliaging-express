@@ -46,8 +46,7 @@ router.post("/login", (req, res) => {
           );
           res.send({
             message: apiMessages.loginSuccess,
-            accessToken,
-            refreshToken,
+            tokens: { accessToken, refreshToken },
           });
         } else {
           res.status(401);
@@ -141,6 +140,7 @@ router.post("/register", async (req, res) => {
     },
     empty: () => {
       res.sendStatus(402);
+      res.send({ validation: "empty details is not acceptable" });
     },
     error: (form) => {
       let errors = {};

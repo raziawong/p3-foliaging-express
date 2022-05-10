@@ -2,7 +2,7 @@ const { BlacklistedToken } = require("../models");
 
 const getBlacklistedToken = async (token) => {
   try {
-    return await BlacklistedToken().where({ token }).fetch({ require: true });
+    return await BlacklistedToken.where({ token }).fetch({ require: true });
   } catch (err) {
     console.error(err);
     return false;
@@ -11,7 +11,7 @@ const getBlacklistedToken = async (token) => {
 
 const addBlacklistedToken = async (data) => {
   try {
-    const token = new BlacklistedToken().set(data);
+    const token = new BlacklistedToken.set(data);
     await token.save();
     return token;
   } catch (err) {
