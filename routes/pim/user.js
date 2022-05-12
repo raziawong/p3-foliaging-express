@@ -1,6 +1,11 @@
 const router = require("express").Router();
 const { getUserById, updateUser } = require("../../database/access/users");
-const { messages, variables, titles } = require("../../helpers/const");
+const {
+  messages,
+  variables,
+  titles,
+  getHashPassword,
+} = require("../../helpers/const");
 const { updatePasswordForm, uiFields } = require("../../helpers/form-accounts");
 
 router.get("/profile", (req, res) => {
@@ -26,7 +31,10 @@ router.post("/profile", async (req, res) => {
     const passwordForm = updatePasswordForm();
     passwordForm.handle(req, {
       success: async (form) => {
-        const updatedUser = await updateUser(user, form.data);
+        let { confirm_password, password, ...data } = form.data;
+        password = getHashPassword(password);
+        const updatedUser = await updateUser(user, { ...data, password });
+
         req.flash(
           variables.success,
           messages.updateSuccess(titles.user, updatedUser.name)

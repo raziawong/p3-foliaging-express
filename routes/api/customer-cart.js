@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const CartServices = require("../../database/services/cart-services");
+const ImageServices = require("../../database/services/image-services");
 
 router.get("/", async (req, res) => {
   const { cid } = req.query;
@@ -25,13 +26,14 @@ router.post("/add", async (req, res) => {
 
 router.delete("/remove", async (req, res) => {
   const { cid, pid } = req.query;
-  let resp = {};
+  let resp = { success: false };
 
   if (cid && pid) {
-    resp = await new CartServices(cid).removeItemFromCart(pid);
+    const removed = await new CartServices(cid).removeItemFromCart(pid);
+    resp = { success: true, item: resp };
   }
 
-  res.send({ details: resp });
+  res.send(resp);
 });
 
 router.patch("/quantity/update", async (req, res) => {

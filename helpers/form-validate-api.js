@@ -74,7 +74,28 @@ const createLoginForm = () => {
   );
 };
 
+const updatePasswordForm = () => {
+  return forms.create(
+    {
+      password: fields.password({
+        required: true,
+        errorAfterField: true,
+        validators: [
+          validators.regexp(regexp.password, messages.passwordStrength),
+        ],
+      }),
+      confirm_password: fields.password({
+        required: true,
+        errorAfterField: true,
+        validators: [validators.matchField("password")],
+      }),
+    },
+    { validatePastFirstError: true }
+  );
+};
+
 module.exports = {
   createRegistrationForm,
   createLoginForm,
+  updatePasswordForm,
 };

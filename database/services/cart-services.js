@@ -5,6 +5,7 @@ const {
   deleteCartItem,
   getShoppingCart,
 } = require("../access/cart-items");
+const ImageServices = require("./image-services");
 
 class CartServices {
   constructor(cid) {
@@ -12,20 +13,42 @@ class CartServices {
   }
 
   async getCart() {
-    return await getShoppingCart(this.cid);
+    const cart = await getShoppingCart(this.cid);
+    if (cart) {
+      let resp = cart.toJSON();
+      for (const item of resp) {
+        if (item.product.uploadcare_group_id) {
+          item.images = await new ImageServices(item.id).getImagesUrls();
+        }
+      }
+
+      return resp;
+    }
+    return {};
   }
 
   async addItemToCart(pid, quantity) {
     const cartItem = await getCartItemByCustomerAndProduct(this.cid, pid);
+    let resp = {};
+
     if (cartItem) {
-      return await updateCartItemQuantity(
+      resp = await updateCartItemQuantity(
         this.cid,
         pid,
         cartItem.get("quantity") + 1
       );
     } else {
-      return await addCartItem(this.cid, pid, quantity);
+      resp = await addCartItem(this.cid, pid, quantity);
     }
+
+    if (resp) {
+      resp = resp.toJSON();
+      if (resp.product.uploadcare_group_id) {
+        resp.images = await new ImageServices(resp.id).getImagesUrls();
+      }
+    }
+
+    return resp;
   }
 
   async removeItemFromCart(pid) {
@@ -33,7 +56,17 @@ class CartServices {
   }
 
   async setItemQuantity(pid, quantity) {
-    return await updateCartItemQuantity(this.cid, pid, quantity);
+    const cartItem = await updateCartItemQuantity(this.cid, pid, quantity);
+    let resp = {};
+
+    if (cartItem) {
+      resp = cartItem.toJSON();
+      if (resp.product.uploadcare_group_id) {
+        resp.images = await new ImageServices(resp.id).getImagesUrls();
+      }
+    }
+
+    return resp;
   }
 }
 

@@ -6,7 +6,7 @@ const getShoppingCart = async (cid) => {
       customer_id: cid,
     }).fetchAll({
       require: false,
-      withRelated: ["product", "customer"],
+      withRelated: ["product"],
     });
   } catch (err) {
     console.error(err);
@@ -21,7 +21,7 @@ const getCartItemByCustomerAndProduct = async (cid, pid) => {
       product_id: pid,
     }).fetch({
       require: false,
-      withRelated: ["product", "customer"],
+      withRelated: ["product"],
     });
   } catch (err) {
     console.error(err);
@@ -38,7 +38,7 @@ const addCartItem = async (cid, pid, quantity) => {
     });
     await cartItem.save();
     return cartItem.fetch({
-      withRelated: ["product", "customer"],
+      withRelated: ["product"],
     });
   } catch (err) {
     console.error(err);

@@ -1,5 +1,6 @@
 const CustomerServices = require("../../database/services/customer-services");
-const { apiMessages } = require("../../helpers/const");
+const { apiMessages, getHashPassword } = require("../../helpers/const");
+const { updatePasswordForm } = require("../../helpers/form-validate-api");
 
 const router = require("express").Router();
 
@@ -14,7 +15,16 @@ const userActions = {
 
   router.get("/profile", async (req, res) => {
     const customer = req.user || {};
-    res.send({ user: customer });
+    let resp = {};
+
+    if (customer && customer.id) {
+      resp = await new CustomerServices(customer.id).getCustomer();
+    } else {
+      res.status(406);
+      res.send({ error: apiMessages.notAcceptable });
+    }
+
+    res.send({ user: resp });
   });
 
   router.patch("/profile/update", async (req, res) => {
@@ -23,6 +33,34 @@ const userActions = {
 
     if (customer && customer.id) {
       resp = await new CustomerServices(customer.id).updateAccount(req.body);
+    } else {
+      res.status(406);
+      res.send({ error: apiMessages.notAcceptable });
+    }
+
+    res.send({ user: resp });
+  });
+
+  router.patch("/password/update", async (req, res) => {
+    const customer = req.user || null;
+    let resp = {};
+
+    if (customer && customer.id) {
+      const passwordForm = updatePasswordForm();
+      passwordForm.handle(req, {
+        success: async (form) => {
+          const { confirm_password, password } = req.body;
+          resp = await new CustomerServices(customer.id).updateAccount({
+            password: getHashPassword(password),
+          });
+        },
+        error: async (form) => {
+          res.render("user/profile", {
+            user: user,
+            form: form.toHTML(uiFields),
+          });
+        },
+      });
     } else {
       res.status(406);
       res.send({ error: apiMessages.notAcceptable });
