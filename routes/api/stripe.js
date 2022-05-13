@@ -51,7 +51,7 @@ router.post(
           shipping_type_id,
           shipping_address_id: checkoutInfo.shipping_id,
           total_amount: checkoutInfo.amount_total,
-          items: JSON.parse(checkoutInfo.orders),
+          items: JSON.parse(checkoutInfo.metadata.orders),
         });
       }
 

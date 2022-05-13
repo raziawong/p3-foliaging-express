@@ -40,16 +40,16 @@ router.get("/", async (req, res) => {
         let meta = [];
 
         for (let item of cartItems) {
-          const pid = item.get("product_id");
+          const pid = item.product_id;
 
           const lineItem = {
-            name: item.related("product").get("title"),
-            amount: item.related("product").get("price") * 100,
-            quantity: item.get("quantity"),
+            name: item.product.title,
+            amount: item.product.price * 100,
+            quantity: item.quantity,
             currency: variables.currency,
           };
 
-          if (item.related("product").get("uploadcare_group_id")) {
+          if (item.product.uploadcare_group_id) {
             lineItem["images"] = await new ImageServices(pid).getImagesUrls();
           }
 
@@ -58,7 +58,7 @@ router.get("/", async (req, res) => {
 
           meta.push({
             product_id: pid,
-            quantity: item.get("quantity"),
+            quantity: item.quantity,
           });
         }
 
