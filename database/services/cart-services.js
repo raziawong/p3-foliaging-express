@@ -18,7 +18,9 @@ class CartServices {
       let resp = cart.toJSON();
       for (const item of resp) {
         if (item.product.uploadcare_group_id) {
-          item.images = await new ImageServices(item.id).getImagesUrls();
+          item.images = await new ImageServices(
+            item.product.id
+          ).getImagesUrls();
         }
       }
 
@@ -44,7 +46,7 @@ class CartServices {
     if (resp) {
       resp = resp.toJSON();
       if (resp.product.uploadcare_group_id) {
-        resp.images = await new ImageServices(resp.id).getImagesUrls();
+        resp.images = await new ImageServices(resp.product.id).getImagesUrls();
       }
     }
 
@@ -62,7 +64,7 @@ class CartServices {
     if (cartItem) {
       resp = cartItem.toJSON();
       if (resp.product.uploadcare_group_id) {
-        resp.images = await new ImageServices(resp.id).getImagesUrls();
+        resp.images = await new ImageServices(resp.product.id).getImagesUrls();
       }
     }
 

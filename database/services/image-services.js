@@ -10,7 +10,6 @@ class ImageServices {
     const product = await getProductById(this.pid);
     if (product) {
       const imageGroupId = product.get("uploadcare_group_id");
-
       try {
         const groupInfo = await axios.get(
           `https://api.uploadcare.com/groups/${imageGroupId}/`,
@@ -25,7 +24,6 @@ class ImageServices {
             },
           }
         );
-
         return groupInfo.data;
       } catch (err) {
         console.error(err);
@@ -35,14 +33,20 @@ class ImageServices {
   }
 
   async getImagesUrls() {
-    const groupInfo = await this.getImagesGroupInfo();
-    let urls = false;
+    try {
+      const groupInfo = await this.getImagesGroupInfo();
+      const { files } = groupInfo;
+      let urls = false;
 
-    if (groupInfo.files && groupInfo.files.length) {
-      urls = groupInfo.files.map((file) => file["original_file_url"]);
+      if (files && files.length) {
+        urls = files.map((file) => file["original_file_url"]);
+      }
+
+      return urls;
+    } catch (err) {
+      console.error(err);
+      return false;
     }
-
-    return urls;
   }
 }
 
