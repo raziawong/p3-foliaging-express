@@ -13,6 +13,7 @@ const {
   searchProducts,
   getAllSpecificationsOpts,
 } = require("../../database/access/products");
+const ImageServices = require("../../database/services/image-services");
 const {
   messages,
   titles,
@@ -31,22 +32,28 @@ const expiryTS = (Math.round(Date.now() / 1000) + 3600).toString();
 
 router.get("/", async (req, res, next) => {
   const consolidateSpecs = (products) => {
-    products = products.map((item) => {
-      item.specification = item.plant_id
-        ? item.plant
-        : item.planter_id
-        ? item.planter
-        : item.supply_id
-        ? item.supply
-        : {};
-      return item;
-    });
-    return products;
+    return Promise.allSettled(
+      products.map(async (item) => {
+        item.specification = item.plant_id
+          ? item.plant
+          : item.planter_id
+          ? item.planter
+          : item.supply_id
+          ? item.supply
+          : {};
+        if (item.uploadcare_group_id) {
+          const images = await new ImageServices(item.id).getImagesUrls();
+          item.image = images[0];
+        }
+        item.price = item.price.toFixed(2);
+        return item;
+      })
+    );
   };
   const showAllProducts = async (form) => {
     let products = await getAllProducts();
     if (products) {
-      products = consolidateSpecs(products.toJSON());
+      products = await consolidateSpecs(products.toJSON());
       res.render("listing/products", {
         form: form.toHTML(uiFields),
         products: products,
