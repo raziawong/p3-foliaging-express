@@ -182,7 +182,7 @@ const createProductForm = (
         widget: widgets.text(),
       }),
       width: fields.number({
-        label: "Width / Circumference (cm)",
+        label: "Width / Diameter (cm)",
         errorAfterField: true,
         validators: [
           validators.min(1),
@@ -287,6 +287,7 @@ const createDiscountForm = () => {
         validators: [validators.maxlength(50)],
       }),
       code: fields.string({
+        label: "Cart Coupon (Discount will only apply when entered)",
         errorAfterField: true,
         validators: [validators.maxlength(10)],
       }),
@@ -306,9 +307,9 @@ const createDiscountForm = () => {
         errorAfterField: true,
         widget: widgets.date(),
       }),
-      all_products: fields.boolean({
-        widget: widgets.checkbox(),
-      }),
+      // all_products: fields.boolean({
+      //   widget: widgets.checkbox(),
+      // }),
     },
     { validatePastFirstError: true }
   );

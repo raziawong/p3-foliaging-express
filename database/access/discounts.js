@@ -9,6 +9,17 @@ const getAllDiscounts = async () => {
   }
 };
 
+const getDiscountByCoupon = async (code) => {
+  try {
+    return await Discount.where({ code }).fetch({
+      require: false,
+    });
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 const getDiscountById = async (id) => {
   try {
     return await Discount.where({ id }).fetch({
@@ -46,6 +57,7 @@ const updateDiscount = async (discount, data) => {
 
 module.exports = {
   getAllDiscounts,
+  getDiscountByCoupon,
   getDiscountById,
   addDiscount,
   updateDiscount,

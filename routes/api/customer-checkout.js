@@ -2,19 +2,20 @@ const router = require("express").Router();
 const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { getAllShippingTypes } = require("../../database/access/orders");
 const CartServices = require("../../database/services/cart-services");
+const DiscountServices = require("../../database/services/discount-services");
 const CustomerServices = require("../../database/services/customer-services");
 const ImageServices = require("../../database/services/image-services");
 const { variables, apiMessages, messages } = require("../../helpers/const");
 
 router.get("/", async (req, res) => {
-  let { cid, shipping_id } = req.query;
+  let { cid, shipping_id, coupon } = req.query;
   cid = Number(cid);
   shipping_id = Number(shipping_id);
 
   if (cid && shipping_id) {
     try {
       const cartItems = await new CartServices(cid).getCart();
-      const customerService = await new CustomerServices(cid);
+      const customerService = new CustomerServices(cid);
       let shippingTypes = await getAllShippingTypes();
 
       let hasError = false;
@@ -42,9 +43,20 @@ router.get("/", async (req, res) => {
         for (let item of cartItems) {
           const pid = item.product_id;
 
+          const discountService = new DiscountServices(
+            item.product_id,
+            item.product.discounts
+          );
+          const discount_percentage = coupon
+            ? (discount_price = discountService.getCouponDiscount())
+            : discountService.getAutoDiscount();
+
+          let disconted_price =
+            item.product.price * ((100 - discount_percentage) / 100);
+
           const lineItem = {
             name: item.product.title,
-            amount: item.product.price * 100,
+            amount: disconted_price * 100,
             quantity: item.quantity,
             currency: variables.currency,
           };
@@ -58,6 +70,8 @@ router.get("/", async (req, res) => {
 
           meta.push({
             product_id: pid,
+            price: disconted_price * 100,
+            discounted_price: discount_percentage ? disconted_price : 0,
             quantity: item.quantity,
           });
         }

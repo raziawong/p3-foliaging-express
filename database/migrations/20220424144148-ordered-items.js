@@ -18,6 +18,8 @@ exports.up = function (db) {
   return db.createTable("ordered_items", {
     id: { type: "int", primaryKey: true, unsigned: true, autoIncrement: true },
     quantity: { type: "smallint", notNull: true },
+    price: { type: "bigint", notNull: true },
+    discounted_price: { type: "bigint", notNull: false },
     order_id: {
       type: "int",
       unsigned: true,
