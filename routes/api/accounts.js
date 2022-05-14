@@ -17,6 +17,37 @@ const {
   getBlacklistedToken,
   addBlacklistedToken,
 } = require("../../database/access/blacklisted-token");
+const { checkIfAuthenticated } = require("../../middleware");
+
+router.post("/register", async (req, res) => {
+  const registerForm = createRegistrationForm();
+
+  registerForm.handle(req, {
+    success: async (form) => {
+      let { confirm_password, password, ...inputs } = form.data;
+      password = getHashPassword(password);
+      const customer = await addCustomer({ ...inputs, password });
+      res.send({
+        message: apiMessages.registeredSuccess,
+        user: customer.get("username"),
+      });
+    },
+    empty: () => {
+      res.sendStatus(402);
+      res.send({ validation: "empty details is not acceptable" });
+    },
+    error: (form) => {
+      let errors = {};
+      for (let key in form.fields) {
+        if (form.fields[key].error) {
+          errors[key] = form.fields[key].error;
+        }
+      }
+      res.status(402);
+      res.send({ validation: { ...errors } });
+    },
+  });
+});
 
 router.post("/login", (req, res) => {
   const loginForm = createLoginForm();
@@ -71,7 +102,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.post("/logout", async (req, res) => {
+router.post("/logout", checkIfAuthenticated, async (req, res) => {
   const refreshToken = req.body.refreshToken;
 
   if (!refreshToken) {
@@ -92,7 +123,7 @@ router.post("/logout", async (req, res) => {
   }
 });
 
-router.post("/refresh", async (req, res) => {
+router.post("/refresh", checkIfAuthenticated, async (req, res) => {
   const refreshToken = req.body.refreshToken;
 
   if (refreshToken) {
@@ -123,36 +154,6 @@ router.post("/refresh", async (req, res) => {
   } else {
     res.sendStatus(401);
   }
-});
-
-router.post("/register", async (req, res) => {
-  const registerForm = createRegistrationForm();
-
-  registerForm.handle(req, {
-    success: async (form) => {
-      let { confirm_password, password, ...inputs } = form.data;
-      password = getHashPassword(password);
-      const customer = await addCustomer({ ...inputs, password });
-      res.send({
-        message: apiMessages.registeredSuccess,
-        user: customer.get("username"),
-      });
-    },
-    empty: () => {
-      res.sendStatus(402);
-      res.send({ validation: "empty details is not acceptable" });
-    },
-    error: (form) => {
-      let errors = {};
-      for (let key in form.fields) {
-        if (form.fields[key].error) {
-          errors[key] = form.fields[key].error;
-        }
-      }
-      res.status(402);
-      res.send({ validation: { ...errors } });
-    },
-  });
 });
 
 module.exports = router;
