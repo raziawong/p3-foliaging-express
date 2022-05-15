@@ -5,7 +5,7 @@ const {
 } = require("../../database/access/planters");
 const { searchAndProcessProducts } = require("../../helpers/const");
 
-router.get("/planters", async (req, res) => {
+router.get("/", async (req, res) => {
   const queries = req.query;
   const builder = (qb) => {
     qb.whereNotNull("planter_id");

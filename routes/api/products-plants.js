@@ -83,7 +83,7 @@ router.get("/light-requirements", async (req, res) => {
   res.send({ light: results });
 });
 
-router.get("/water-frequency", async (req, res) => {
+router.get("/water-frequencies", async (req, res) => {
   const results = await getAllWaterFrequenciesOpts();
   res.send({ water: results });
 });

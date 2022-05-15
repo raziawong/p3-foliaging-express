@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { getAllSupplyTypesOpts } = require("../../database/access/supplies");
 const { searchAndProcessProducts } = require("../../helpers/const");
 
-router.get("/supplies", async (req, res) => {
+router.get("/", async (req, res) => {
   const queries = req.query;
   const builder = (qb) => {
     qb.whereNotNull("supply_id");
