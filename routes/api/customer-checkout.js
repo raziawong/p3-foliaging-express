@@ -2,9 +2,8 @@ const router = require("express").Router();
 const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { getAllShippingTypes } = require("../../database/access/orders");
 const CartServices = require("../../database/services/cart-services");
-const DiscountServices = require("../../database/services/discount-services");
 const CustomerServices = require("../../database/services/customer-services");
-const ImageServices = require("../../database/services/image-services");
+const ProductServices = require("../../database/services/product-services");
 const { variables, apiMessages, messages } = require("../../helpers/const");
 
 router.get("/", async (req, res) => {
@@ -43,13 +42,13 @@ router.get("/", async (req, res) => {
         for (let item of cartItems) {
           const pid = item.product_id;
 
-          const discountService = new DiscountServices(
+          const productService = new ProductServices(
             item.product_id,
             item.product.discounts
           );
           const discount_percentage = coupon
-            ? (discount_price = discountService.getCouponDiscount())
-            : discountService.getAutoDiscount();
+            ? productService.getCouponDiscount(coupon)
+            : productService.getLatestDeal();
 
           let disconted_price =
             item.product.price * ((100 - discount_percentage) / 100);
@@ -62,7 +61,7 @@ router.get("/", async (req, res) => {
           };
 
           if (item.product.uploadcare_group_id) {
-            lineItem["images"] = await new ImageServices(pid).getImagesUrls();
+            lineItem["images"] = await productService.getImagesUrls();
           }
 
           totalPrice += lineItem.amount * lineItem.quantity;

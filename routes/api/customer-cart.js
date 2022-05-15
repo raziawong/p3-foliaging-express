@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const CartServices = require("../../database/services/cart-services");
-const ImageServices = require("../../database/services/image-services");
 
 router.get("/", async (req, res) => {
   const { cid } = req.query;

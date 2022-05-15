@@ -13,7 +13,7 @@ const {
   searchProducts,
   getAllSpecificationsOpts,
 } = require("../../database/access/products");
-const ImageServices = require("../../database/services/image-services");
+const ProductServices = require("../../database/services/product-services");
 const {
   messages,
   titles,
@@ -42,7 +42,7 @@ router.get("/", async (req, res, next) => {
           ? item.supply
           : {};
         if (item.uploadcare_group_id) {
-          const images = await new ImageServices(item.id).getImagesUrls();
+          const images = await new ProductServices(item.id).getImagesUrls();
           item.image = images[0];
         }
         item.price = item.price.toFixed(2);

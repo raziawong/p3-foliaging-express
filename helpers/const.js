@@ -78,6 +78,9 @@ const fetchErrorHandler = (next, name, id) => {
   next(err);
 };
 
+const compareCreatedDate = (a, b) =>
+  new Date(b.created_date).getTime() - new Date(a.created_date).getTime();
+
 module.exports = {
   titles,
   variables,
@@ -88,4 +91,5 @@ module.exports = {
   generateSignature,
   generateAccessToken,
   fetchErrorHandler,
+  compareCreatedDate,
 };

@@ -5,7 +5,7 @@ const {
   deleteCartItem,
   getShoppingCart,
 } = require("../access/cart-items");
-const ImageServices = require("./image-services");
+const ProductServices = require("./product-services");
 
 class CartServices {
   constructor(cid) {
@@ -18,7 +18,7 @@ class CartServices {
       let resp = cart.toJSON();
       for (const item of resp) {
         if (item.product.uploadcare_group_id) {
-          item.images = await new ImageServices(
+          item.images = await new ProductServices(
             item.product.id
           ).getImagesUrls();
         }
@@ -46,7 +46,9 @@ class CartServices {
     if (resp) {
       resp = resp.toJSON();
       if (resp.product.uploadcare_group_id) {
-        resp.images = await new ImageServices(resp.product.id).getImagesUrls();
+        resp.images = await new ProductServices(
+          resp.product.id
+        ).getImagesUrls();
       }
     }
 
@@ -64,7 +66,9 @@ class CartServices {
     if (cartItem) {
       resp = cartItem.toJSON();
       if (resp.product.uploadcare_group_id) {
-        resp.images = await new ImageServices(resp.product.id).getImagesUrls();
+        resp.images = await new ProductServices(
+          resp.product.id
+        ).getImagesUrls();
       }
     }
 
