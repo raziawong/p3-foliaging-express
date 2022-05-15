@@ -66,7 +66,7 @@ router.get("/", async (req, res, next) => {
     const queries = req.query;
     const builder = (qb) => {
       if (queries.title) {
-        qb.where("title", "LIKE", "%" + queries.title + "%");
+        qb.where("title", "ILIKE", "%" + queries.title + "%");
       }
       if (queries.specification) {
         const specs = queries.specification.split("_");

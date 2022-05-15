@@ -18,11 +18,20 @@ exports.up = function (db) {
   const colors = [
     "Mixed",
     "Red",
-    "Dark Green",
-    "Lime Green",
+    "Deep Green",
+    "Bright Green",
     "Green",
     "Orange",
     "Blue",
+    "Yellow",
+    "Purple",
+    "Beige",
+    "White",
+    "Off-White",
+    "Grey",
+    "Black",
+    "Gold",
+    "Silver",
   ];
   const promises = colors.map((c) => db.insert("colors", ["color"], [c]));
   return Promise.all(promises);

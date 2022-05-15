@@ -1,5 +1,7 @@
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const ProductServices = require("../database/services/product-services");
+const { searchProducts } = require("../database/access/products");
 
 const titles = {
   product: "Product Item",
@@ -62,6 +64,29 @@ const regexp = {
   floatTwo: new RegExp(/^\d*(\.\d{1,2})?$/),
 };
 
+const likeKey = process.env.LIKE_SYNTAX;
+
+const searchAndProcessProducts = async (builder) => {
+  let products = await searchProducts(builder);
+
+  if (products) {
+    products = products.toJSON();
+    products = products.filter((item) => item.stock > 0);
+
+    for (const item of products) {
+      const productService = new ProductServices(item.id, item.discounts);
+
+      if (item.uploadcare_group_id) {
+        item.images = await productService.getImagesUrls();
+      }
+
+      item.deals = productService.getDeals();
+    }
+  }
+
+  return products;
+};
+
 const getHashPassword = (password) =>
   crypto.createHash("sha256").update(password).digest("base64");
 
@@ -78,18 +103,16 @@ const fetchErrorHandler = (next, name, id) => {
   next(err);
 };
 
-const compareCreatedDate = (a, b) =>
-  new Date(b.created_date).getTime() - new Date(a.created_date).getTime();
-
 module.exports = {
   titles,
   variables,
   messages,
   apiMessages,
   regexp,
+  likeKey,
+  searchAndProcessProducts,
   getHashPassword,
   generateSignature,
   generateAccessToken,
   fetchErrorHandler,
-  compareCreatedDate,
 };

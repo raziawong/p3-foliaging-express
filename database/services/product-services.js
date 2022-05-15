@@ -1,6 +1,8 @@
 const axios = require("axios");
-const { compareCreatedDate } = require("../../helpers/const");
 const { getProductById } = require("../access/products");
+
+const compareCreatedDate = (a, b) =>
+  new Date(b.created_date).getTime() - new Date(a.created_date).getTime();
 
 class ProductServices {
   constructor(pid, discounts = null) {

@@ -1,61 +1,36 @@
+const { searchAndProcessProducts, likeKey } = require("../../helpers/const");
+
 const router = require("express").Router();
-const { searchProducts } = require("../../database/access/products");
-const ProductServices = require("../../database/services/product-services");
 
-const searchAndProcessProducts = async (builder) => {
-  let products = await searchProducts(builder);
-
-  if (products) {
-    products = products.toJSON();
-    for (const item of products) {
-      const productService = new ProductServices(item.id, item.discounts);
-
-      if (item.uploadcare_group_id) {
-        item.images = await productService.getImagesUrls();
-      }
-
-      item.deals = productService.getDeals();
-    }
-  }
-
-  return products;
+const types = {
+  plants: require("./products-plants"),
+  planters: require("./products-planters"),
+  supplies: require("./products-supplies"),
 };
 
-router.get("/", async (req, res) => {
-  const queries = req.query;
-  const builder = (qb) => {};
-  const results = await searchAndProcessProducts(builder);
-  res.send(results);
-});
+(async function () {
+  router.use("/plants", types.plants);
+  router.use("/planters", types.planters);
+  router.use("/supplies", types.supplies);
 
-router.get("/plants", async (req, res) => {
-  const queries = req.query;
-  const builder = (qb) => {
-    qb.whereNotNull("plant_id");
-  };
+  router.get("/", async (req, res) => {
+    const queries = req.query;
+    const builder = (qb) => {
+      if (queries.title) {
+        qb.where("title", likeKey, "%" + queries.title + "%");
+      }
 
-  const results = await searchAndProcessProducts(builder);
-  res.send(results);
-});
+      if (queries.min_price) {
+        qb.where("price", ">=", queries.min_price * 100);
+      }
 
-router.get("/planters", async (req, res) => {
-  const queries = req.query;
-  const builder = (qb) => {
-    qb.whereNotNull("planter_id");
-  };
-
-  const results = await searchAndProcessProducts(builder);
-  res.send(results);
-});
-
-router.get("/supplies", async (req, res) => {
-  const queries = req.query;
-  const builder = (qb) => {
-    qb.whereNotNull("supply_id");
-  };
-
-  const results = await searchAndProcessProducts(builder);
-  res.send(results);
-});
+      if (queries.max_price) {
+        qb.where("price", "<=", queries.max_price * 100);
+      }
+    };
+    const results = await searchAndProcessProducts(builder);
+    res.send({ products: results });
+  });
+})();
 
 module.exports = router;
