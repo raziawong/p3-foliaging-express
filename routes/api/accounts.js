@@ -17,7 +17,7 @@ const {
   getBlacklistedToken,
   addBlacklistedToken,
 } = require("../../database/access/blacklisted-token");
-const { checkIfAuthenticated } = require("../../middleware");
+const { checkIfAuthenticatedJWT } = require("../../middleware");
 
 router.post("/register", async (req, res) => {
   const registerForm = createRegistrationForm();
@@ -102,7 +102,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.post("/logout", checkIfAuthenticated, async (req, res) => {
+router.post("/logout", checkIfAuthenticatedJWT, async (req, res) => {
   const refreshToken = req.body.refreshToken;
 
   if (!refreshToken) {
@@ -123,7 +123,7 @@ router.post("/logout", checkIfAuthenticated, async (req, res) => {
   }
 });
 
-router.post("/refresh", checkIfAuthenticated, async (req, res) => {
+router.post("/refresh", checkIfAuthenticatedJWT, async (req, res) => {
   const refreshToken = req.body.refreshToken;
 
   if (refreshToken) {
