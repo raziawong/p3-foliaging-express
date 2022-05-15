@@ -102,7 +102,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.post("/logout", checkIfAuthenticatedJWT, async (req, res) => {
+router.post("/logout", async (req, res) => {
   const refreshToken = req.body.refreshToken;
 
   if (!refreshToken) {
