@@ -3,7 +3,7 @@ const {
   getAllPlanterTypesOpts,
   getAllPlanterMaterialsOpts,
 } = require("../../database/access/planters");
-const { searchAndProcessProducts } = require("../../helpers/const");
+const { searchAndProcessProducts, likeKey } = require("../../helpers/const");
 
 router.get("/", async (req, res) => {
   const queries = req.query;

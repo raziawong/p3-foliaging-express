@@ -16,8 +16,19 @@ const types = {
   router.get("/", async (req, res) => {
     const queries = req.query;
     const builder = (qb) => {
-      if (queries.title) {
-        qb.where("title", likeKey, "%" + queries.title + "%");
+      if (queries.text) {
+        qb.leftOuterJoin("plants", "products.plant_id", "plants.id")
+          .leftOuterJoin("planters", "planters.id", "products.planter_id")
+          .leftOuterJoin("supplies", "supplies.id", "products.supply_id");
+
+        qb.where("title", likeKey, "%" + queries.text + "%")
+          .orWhere("plants.name", likeKey, "%" + queries.text + "%")
+          .orWhere("plants.alias", likeKey, "%" + queries.text + "%")
+          .orWhere("plants.description", likeKey, "%" + queries.text + "%")
+          .orWhere("planters.name", likeKey, "%" + queries.text + "%")
+          .orWhere("planters.description", likeKey, "%" + queries.text + "%")
+          .orWhere("supplies.name", likeKey, "%" + queries.text + "%")
+          .orWhere("supplies.description", likeKey, "%" + queries.text + "%");
       }
 
       if (queries.min_price) {
@@ -28,6 +39,7 @@ const types = {
         qb.where("price", "<=", queries.max_price * 100);
       }
     };
+
     const results = await searchAndProcessProducts(builder);
     res.send({ products: results });
   });

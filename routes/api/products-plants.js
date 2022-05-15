@@ -6,7 +6,7 @@ const {
   getAllWaterFrequenciesOpts,
   getAllTraitsOpts,
 } = require("../../database/access/plants");
-const { searchAndProcessProducts } = require("../../helpers/const");
+const { searchAndProcessProducts, likeKey } = require("../../helpers/const");
 
 router.get("/", async (req, res) => {
   const queries = req.query;

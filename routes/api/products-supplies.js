@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { getAllSupplyTypesOpts } = require("../../database/access/supplies");
-const { searchAndProcessProducts } = require("../../helpers/const");
+const { searchAndProcessProducts, likeKey } = require("../../helpers/const");
 
 router.get("/", async (req, res) => {
   const queries = req.query;
