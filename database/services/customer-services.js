@@ -15,7 +15,8 @@ class CustomerServices {
   }
 
   async getCustomer() {
-    return await getCustomerById(this.cid);
+    const customer = await getCustomerById(this.cid);
+    return customer.unset("password");
   }
 
   async updateAccount(data) {
