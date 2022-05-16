@@ -2,12 +2,14 @@ const router = require("express").Router();
 const { getAllSupplyTypesOpts } = require("../../database/access/supplies");
 const { searchAndProcessProducts, likeKey } = require("../../helpers/const");
 
-router.get("/", async (req, res) => {
+router.get("/:sortField/:sortOrder", async (req, res) => {
   const queries = req.query;
+  const params = req.params;
+
   const builder = (qb) => {
     qb.whereNotNull("supply_id");
 
-    if (queries.text || queries.type) {
+    if (queries.text || queries.supplyType) {
       qb.innerJoin("supplies", "supplies.id", "products.supply_id");
 
       if (queries.text) {
@@ -17,7 +19,7 @@ router.get("/", async (req, res) => {
       }
 
       if (queries.type) {
-        qb.where("supplies.type_id", queries.type);
+        qb.where("supplies.type_id", queries.supplyType);
       }
     }
 
@@ -28,6 +30,8 @@ router.get("/", async (req, res) => {
     if (queries.max_price) {
       qb.where("price", "<=", queries.max_price * 100);
     }
+
+    qb.orderBy(params.sortField, params.sortOrder);
   };
 
   const results = await searchAndProcessProducts(builder);

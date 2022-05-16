@@ -13,8 +13,10 @@ const types = {
   router.use("/planters", types.planters);
   router.use("/supplies", types.supplies);
 
-  router.get("/", async (req, res) => {
+  router.get("/:sortField/:sortOrder", async (req, res) => {
     const queries = req.query;
+    const params = req.params;
+
     const builder = (qb) => {
       if (queries.text) {
         qb.leftOuterJoin("plants", "products.plant_id", "plants.id")
@@ -38,6 +40,8 @@ const types = {
       if (queries.max_price) {
         qb.where("price", "<=", queries.max_price * 100);
       }
+
+      qb.orderBy(params.sortField, params.sortOrder);
     };
 
     const results = await searchAndProcessProducts(builder);

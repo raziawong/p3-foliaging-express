@@ -8,8 +8,10 @@ const {
 } = require("../../database/access/plants");
 const { searchAndProcessProducts, likeKey } = require("../../helpers/const");
 
-router.get("/", async (req, res) => {
+router.get("/:sortField/:sortOrder", async (req, res) => {
   const queries = req.query;
+  const params = req.params;
+
   const builder = (qb) => {
     qb.whereNotNull("products.plant_id");
 
@@ -52,7 +54,7 @@ router.get("/", async (req, res) => {
         "plants_traits",
         "plants_traits.plant_id",
         "products.plant_id"
-      ).where("plants_traits.trait_id", "in", queries.traits.split(","));
+      ).where("plants_traits.trait_id", "in", queries.traits);
     }
 
     if (queries.min_price) {
@@ -62,6 +64,8 @@ router.get("/", async (req, res) => {
     if (queries.max_price) {
       qb.where("price", "<=", queries.max_price * 100);
     }
+
+    qb.orderBy(params.sortField, params.sortOrder);
   };
 
   const results = await searchAndProcessProducts(builder);

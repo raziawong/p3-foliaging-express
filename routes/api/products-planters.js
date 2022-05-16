@@ -5,12 +5,14 @@ const {
 } = require("../../database/access/planters");
 const { searchAndProcessProducts, likeKey } = require("../../helpers/const");
 
-router.get("/", async (req, res) => {
+router.get("/:sortField/:sortOrder", async (req, res) => {
   const queries = req.query;
+  const params = req.params;
+
   const builder = (qb) => {
     qb.whereNotNull("planter_id");
 
-    if (queries.text || queries.type || queries.material) {
+    if (queries.text || queries.planterType || queries.material) {
       qb.innerJoin("planters", "planters.id", "products.planter_id");
 
       if (queries.text) {
@@ -19,8 +21,8 @@ router.get("/", async (req, res) => {
           .orWhere("planters.description", likeKey, "%" + queries.text + "%");
       }
 
-      if (queries.type) {
-        qb.where("planters.type_id", queries.type);
+      if (queries.planterType) {
+        qb.where("planters.type_id", queries.planterType);
       }
 
       if (queries.material) {
@@ -39,6 +41,8 @@ router.get("/", async (req, res) => {
     if (queries.max_price) {
       qb.where("price", "<=", queries.max_price * 100);
     }
+
+    qb.orderBy(params.sortField, params.sortOrder);
   };
 
   const results = await searchAndProcessProducts(builder);
