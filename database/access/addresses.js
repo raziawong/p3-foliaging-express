@@ -1,4 +1,4 @@
-const { Address } = require("../models");
+const { Address, BacklogAddress } = require("../models");
 
 const getAddressById = async (aid) => {
   try {
@@ -67,11 +67,51 @@ const deleteAddress = async (aid) => {
   }
 };
 
-const archiveAddress = async (address) => {
+const searchProducts = async (queryBuilder) => {
   try {
-    address.set("archived", true);
-    await address.save();
-    return address;
+    return await Product.query(queryBuilder).fetchAll({
+      require: false,
+      withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
+    });
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
+const addBacklogAddressByAddressId = async (aid) => {
+  try {
+    const address = await getAddressById(aid);
+
+    if (address) {
+      const { id, ...data } = address.toJSON();
+      const backlogAddress = new BacklogAddress({ ...data });
+      await backlogAddress.save();
+      return backlogAddress;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
+const getBacklogAddressByAddress = async ({
+  line_1,
+  line_2,
+  unit_number,
+  postal_code,
+}) => {
+  try {
+    return await BacklogAddress.query(function (qb) {
+      qb.where("line_1", "=", line_1)
+        .andWhere("line_2", "=", line_2)
+        .andWhere("unit_number", "=", unit_number)
+        .andWhere("postal_code", "=", postal_code);
+    }).fetchAll({
+      require: false,
+    });
   } catch (err) {
     console.error(err);
     return false;
@@ -84,5 +124,6 @@ module.exports = {
   addAddressForCustomer,
   updateAddress,
   deleteAddress,
-  archiveAddress,
+  addBacklogAddressByAddressId,
+  getBacklogAddressByAddress,
 };

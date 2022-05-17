@@ -255,6 +255,15 @@ const Customer = bookshelf.model("Customer", {
   },
 });
 
+const BacklogAddress = bookshelf.model("BacklogAddress", {
+  tableName: "backlog_addresses",
+  orders: function () {
+    return this.hasMany("Order");
+  },
+  payments: function () {
+    return this.hasMany("PaymentDetail");
+  },
+});
 const ShippingType = bookshelf.model("ShippingType", {
   tableName: "shipping_types",
   orders: function () {
@@ -271,6 +280,9 @@ const PaymentDetail = bookshelf.model("PaymentDetail", {
   tableName: "payment_details",
   order: function () {
     return this.belongsTo("Order");
+  },
+  address: function () {
+    return this.belongsTo("BacklogAddress");
   },
 });
 const Order = bookshelf.model("Order", {
@@ -293,8 +305,8 @@ const Order = bookshelf.model("Order", {
   shipping_type: function () {
     return this.belongsTo("ShippingType");
   },
-  shipping_address: function () {
-    return this.belongsTo("Address");
+  address: function () {
+    return this.belongsTo("BacklogAddress");
   },
   items: function () {
     return this.hasMany("OrderedItem");
@@ -354,6 +366,7 @@ module.exports = {
   AddressType,
   Address,
   Customer,
+  BacklogAddress,
   ShippingType,
   OrderStatus,
   PaymentDetail,
