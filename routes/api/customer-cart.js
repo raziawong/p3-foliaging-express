@@ -46,4 +46,15 @@ router.patch("/quantity/update", async (req, res) => {
   res.send({ item: resp });
 });
 
+router.get("/quantity/check", async (req, res) => {
+  const { cid, pid, quantity } = req.query;
+  let resp = {};
+
+  if (cid && pid) {
+    resp = await new CartServices(cid).verifyStockQuantity(pid, quantity);
+  }
+
+  res.send({ resp });
+});
+
 module.exports = router;
