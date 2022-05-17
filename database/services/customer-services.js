@@ -24,7 +24,7 @@ class CustomerServices {
     if (customer) {
       const updated = await updateCustomer(customer, data);
       const { password, ...user } = updated.attributes;
-      return user;
+      return user.unset("password");
     }
     return false;
   }
