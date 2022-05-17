@@ -41,7 +41,7 @@ const userActions = {
     res.send({ user: resp });
   });
 
-  router.patch("/password/update", async (req, res) => {
+  router.post("/password/update", async (req, res) => {
     const customer = req.user || null;
     let resp = {};
 

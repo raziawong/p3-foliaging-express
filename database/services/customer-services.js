@@ -23,8 +23,8 @@ class CustomerServices {
     const customer = await this.getCustomer();
     if (customer) {
       const updated = await updateCustomer(customer, data);
-      const { password, ...data } = updated.attributes;
-      return data;
+      const { password, ...user } = updated.attributes;
+      return user;
     }
     return false;
   }
