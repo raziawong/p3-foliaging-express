@@ -45,9 +45,9 @@ const updateSupply = async (supply, data) => {
   }
 };
 
-const getAllSupplyTypes = async () => {
+const getAllSupplyTypes = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await SupplyType.fetchAll();
+    return await SupplyType.collection().orderBy(sortCol, sortOrder).fetch();
   } catch (err) {
     console.error(err);
     return false;
@@ -55,7 +55,7 @@ const getAllSupplyTypes = async () => {
 };
 
 const getAllSupplyTypesOpts = async () => {
-  return await getAllSupplyTypes().then((resp) =>
+  return await getAllSupplyTypes("type").then((resp) =>
     resp.map((o) => [o.get("id"), o.get("type")])
   );
 };

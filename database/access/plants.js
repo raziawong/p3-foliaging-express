@@ -67,9 +67,9 @@ const updatePlant = async (plant, data) => {
   }
 };
 
-const getAllSpecies = async () => {
+const getAllSpecies = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await Species.fetchAll();
+    return await Species.collection().orderBy(sortCol, sortOrder).fetch();
   } catch (err) {
     console.error(err);
     return false;
@@ -77,14 +77,16 @@ const getAllSpecies = async () => {
 };
 
 const getAllSpeciesOpts = async () => {
-  return await getAllSpecies().then((resp) =>
+  return await getAllSpecies("name").then((resp) =>
     resp.map((o) => [o.get("id"), o.get("name")])
   );
 };
 
-const getAllLightRequirements = async () => {
+const getAllLightRequirements = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await LightRequirement.fetchAll();
+    return await LightRequirement.collection()
+      .orderBy(sortCol, sortOrder)
+      .fetch();
   } catch (err) {
     console.error(err);
     return false;
@@ -92,14 +94,16 @@ const getAllLightRequirements = async () => {
 };
 
 const getAllLightRequirementsOpts = async () => {
-  return await getAllLightRequirements().then((resp) =>
+  return await getAllLightRequirements("requirement").then((resp) =>
     resp.map((o) => [o.get("id"), o.get("requirement")])
   );
 };
 
-const getAllWaterFrequencies = async () => {
+const getAllWaterFrequencies = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await WaterFrequency.fetchAll();
+    return await WaterFrequency.collection()
+      .orderBy(sortCol, sortOrder)
+      .fetch();
   } catch (err) {
     console.error(err);
     return false;
@@ -107,14 +111,14 @@ const getAllWaterFrequencies = async () => {
 };
 
 const getAllWaterFrequenciesOpts = async () => {
-  return await getAllWaterFrequencies().then((resp) =>
+  return await getAllWaterFrequencies("frequency").then((resp) =>
     resp.map((o) => [o.get("id"), o.get("frequency")])
   );
 };
 
-const getAllCareLevels = async () => {
+const getAllCareLevels = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await CareLevel.fetchAll();
+    return await CareLevel.collection().orderBy(sortCol, sortOrder).fetch();
   } catch (err) {
     console.error(err);
     return false;
@@ -122,14 +126,14 @@ const getAllCareLevels = async () => {
 };
 
 const getAllCareLevelsOpts = async () => {
-  return await getAllCareLevels().then((resp) =>
+  return await getAllCareLevels("level").then((resp) =>
     resp.map((o) => [o.get("id"), o.get("level")])
   );
 };
 
-const getAllTraits = async () => {
+const getAllTraits = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await Trait.fetchAll();
+    return await Trait.collection().orderBy(sortCol, sortOrder).fetch();
   } catch (err) {
     console.error(err);
     return false;
@@ -137,7 +141,7 @@ const getAllTraits = async () => {
 };
 
 const getAllTraitsOpts = async () => {
-  return await getAllTraits().then((resp) =>
+  return await getAllTraits("trait").then((resp) =>
     resp.map((o) => [o.get("id"), o.get("trait")])
   );
 };

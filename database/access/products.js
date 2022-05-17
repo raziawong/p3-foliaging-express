@@ -75,9 +75,9 @@ const updateProduct = async (product, data) => {
   }
 };
 
-const getAllColors = async () => {
+const getAllColors = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await Color.fetchAll();
+    return await Color.collection().orderBy(sortCol, sortOrder).fetch();
   } catch (err) {
     console.error(err);
     return false;
@@ -85,16 +85,16 @@ const getAllColors = async () => {
 };
 
 const getAllColorsOpts = async () => {
-  const opts = await getAllColors().then((resp) =>
+  const opts = await getAllColors("color").then((resp) =>
     resp.map((o) => [o.get("id"), o.get("color")])
   );
   opts.unshift(["", "None"]);
   return opts;
 };
 
-const getAllSizes = async () => {
+const getAllSizes = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await Size.fetchAll();
+    return await Size.collection().orderBy(sortCol, sortOrder).fetch();
   } catch (err) {
     console.error(err);
     return false;
@@ -102,7 +102,7 @@ const getAllSizes = async () => {
 };
 
 const getAllSizesOpts = async () => {
-  const opts = await getAllSizes().then((resp) =>
+  const opts = await getAllSizes("size").then((resp) =>
     resp.map((o) => [o.get("id"), o.get("size")])
   );
   opts.unshift(["", "None"]);

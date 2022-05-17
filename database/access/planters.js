@@ -47,9 +47,9 @@ const updatePlanter = async (planter, data) => {
   }
 };
 
-const getAllPlanterTypes = async () => {
+const getAllPlanterTypes = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await PlanterType.fetchAll();
+    return await PlanterType.collection().orderBy(sortCol, sortOrder).fetch();
   } catch (err) {
     console.error(err);
     return false;
@@ -57,14 +57,16 @@ const getAllPlanterTypes = async () => {
 };
 
 const getAllPlanterTypesOpts = async () => {
-  return await getAllPlanterTypes().then((resp) =>
+  return await getAllPlanterTypes("type").then((resp) =>
     resp.map((o) => [o.get("id"), o.get("type")])
   );
 };
 
-const getAllPlanterMaterials = async () => {
+const getAllPlanterMaterials = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await PlanterMaterial.fetchAll();
+    return await PlanterMaterial.collection()
+      .orderBy(sortCol, sortOrder)
+      .fetch();
   } catch (err) {
     console.error(err);
     return false;
@@ -72,7 +74,7 @@ const getAllPlanterMaterials = async () => {
 };
 
 const getAllPlanterMaterialsOpts = async () => {
-  return await getAllPlanterMaterials().then((resp) =>
+  return await getAllPlanterMaterials("material").then((resp) =>
     resp.map((o) => [o.get("id"), o.get("material")])
   );
 };
