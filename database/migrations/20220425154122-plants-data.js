@@ -62,7 +62,7 @@ exports.up = function (db) {
       ]
     )
   );
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

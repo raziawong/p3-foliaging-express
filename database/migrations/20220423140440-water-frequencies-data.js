@@ -19,7 +19,7 @@ exports.up = function (db) {
   const promises = frequencies.map((f) =>
     db.insert("water_frequencies", ["frequency"], [f])
   );
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

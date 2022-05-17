@@ -61,7 +61,7 @@ exports.down = function (db) {
   );
   let ret = null;
   try {
-    ret = Promise.all(promises).then(() => {
+    ret = Promise.allSettled(promises).then(() => {
       db.dropTable("ordered_items");
     });
   } catch (err) {

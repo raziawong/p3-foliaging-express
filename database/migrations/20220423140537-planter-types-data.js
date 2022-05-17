@@ -25,7 +25,7 @@ exports.up = function (db) {
     "Pot Only",
   ];
   const promises = types.map((t) => db.insert("planter_types", ["type"], [t]));
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

@@ -52,7 +52,7 @@ exports.up = function (db) {
       [v.trait_id, v.plant_id]
     )
   );
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

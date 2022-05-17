@@ -51,6 +51,7 @@ main = () => {
   setTimeout(() => doDBMCreate("customers"), 4500);
   setTimeout(() => doDBMCreate("users"), 4500);
   setTimeout(() => doDBMCreate("addresses"), 6000);
+  setTimeout(() => doDBMCreate("backlog_addresses"), 6000);
   setTimeout(() => doDBMCreate("orders"), 7500);
   setTimeout(() => doDBMCreate("payment-details"), 9000);
   setTimeout(() => doDBMCreate("cart-items"), 9000);

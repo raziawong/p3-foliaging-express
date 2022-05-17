@@ -59,7 +59,7 @@ exports.down = function (db) {
   );
   let ret = null;
   try {
-    ret = Promise.all(promises).then(() => {
+    ret = Promise.allSettled(promises).then(() => {
       db.dropTable("cart_items");
     });
   } catch (err) {

@@ -17,7 +17,7 @@ exports.setup = function (options, seedLink) {
 exports.up = function (db) {
   const levels = ["Easy", "Medium", "Hard"];
   const promises = levels.map((l) => db.insert("care_levels", ["level"], [l]));
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

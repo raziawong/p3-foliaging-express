@@ -19,7 +19,7 @@ exports.up = function (db) {
   const promises = materials.map((m) =>
     db.insert("planter_materials", ["material"], [m])
   );
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

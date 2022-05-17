@@ -95,7 +95,7 @@ exports.down = function (db) {
   const promises = foreignKeys.map((fk) => db.removeForeignKey("plants", fk));
   let ret = null;
   try {
-    ret = Promise.all(promises).then(() => {
+    ret = Promise.allSettled(promises).then(() => {
       db.dropTable("plants");
     });
   } catch (err) {

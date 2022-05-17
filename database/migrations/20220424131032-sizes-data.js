@@ -17,7 +17,7 @@ exports.setup = function (options, seedLink) {
 exports.up = function (db) {
   const sizes = ["Small", "Medium", "Large"];
   const promises = sizes.map((s) => db.insert("sizes", ["size"], [s]));
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

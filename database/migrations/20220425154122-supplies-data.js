@@ -32,7 +32,7 @@ exports.up = function (db) {
   const promises = values.map((v) =>
     db.insert("supplies", ["name", "type_id"], [v.name, v.type_id])
   );
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

@@ -25,7 +25,7 @@ exports.up = function (db) {
     "Variegated",
   ];
   const promises = attributes.map((a) => db.insert("traits", ["trait"], [a]));
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

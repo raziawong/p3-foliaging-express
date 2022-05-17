@@ -25,7 +25,7 @@ exports.up = function (db) {
   const promises = requirements.map((r) =>
     db.insert("light_requirements", ["requirement"], [r])
   );
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

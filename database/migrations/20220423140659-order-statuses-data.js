@@ -25,7 +25,7 @@ exports.up = function (db) {
   const promises = statuses.map((s) =>
     db.insert("order_statuses", ["status"], [s])
   );
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

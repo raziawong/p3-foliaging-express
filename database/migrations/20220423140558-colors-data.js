@@ -34,7 +34,7 @@ exports.up = function (db) {
     "Silver",
   ];
   const promises = colors.map((c) => db.insert("colors", ["color"], [c]));
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

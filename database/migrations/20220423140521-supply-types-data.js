@@ -17,7 +17,7 @@ exports.setup = function (options, seedLink) {
 exports.up = function (db) {
   const types = ["Tools", "Potting Media", "Fertiliser", "Pesticide"];
   const promises = types.map((t) => db.insert("supply_types", ["type"], [t]));
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

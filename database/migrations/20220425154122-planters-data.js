@@ -39,7 +39,7 @@ exports.up = function (db) {
       [v.name, v.type_id, v.material_id]
     )
   );
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {

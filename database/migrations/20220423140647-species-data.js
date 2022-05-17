@@ -24,7 +24,7 @@ exports.up = function (db) {
     "Dracaena Trifasciata",
   ];
   const promises = names.map((n) => db.insert("species", ["name"], [n]));
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports.down = function (db) {
