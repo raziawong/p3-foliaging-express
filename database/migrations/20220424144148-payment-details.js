@@ -23,6 +23,20 @@ exports.up = function (db) {
     payment_method: { type: "string", length: 20, notNull: true },
     customer_email: { type: "string", length: 320, notNull: true },
     amount: { type: "bigint", notNull: true },
+    address_id: {
+      type: "int",
+      unsigned: true,
+      notNull: false,
+      foreignKey: {
+        name: "FK_payment_details_backlog_addresses_billing_address_id",
+        table: "backlog_addresses",
+        mapping: "id",
+        rules: {
+          onDelete: "RESTRICT",
+          onUpdate: "RESTRICT",
+        },
+      },
+    },
     order_id: {
       type: "int",
       unsigned: true,
@@ -41,13 +55,16 @@ exports.up = function (db) {
 };
 
 exports.down = function (db) {
-  const foreignKeys = ["FK_payment_details_orders_order_id"];
+  const foreignKeys = [
+    "FK_payment_details_backlog_addresses_billing_address_id",
+    "FK_payment_details_orders_order_id",
+  ];
   const promises = foreignKeys.map((fk) =>
     db.removeForeignKey("payment_details", fk)
   );
   let ret = null;
   try {
-    ret = Promise.all(promises).then(() => {
+    ret = Promise.allSettledSettled(promises).then(() => {
       db.dropTable("payment_details");
     });
   } catch (err) {

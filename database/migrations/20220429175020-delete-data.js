@@ -23,6 +23,7 @@ exports.down = function (db) {
     "discounts_products",
     "discounts",
     "products",
+    "backlog_addresses",
     "payment_details",
     "orders",
     "ordered_items",
@@ -38,7 +39,7 @@ exports.down = function (db) {
       if (err) return console.log(err);
     });
   });
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 };
 
 exports._meta = {

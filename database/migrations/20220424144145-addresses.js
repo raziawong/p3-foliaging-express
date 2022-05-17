@@ -23,7 +23,6 @@ exports.up = function (db) {
     unit_number: { type: "string", length: 5, notNull: false },
     postal_code: { type: "string", length: 6, notNull: true },
     label: { type: "string", length: 20, notNull: true },
-    archived: { type: "boolean", defaultValue: false, notNull: true },
     address_type_id: {
       type: "int",
       unsigned: true,
@@ -65,7 +64,7 @@ exports.down = function (db) {
   );
   let ret = null;
   try {
-    ret = Promise.all(promises).then(() => {
+    ret = Promise.allSettled(promises).then(() => {
       db.dropTable("addresses");
     });
   } catch (err) {
