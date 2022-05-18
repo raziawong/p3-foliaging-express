@@ -302,7 +302,6 @@ router.get("/:id/delete", async (req, res, next) => {
   const cartItem = await getCartItemByProductId(id);
   const orderItem = await getOrderedItemByProductId(id);
 
-  console.log(cartItem);
   if (item) {
     res.render("operations/delete", {
       title: item.toJSON().title,
