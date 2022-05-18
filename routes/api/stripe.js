@@ -11,6 +11,7 @@ router.post(
   express.raw({ type: "application/json" }),
   async (req, res) => {
     let event;
+    let resp = {};
 
     try {
       event = Stripe.webhooks.constructEvent(
@@ -27,7 +28,7 @@ router.post(
     if (event) {
       if (event.type == "charge.succeeded") {
         const { object: paymentInfo } = event.data;
-        await addPaymentDetail({
+        resp = await addPaymentDetail({
           payment_intent_id: paymentInfo.payment_intent,
           customer_email: paymentInfo.billing_details.email,
           amount: paymentInfo.amount,
@@ -54,7 +55,7 @@ router.post(
           shipping_type_id = shippingRate.metadata.type_id;
         }
 
-        const order = await customerService.insertOrderAndPayment({
+        resp = await customerService.insertOrderAndPayment({
           shipping_type_id,
           shipping_address,
           billing_address,
@@ -62,7 +63,7 @@ router.post(
           items,
         });
 
-        if (order && items) {
+        if (resp && items) {
           if (checkoutInfo.metadata.cartIds) {
             const cartIds = JSON.parse(cartIds);
             for (const id of cartIds) {
@@ -70,12 +71,12 @@ router.post(
             }
           }
           for (const item of items) {
-            updateProductStock(item.product_id, quantity);
+            updateProductStock(item.product_id, item.quantity);
           }
         }
       }
 
-      res.send({ received: true });
+      res.send({ type: event.type, inserted: resp });
     }
   }
 );
