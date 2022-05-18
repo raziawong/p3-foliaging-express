@@ -121,6 +121,17 @@ const getShippingTypeById = async (id) => {
   }
 };
 
+const getOrderedItemByProductId = async (pid) => {
+  try {
+    return await OrderedItem.where({ product_id: pid }).fetch({
+      require: false,
+    });
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 module.exports = {
   getAllOrders,
   getOrderById,
@@ -131,4 +142,5 @@ module.exports = {
   updateOrderStatus,
   getAllShippingTypes,
   getShippingTypeById,
+  getOrderedItemByProductId,
 };

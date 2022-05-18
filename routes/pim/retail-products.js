@@ -1,5 +1,10 @@
 const router = require("express").Router();
 const {
+  getCartItemById,
+  getCartItemByProductId,
+} = require("../../database/access/cart-items");
+const { getOrderedItemByProductId } = require("../../database/access/orders");
+const {
   getProductById,
   getAllProducts,
   addProduct,
@@ -292,11 +297,18 @@ router.post("/:id/update", async (req, res, next) => {
 });
 
 router.get("/:id/delete", async (req, res, next) => {
-  const item = await getProductById(req.params.id);
+  const { id } = req.params;
+  const item = await getProductById(id);
+  const cartItem = await getCartItemByProductId(id);
+  const orderItem = await getOrderedItemByProductId(id);
+
+  console.log(cartItem);
   if (item) {
     res.render("operations/delete", {
       title: item.toJSON().title,
       homePath: "/retail/products",
+      isInCarts: cartItem ? true : false,
+      isInOrders: orderItem ? true : false,
     });
   } else {
     fetchErrorHandler(next, "product", req.params.id);
