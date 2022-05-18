@@ -27,6 +27,8 @@ const messages = {
   registerFail: "Please try again, account failed to register",
   usernameExists: "Username already exists",
   emailExists: "Email already exists",
+  floorRequired: "Floor is required when Unit is filled",
+  unitRequired: "Unit is required when Floor is filled",
   createSuccess: (title, name) => `New ${title}, ${name}, has been created`,
   createError: (title) =>
     `${title} create operation encountered an error, please try again.`,

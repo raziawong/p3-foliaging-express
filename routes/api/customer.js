@@ -65,7 +65,7 @@ const userActions = {
               errors[key] = form.fields[key].error;
             }
           }
-          res.status(402);
+          res.status(406);
           res.send({ validation: { ...errors } });
         },
       });
@@ -100,6 +100,7 @@ const userActions = {
       addressForm.handle(req, {
         success: async (form) => {
           resp = await new CustomerServices(customer.id).addAddress(req.body);
+          res.send({ user: resp });
         },
         error: async (form) => {
           let errors = {};
@@ -108,7 +109,7 @@ const userActions = {
               errors[key] = form.fields[key].error;
             }
           }
-          res.status(402);
+          res.status(406);
           res.send({ validation: { ...errors } });
         },
       });
@@ -116,11 +117,10 @@ const userActions = {
       res.status(406);
       res.send({ error: apiMessages.notAcceptable });
     }
-
-    res.send({ user: resp });
   });
 
-  router.put("/address/update", async (req, res) => {
+  router.post("/address/update", async (req, res) => {
+    const { aid } = req.query;
     const customer = req.user || null;
     let resp = {};
 
@@ -128,11 +128,11 @@ const userActions = {
       const addressForm = createAddressForm();
       addressForm.handle(req, {
         success: async (form) => {
-          const { id, ...inputs } = req.body;
           resp = await new CustomerServices(customer.id).updateAddress(
-            id,
-            inputs
+            Number(aid),
+            req.body
           );
+          res.send({ user: resp });
         },
         error: async (form) => {
           let errors = {};
@@ -141,7 +141,7 @@ const userActions = {
               errors[key] = form.fields[key].error;
             }
           }
-          res.status(402);
+          res.status(406);
           res.send({ validation: { ...errors } });
         },
       });
@@ -149,13 +149,20 @@ const userActions = {
       res.status(406);
       res.send({ error: apiMessages.notAcceptable });
     }
-
-    res.send({ user: resp });
   });
 
-  router.get("/address/types", async (req, res) => {
-    const results = await getAllAddressTypesOpts();
-    res.send({ types: results });
+  router.delete("/address/remove", async (req, res) => {
+    const { aid } = req.query;
+    const customer = req.user || null;
+    let resp = {};
+
+    if (aid) {
+      resp = await new CustomerServices(customer.id).removeAddress(Number(aid));
+      res.send({ user: resp });
+    } else {
+      res.status(406);
+      res.send({ error: apiMessages.notAcceptable });
+    }
   });
 })();
 

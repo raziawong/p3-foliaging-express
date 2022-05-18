@@ -1,7 +1,6 @@
 const {
   addAddressForCustomer,
   getAddressById,
-  archiveAddress,
   deleteAddress,
   updateAddress,
 } = require("../access/addresses");
@@ -46,7 +45,7 @@ class CustomerServices {
   }
 
   async getAddress(aid) {
-    if (await hasAddress(aid)) {
+    if (await this.hasAddress(aid)) {
       return await getAddressById(aid);
     }
     return false;
@@ -62,25 +61,20 @@ class CustomerServices {
   }
 
   async updateAddress(aid, data) {
-    if (await hasAddress(aid)) {
-      await updateAddress(data);
+    if (await this.hasAddress(aid)) {
+      await updateAddress(aid, data);
       return await this.getCustomer();
     }
     return false;
   }
 
   async removeAddress(aid) {
-    if (await hasAddress(aid)) {
+    if (await this.hasAddress(aid)) {
       const address = await getAddressById(aid);
 
       if (address) {
-        if (address.related("orders")) {
-          await archiveAddress(address);
-          return await this.getCustomer();
-        } else {
-          await deleteAddress(aid);
-          return await this.getCustomer();
-        }
+        await deleteAddress(aid);
+        return await this.getCustomer();
       }
       return false;
     }
@@ -97,9 +91,9 @@ class CustomerServices {
     if (data && shipping_address_id) {
       const newOrderStatus = await getOrderStatusForNewOrder();
       const customer = await this.getCustomer();
-      const hasAddress = await this.hasAddress(shipping_address_id);
+      const hasAddr = await this.hasAddress(shipping_address_id);
 
-      if (newOrderStatus && hasAddress) {
+      if (newOrderStatus && hasAddr) {
         let orderObj = {
           customer_id: customer.get("id"),
           status_id: newOrderStatus.get("id"),

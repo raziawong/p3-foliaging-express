@@ -17,6 +17,7 @@ const {
   getBlacklistedToken,
   addBlacklistedToken,
 } = require("../../database/access/blacklisted-token");
+const { getAllAddressTypesOpts } = require("../../database/access/addresses");
 
 router.post("/register", async (req, res) => {
   const registerForm = createRegistrationForm();
@@ -32,7 +33,7 @@ router.post("/register", async (req, res) => {
       });
     },
     empty: () => {
-      res.sendStatus(402);
+      res.sendstatus(406);
       res.send({ validation: "empty details is not acceptable" });
     },
     error: (form) => {
@@ -42,7 +43,7 @@ router.post("/register", async (req, res) => {
           errors[key] = form.fields[key].error;
         }
       }
-      res.status(402);
+      res.status(406);
       res.send({ validation: { ...errors } });
     },
   });
@@ -95,7 +96,7 @@ router.post("/login", (req, res) => {
           errors[key] = form.fields[key].error;
         }
       }
-      res.status(402);
+      res.status(406);
       res.send({ validation: { ...errors } });
     },
   });
@@ -153,6 +154,11 @@ router.post("/refresh", async (req, res) => {
   } else {
     res.sendStatus(401);
   }
+});
+
+router.get("/address/types", async (req, res) => {
+  const results = await getAllAddressTypesOpts();
+  res.send({ types: results });
 });
 
 module.exports = router;

@@ -226,8 +226,8 @@ const Address = bookshelf.model("Address", {
   type: function () {
     return this.belongsTo("AddressType");
   },
-  user: function () {
-    return this.belongsTo("User");
+  customer: function () {
+    return this.belongsTo("Customer");
   },
   orders: function () {
     return this.hasMany("Order");

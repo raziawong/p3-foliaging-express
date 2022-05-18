@@ -97,27 +97,46 @@ const createAddressForm = () => {
     {
       label: fields.string({
         required: true,
+        validators: [validators.maxlength(20)],
       }),
       line_1: fields.string({
         required: true,
+        validators: [validators.maxlength(100)],
       }),
       line_2: fields.string({
         required: false,
+        validators: [validators.maxlength(100)],
       }),
       floor_number: fields.string({
         required: false,
-        validators: [validators.digits()],
+        validators: [
+          validators.maxlength(2),
+          validators.digits(),
+          function (form, field, callback) {
+            if (form.unit_number && !field.data) {
+              callback(messages.floorRequired);
+            } else {
+              callback();
+            }
+          },
+        ],
       }),
       unit_number: fields.string({
         required: false,
         validators: [
           validators.digits(),
-          validators.matchField("floor_number"),
+          function (form, field, callback) {
+            if (form.floor_number && !field.data) {
+              callback(messages.unitRequired);
+            } else {
+              callback();
+            }
+          },
         ],
       }),
       postal_code: fields.string({
         required: true,
-        validators: [validators.digits()],
+        validators: [validators.maxlength(6), validators.digits()],
       }),
     },
     { validatePastFirstError: true }

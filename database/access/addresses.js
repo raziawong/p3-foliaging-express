@@ -39,12 +39,11 @@ const addAddressForCustomer = async (cid, data) => {
   }
 };
 
-const updateAddress = async (data) => {
+const updateAddress = async (aid, data) => {
   try {
-    const { id, ...inputs } = data;
-    const address = await getAddressById(id);
+    const address = await getAddressById(aid);
     if (address) {
-      address.set(inputs);
+      address.set(data);
       await address.save();
     }
     return address;
