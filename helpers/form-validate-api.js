@@ -79,15 +79,45 @@ const updatePasswordForm = () => {
     {
       password: fields.password({
         required: true,
-        errorAfterField: true,
         validators: [
           validators.regexp(regexp.password, messages.passwordStrength),
         ],
       }),
       confirm_password: fields.password({
         required: true,
-        errorAfterField: true,
         validators: [validators.matchField("password")],
+      }),
+    },
+    { validatePastFirstError: true }
+  );
+};
+
+const createAddressForm = () => {
+  return forms.create(
+    {
+      label: fields.string({
+        required: true,
+      }),
+      line_1: fields.string({
+        required: true,
+      }),
+      line_2: fields.string({
+        required: false,
+      }),
+      floor_number: fields.string({
+        required: false,
+        validators: [validators.digits()],
+      }),
+      unit_number: fields.string({
+        required: false,
+        validators: [
+          validators.digits(),
+          validators.matchField("floor_number"),
+        ],
+      }),
+      postal_code: fields.string({
+        required: true,
+        validators: [validators.digits()],
       }),
     },
     { validatePastFirstError: true }
@@ -98,4 +128,5 @@ module.exports = {
   createRegistrationForm,
   createLoginForm,
   updatePasswordForm,
+  createAddressForm,
 };

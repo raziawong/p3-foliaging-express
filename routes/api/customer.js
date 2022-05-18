@@ -1,6 +1,10 @@
+const { getAllAddressTypesOpts } = require("../../database/access/addresses");
 const CustomerServices = require("../../database/services/customer-services");
 const { apiMessages, getHashPassword } = require("../../helpers/const");
-const { updatePasswordForm } = require("../../helpers/form-validate-api");
+const {
+  updatePasswordForm,
+  createAddressForm,
+} = require("../../helpers/form-validate-api");
 
 const router = require("express").Router();
 
@@ -55,10 +59,14 @@ const userActions = {
           });
         },
         error: async (form) => {
-          res.render("user/profile", {
-            user: user,
-            form: form.toHTML(uiFields),
-          });
+          let errors = {};
+          for (let key in form.fields) {
+            if (form.fields[key].error) {
+              errors[key] = form.fields[key].error;
+            }
+          }
+          res.status(402);
+          res.send({ validation: { ...errors } });
         },
       });
     } else {
@@ -88,7 +96,22 @@ const userActions = {
     let resp = {};
 
     if (customer && customer.id) {
-      resp = await new CustomerServices(customer.id).addAddress(req.body);
+      const addressForm = createAddressForm();
+      addressForm.handle(req, {
+        success: async (form) => {
+          resp = await new CustomerServices(customer.id).addAddress(req.body);
+        },
+        error: async (form) => {
+          let errors = {};
+          for (let key in form.fields) {
+            if (form.fields[key].error) {
+              errors[key] = form.fields[key].error;
+            }
+          }
+          res.status(402);
+          res.send({ validation: { ...errors } });
+        },
+      });
     } else {
       res.status(406);
       res.send({ error: apiMessages.notAcceptable });
@@ -97,19 +120,42 @@ const userActions = {
     res.send({ user: resp });
   });
 
-  router.patch("/address/update", async (req, res) => {
+  router.put("/address/update", async (req, res) => {
     const customer = req.user || null;
     let resp = {};
 
     if (customer && customer.id) {
-      const { id, ...inputs } = req.body;
-      resp = await new CustomerServices(customer.id).updateAddress(id, inputs);
+      const addressForm = createAddressForm();
+      addressForm.handle(req, {
+        success: async (form) => {
+          const { id, ...inputs } = req.body;
+          resp = await new CustomerServices(customer.id).updateAddress(
+            id,
+            inputs
+          );
+        },
+        error: async (form) => {
+          let errors = {};
+          for (let key in form.fields) {
+            if (form.fields[key].error) {
+              errors[key] = form.fields[key].error;
+            }
+          }
+          res.status(402);
+          res.send({ validation: { ...errors } });
+        },
+      });
     } else {
       res.status(406);
       res.send({ error: apiMessages.notAcceptable });
     }
 
     res.send({ user: resp });
+  });
+
+  router.get("/address/types", async (req, res) => {
+    const results = await getAllAddressTypesOpts();
+    res.send({ types: results });
   });
 })();
 

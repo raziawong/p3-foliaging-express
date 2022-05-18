@@ -1,4 +1,4 @@
-const { Address, BacklogAddress } = require("../models");
+const { Address, BacklogAddress, AddressType } = require("../models");
 
 const getAddressById = async (aid) => {
   try {
@@ -67,16 +67,19 @@ const deleteAddress = async (aid) => {
   }
 };
 
-const searchProducts = async (queryBuilder) => {
+const getAllAddressTypes = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await Product.query(queryBuilder).fetchAll({
-      require: false,
-      withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
-    });
+    return await AddressType.collection().orderBy(sortCol, sortOrder).fetch();
   } catch (err) {
     console.error(err);
     return false;
   }
+};
+
+const getAllAddressTypesOpts = async () => {
+  return await getAllAddressTypes("type").then((resp) =>
+    resp.map((o) => [o.get("id"), o.get("type")])
+  );
 };
 
 const addBacklogAddressByAddressId = async (aid) => {
@@ -124,6 +127,8 @@ module.exports = {
   addAddressForCustomer,
   updateAddress,
   deleteAddress,
+  getAllAddressTypes,
+  getAllAddressTypesOpts,
   addBacklogAddressByAddressId,
   getBacklogAddressByAddress,
 };
