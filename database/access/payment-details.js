@@ -1,8 +1,11 @@
 const { PaymentDetail } = require("../models");
 
-const getPaymentByCustomerEmail = async (email) => {
+const getPaymentByCustomerEmail = async (email, payment_intent_id) => {
   try {
-    return await PaymentDetail.where({ customer_email: email }).fetch({
+    return await PaymentDetail.where({
+      customer_email: email,
+      payment_intent_id,
+    }).fetch({
       require: true,
     });
   } catch (err) {
@@ -22,7 +25,7 @@ const addPaymentDetail = async (data) => {
   }
 };
 
-const addOrderToPayment = async (payment, {order_id, address_id}) => {
+const addOrderToPayment = async (payment, { order_id, address_id }) => {
   try {
     if (payment && data) {
       payment.set({ order_id, address_id });

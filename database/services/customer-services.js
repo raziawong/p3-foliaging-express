@@ -8,7 +8,10 @@ const {
 } = require("../access/addresses");
 const { getCustomerById, updateCustomer } = require("../access/customers");
 const { getAllOrdersByCustomerId } = require("../access/orders");
-const { addOrderToPayment } = require("../access/payment-details");
+const {
+  addOrderToPayment,
+  getPaymentByCustomerEmail,
+} = require("../access/payment-details");
 
 const checkAndAddBacklogAddresses = async (address) => {
   let id = null;
@@ -111,10 +114,15 @@ class CustomerServices {
   }
 
   async insertOrderAndPayment(data) {
-    const { shipping_type_id, shipping_address, billing_address, ...inputs } =
-      data;
+    const {
+      shipping_type_id,
+      shipping_address,
+      billing_address,
+      payment_intent_id,
+      ...inputs
+    } = data;
 
-    if (data && shipping_address_id) {
+    if (inputs) {
       const newOrderStatus = await getOrderStatusForNewOrder();
       const customer = await this.getCustomer();
 
@@ -138,7 +146,10 @@ class CustomerServices {
         }
 
         const order = await addOrderForCustomer(orderObj);
-        const payment = await getPaymentByCustomerEmail(customer.get("email"));
+        const payment = await getPaymentByCustomerEmail(
+          customer.get("email"),
+          payment_intent_id
+        );
 
         if (payment && order) {
           await addOrderToPayment(payment, {

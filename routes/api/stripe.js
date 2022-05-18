@@ -62,6 +62,7 @@ router.post(
           shipping_type_id,
           shipping_address,
           billing_address,
+          payment_intent_id: checkoutInfo.payment_intent,
           total_amount: checkoutInfo.amount_total,
           items,
         });
