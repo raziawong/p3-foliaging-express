@@ -7,7 +7,11 @@ const {
   addBacklogAddress,
 } = require("../access/addresses");
 const { getCustomerById, updateCustomer } = require("../access/customers");
-const { getAllOrdersByCustomerId } = require("../access/orders");
+const {
+  getAllOrdersByCustomerId,
+  getOrderStatusForNewOrder,
+  addOrderForCustomer,
+} = require("../access/orders");
 const {
   addOrderToPayment,
   getPaymentByCustomerEmail,
