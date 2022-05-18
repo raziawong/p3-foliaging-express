@@ -6,7 +6,6 @@ const getAddressById = async (aid) => {
       id: aid,
     }).fetch({
       require: false,
-      withRelated: ["type", "customer", "orders"],
     });
   } catch (err) {
     console.error(err);

@@ -120,14 +120,14 @@ router.get("/", async (req, res) => {
 
         if (shipping_id) {
           const addr = await getAddressById(shipping_id);
-          if (addr) shipping_addr = addr.toJSON();
+          if (addr) shipping_addr = JSON.stringify(addr.toJSON());
         }
 
         if (billing_id === shipping_id) {
           billing_addr = shipping_addr;
         } else if (billing_id) {
           const addr = await getAddressById(billing_id);
-          if (addr) billing_addr = addr.toJSON();
+          if (addr) billing_addr = JSON.stringify(addr.toJSON());
         }
 
         if (shippingTypes) {
@@ -177,7 +177,7 @@ router.get("/", async (req, res) => {
           metadata: {
             shipping_addr,
             billing_addr,
-            cartIds,
+            cartIds: JSON.stringify(cartIds),
             orders: orderMeta,
           },
         };

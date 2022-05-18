@@ -38,6 +38,10 @@ router.post(
         const { object: checkoutInfo } = event.data;
         let shipping_type_id = null;
         const items = JSON.parse(checkoutInfo.metadata.orders);
+        const shipping_address = JSON.parse(
+          checkoutInfo.metadata.shipping_addr
+        );
+        const billing_address = JSON.parse(checkoutInfo.metadata.billing_addr);
 
         const customerService = new CustomerServices(
           checkoutInfo.client_reference_id
@@ -52,15 +56,16 @@ router.post(
 
         const order = await customerService.insertOrderAndPayment({
           shipping_type_id,
-          shipping_address: checkoutInfo.metadata.shipping_addr,
-          billing_address: checkoutInfo.metadata.billing_addr,
+          shipping_address,
+          billing_address,
           total_amount: checkoutInfo.amount_total,
           items,
         });
 
         if (order && items) {
           if (checkoutInfo.metadata.cartIds) {
-            for (const id of checkoutInfo.metadata.cartIds) {
+            const cartIds = JSON.parse(cartIds);
+            for (const id of cartIds) {
               deleteCartItemById(id);
             }
           }
