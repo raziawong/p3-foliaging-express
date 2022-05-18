@@ -32,17 +32,20 @@ router.post(
           payment_intent_id: paymentInfo.payment_intent,
           customer_email: paymentInfo.billing_details.email,
           amount: paymentInfo.amount,
+          receipt_url: paymentInfo.receipt_url,
           payment_status: paymentInfo.status,
           payment_method: paymentInfo.payment_method_details.type,
         });
       } else if (event.type == "checkout.session.completed") {
         const { object: checkoutInfo } = event.data;
+        const { orders, shipping_addr, billing_addr, cartIds } =
+          checkoutInfo.metadata;
         let shipping_type_id = null;
-        const items = JSON.parse(checkoutInfo.metadata.orders);
-        const shipping_address = JSON.parse(
-          checkoutInfo.metadata.shipping_addr
-        );
-        const billing_address = JSON.parse(checkoutInfo.metadata.billing_addr);
+        const items = orders ? JSON.parse(orders) : null;
+        const shipping_address = shipping_addr
+          ? JSON.parse(shipping_addr)
+          : null;
+        const billing_address = billing_addr ? JSON.parse(billing_addr) : null;
 
         const customerService = new CustomerServices(
           checkoutInfo.client_reference_id
