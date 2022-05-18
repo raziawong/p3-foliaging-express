@@ -73,7 +73,7 @@ const api = {
     [checkIfAuthenticatedJWT, express.json()],
     api.customerActions
   );
-  app.use("/api/payment", express.json(), api.stripeProcesses);
+  app.use("/api/payment", api.stripeProcesses);
 
   app.use((req, res, next) => {
     if (!req.path.startsWith("/api")) {
