@@ -124,7 +124,7 @@ const userActions = {
     const customer = req.user || null;
     let resp = {};
 
-    if (customer && customer.id) {
+    if (aid && customer && customer.id) {
       const addressForm = createAddressForm();
       addressForm.handle(req, {
         success: async (form) => {
@@ -156,7 +156,7 @@ const userActions = {
     const customer = req.user || null;
     let resp = {};
 
-    if (aid) {
+    if (aid && customer && customer.id) {
       resp = await new CustomerServices(customer.id).removeAddress(Number(aid));
       res.send({ user: resp });
     } else {

@@ -75,6 +75,22 @@ const updateProduct = async (product, data) => {
   }
 };
 
+const updateProductStock = async (pid, deductable) => {
+  try {
+    const product = await getProductById(pid);
+
+    if (product) {
+      product.set("stock", product.get("stock" - deductable));
+      await product.save();
+    }
+
+    return product;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 const getAllColors = async (sortCol = "id", sortOrder = "ASC") => {
   try {
     return await Color.collection().orderBy(sortCol, sortOrder).fetch();
@@ -165,6 +181,7 @@ module.exports = {
   getProductById,
   addProduct,
   updateProduct,
+  updateProductStock,
   getAllColors,
   getAllColorsOpts,
   getAllSizes,

@@ -46,7 +46,7 @@ const addCartItem = async (cid, pid, quantity) => {
   }
 };
 
-const deleteCartItem = async (cid, pid) => {
+const deleteCartItemByCustomer = async (cid, pid) => {
   try {
     const cartItem = await getCartItemByCustomerAndProduct(cid, pid);
     if (cartItem) {
@@ -74,10 +74,36 @@ const updateCartItemQuantity = async (cid, pid, newQuantity) => {
   }
 };
 
+const getCartItemById = async (id) => {
+  try {
+    return await CartItem.where({ id }).fetch({
+      require: false,
+    });
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
+const deleteCartItemById = async (id) => {
+  try {
+    const cartItem = await getCartItemById(id);
+    if (cartItem) {
+      return await cartItem.destroy();
+    }
+    return false;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 module.exports = {
   getShoppingCart,
   getCartItemByCustomerAndProduct,
   addCartItem,
-  deleteCartItem,
+  deleteCartItemByCustomer,
   updateCartItemQuantity,
+  getCartItemById,
+  deleteCartItemById,
 };

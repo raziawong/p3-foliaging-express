@@ -3,10 +3,36 @@ const {
   getAddressById,
   deleteAddress,
   updateAddress,
+  getBacklogAddressByAddress,
+  addBacklogAddress,
 } = require("../access/addresses");
 const { getCustomerById, updateCustomer } = require("../access/customers");
 const { getAllOrdersByCustomerId } = require("../access/orders");
 const { addOrderToPayment } = require("../access/payment-details");
+
+const checkAndAddBacklogAddresses = async (address) => {
+  let id = null;
+  if (address) {
+    const existAddr = await getBacklogAddressByAddress(address);
+    if (existAddr) {
+      id = existAddr.get("id");
+    } else {
+      const { line_1, line_2, floor_number, unit_number, postal_code } =
+        address;
+      const addr = await addBacklogAddress({
+        line_1,
+        line_2,
+        floor_number,
+        unit_number,
+        postal_code,
+      });
+      if (addr) {
+        id = addr.get("id");
+      }
+    }
+  }
+  return id;
+};
 
 class CustomerServices {
   constructor(cid) {
@@ -21,9 +47,8 @@ class CustomerServices {
   async updateAccount(data) {
     const customer = await this.getCustomer();
     if (customer) {
-      const updated = await updateCustomer(customer, data);
-      const { password, ...user } = updated.attributes;
-      return user.unset("password");
+      await updateCustomer(customer, data);
+      return await this.getCustomer();
     }
     return false;
   }
@@ -86,18 +111,25 @@ class CustomerServices {
   }
 
   async insertOrderAndPayment(data) {
-    const { shipping_type_id, shipping_address_id, ...inputs } = data;
+    const { shipping_type_id, shipping_address, billing_address, ...inputs } =
+      data;
 
     if (data && shipping_address_id) {
       const newOrderStatus = await getOrderStatusForNewOrder();
       const customer = await this.getCustomer();
-      const hasAddr = await this.hasAddress(shipping_address_id);
 
-      if (newOrderStatus && hasAddr) {
+      if (newOrderStatus) {
+        const shipping_addr_id = shipping_address
+          ? checkAndAddBacklogAddresses(shipping_address)
+          : null;
+        const billing_addr_id = billing_address
+          ? checkAndAddBacklogAddresses(billing_address)
+          : null;
+
         let orderObj = {
           customer_id: customer.get("id"),
           status_id: newOrderStatus.get("id"),
-          shipping_address_id,
+          address_id: shipping_addr_id,
           ...inputs,
         };
 
@@ -109,7 +141,10 @@ class CustomerServices {
         const payment = await getPaymentByCustomerEmail(customer.get("email"));
 
         if (payment && order) {
-          await addOrderToPayment(payment, order.get("id"));
+          await addOrderToPayment(payment, {
+            order_id: order.get("id"),
+            address_id: billing_addr_id,
+          });
         }
 
         return order;

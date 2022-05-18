@@ -81,24 +81,6 @@ const getAllAddressTypesOpts = async () => {
   );
 };
 
-const addBacklogAddressByAddressId = async (aid) => {
-  try {
-    const address = await getAddressById(aid);
-
-    if (address) {
-      const { id, ...data } = address.toJSON();
-      const backlogAddress = new BacklogAddress({ ...data });
-      await backlogAddress.save();
-      return backlogAddress;
-    } else {
-      return false;
-    }
-  } catch (err) {
-    console.error(err);
-    return false;
-  }
-};
-
 const getBacklogAddressByAddress = async ({
   line_1,
   line_2,
@@ -120,6 +102,17 @@ const getBacklogAddressByAddress = async ({
   }
 };
 
+const addBacklogAddress = async (data) => {
+  try {
+    const address = new BacklogAddress().set(data);
+    await address.save();
+    return address;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 module.exports = {
   getAddressById,
   getAddressByCustomerId,
@@ -128,6 +121,6 @@ module.exports = {
   deleteAddress,
   getAllAddressTypes,
   getAllAddressTypesOpts,
-  addBacklogAddressByAddressId,
+  addBacklogAddress,
   getBacklogAddressByAddress,
 };

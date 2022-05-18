@@ -2,56 +2,63 @@ const router = require("express").Router();
 const CartServices = require("../../database/services/cart-services");
 
 router.get("/", async (req, res) => {
-  const { cid } = req.query;
+  const customer = req.user || null;
   let resp = {};
 
-  if (cid) {
-    resp = await new CartServices(cid).getCart();
+  if (customer && customer.id) {
+    resp = await new CartServices(customer.id).getCart();
   }
 
   res.send({ items: resp });
 });
 
 router.post("/add", async (req, res) => {
-  const { cid, pid } = req.body;
+  const { pid } = req.body;
+  const customer = req.user || null;
   let resp = {};
 
-  if (cid && pid) {
-    resp = await new CartServices(cid).addItemToCart(pid, 1);
+  if (customer && customer.id && pid) {
+    resp = await new CartServices(customer.id).addItemToCart(pid, 1);
   }
 
   res.send({ item: resp });
 });
 
 router.delete("/remove", async (req, res) => {
-  const { cid, pid } = req.query;
+  const { pid } = req.query;
+  const customer = req.user || null;
   let resp = { success: false };
 
-  if (cid && pid) {
-    const removed = await new CartServices(cid).removeItemFromCart(pid);
-    resp = { success: true, item: resp };
+  if (customer && customer.id && pid) {
+    const results = await new CartServices(customer.id).removeItemFromCart(pid);
+    resp = { success: true, item: results };
   }
 
   res.send(resp);
 });
 
 router.patch("/quantity/update", async (req, res) => {
-  const { cid, pid, quantity } = req.body;
+  const { pid, quantity } = req.body;
+  const customer = req.user || null;
   let resp = {};
 
-  if (cid && pid) {
-    resp = await new CartServices(cid).setItemQuantity(pid, quantity);
+  if (customer && customer.id && pid) {
+    resp = await new CartServices(customer.id).setItemQuantity(pid, quantity);
   }
 
   res.send({ item: resp });
 });
 
 router.get("/quantity/check", async (req, res) => {
-  const { cid, pid, quantity } = req.query;
+  const { pid, quantity } = req.query;
+  const customer = req.user || null;
   let resp = {};
 
-  if (cid && pid) {
-    resp = await new CartServices(cid).verifyStockQuantity(pid, quantity);
+  if (customer && customer.id && pid) {
+    resp = await new CartServices(customer.id).verifyStockQuantity(
+      pid,
+      quantity
+    );
   }
 
   res.send({ resp });

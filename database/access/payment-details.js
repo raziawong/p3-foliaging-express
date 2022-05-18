@@ -22,10 +22,10 @@ const addPaymentDetail = async (data) => {
   }
 };
 
-const addOrderToPayment = async (payment, oid) => {
+const addOrderToPayment = async (payment, {order_id, address_id}) => {
   try {
-    if (payment && oid) {
-      payment.set({ order_id: oid });
+    if (payment && data) {
+      payment.set({ order_id, address_id });
       return await payment.save();
     }
     return false;

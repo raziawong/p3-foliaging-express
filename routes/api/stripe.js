@@ -1,4 +1,5 @@
 const express = require("express");
+const { deleteCartItemById } = require("../../database/access/cart-items");
 const { addPaymentDetail } = require("../../database/access/payment-details");
 const router = express.Router();
 const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -28,13 +29,16 @@ router.post(
         const { object: paymentInfo } = event.data;
         await addPaymentDetail({
           payment_intent_id: paymentInfo.payment_intent,
-          customer_email: paymentInfo.billing_dettails.email,
+          customer_email: paymentInfo.billing_details.email,
           amount: paymentInfo.amount,
           payment_status: paymentInfo.status,
           payment_method: paymentInfo.payment_method_details.type,
         });
       } else if (event.type == "checkout.session.completed") {
         const { object: checkoutInfo } = event.data;
+        let shipping_type_id = null;
+        const items = JSON.parse(checkoutInfo.metadata.orders);
+
         const customerService = new CustomerServices(
           checkoutInfo.client_reference_id
         );
@@ -42,17 +46,28 @@ router.post(
           checkoutInfo.shipping_rate
         );
 
-        let shipping_type_id = null;
         if (shippingRate.hasOwnProperty("metadata")) {
           shipping_type_id = shippingRate.metadata.type_id;
         }
 
-        await customerService.insertOrderAndPayment({
+        const order = await customerService.insertOrderAndPayment({
           shipping_type_id,
-          shipping_address_id: checkoutInfo.shipping_id,
+          shipping_address: checkoutInfo.metadata.shipping_addr,
+          billing_address: checkoutInfo.metadata.billing_addr,
           total_amount: checkoutInfo.amount_total,
-          items: JSON.parse(checkoutInfo.metadata.orders),
+          items,
         });
+
+        if (order && items) {
+          if (checkoutInfo.metadata.cartIds) {
+            for (const id of checkoutInfo.metadata.cartIds) {
+              deleteCartItemById(id);
+            }
+          }
+          for (const item of items) {
+            updateProductStock(item.product_id, quantity);
+          }
+        }
       }
 
       res.send({ received: true });
