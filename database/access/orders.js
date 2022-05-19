@@ -21,7 +21,7 @@ const getAllOrders = async () => {
 
 const getOrderById = async (oid) => {
   try {
-    return await Order.where({ id: oid }).fetch({
+    return await Order.where({ id: oid }).fetchAll({
       require: true,
       withRelated: [
         "status",
@@ -53,9 +53,9 @@ const updateOrder = async (order, data) => {
 
 const getAllOrdersByCustomerId = async (cid) => {
   try {
-    return await Order.where({ customer_id: cid }).fetch({
+    return await Order.where({ customer_id: cid }).fetchAll({
       require: true,
-      withRelated: ["status", "shipping_address", "items", "payments"],
+      withRelated: ["status", "shipping_address", "items.product", "payments"],
     });
   } catch (err) {
     console.error(err);
