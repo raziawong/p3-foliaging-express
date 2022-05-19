@@ -48,7 +48,7 @@ router.post(
         const billing_address = billing_addr ? JSON.parse(billing_addr) : null;
 
         const customerService = new CustomerServices(
-          checkoutInfo.client_reference_id
+          Number(checkoutInfo.client_reference_id)
         );
         const shippingRate = await Stripe.shippingRates.retrieve(
           checkoutInfo.shipping_rate
@@ -59,7 +59,7 @@ router.post(
         }
 
         resp = await customerService.insertOrderAndPayment({
-          shipping_type_id,
+          Number(shipping_type_id),
           shipping_address,
           billing_address,
           payment_intent_id: checkoutInfo.payment_intent,
