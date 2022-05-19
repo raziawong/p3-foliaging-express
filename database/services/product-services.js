@@ -19,7 +19,7 @@ class ProductServices {
   }
 
   getDeals() {
-    let discounts = [];
+    let deals = [];
     const now = new Date();
     if (this.discounts) {
       const dealArr = this.discounts.filter((item) => !item.code);
@@ -28,12 +28,12 @@ class ProductServices {
         const start = new Date(item.start_date);
         const end = new Date(item.end_date);
         if (now.getTime() >= start.getTime() && end.getTime() > now.getTime()) {
-          discount.push(item);
+          deals.push(item);
         }
       }
     }
 
-    return discounts.sort(compareCreatedDate);
+    return deals ? deals.sort(compareCreatedDate) : [];
   }
 
   getLatestDeal() {
@@ -42,7 +42,7 @@ class ProductServices {
   }
 
   getCoupons() {
-    let discounts = [];
+    let coupons = [];
     const now = new Date();
     if (this.discounts) {
       const couponArr = this.discounts.filter((item) => item.code);
@@ -51,12 +51,12 @@ class ProductServices {
         const start = new Date(item.start_date);
         const end = new Date(item.end_date);
         if (now.getTime() >= start.getTime() && end.getTime() > now.getTime()) {
-          discount.push(item);
+          coupons.push(item);
         }
       }
     }
 
-    return discounts.sort(compareCreatedDate);
+    return coupons.length ? coupons.sort(compareCreatedDate) : coupons;
   }
 
   getCouponDiscount(coupon) {
