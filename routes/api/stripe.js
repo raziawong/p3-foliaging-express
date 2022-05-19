@@ -69,8 +69,8 @@ router.post(
 
         if (resp && items) {
           if (checkoutInfo.metadata.cartIds) {
-            const cartIds = JSON.parse(cartIds);
-            for (const id of cartIds) {
+            let cart = JSON.parse(cartIds);
+            for (const id of cart) {
               deleteCartItemById(id);
             }
           }

@@ -131,12 +131,12 @@ class CustomerServices {
       const customer = await this.getCustomer();
 
       if (newOrderStatus) {
-        const shipping_addr_id = shipping_address
-          ? await checkAndAddBacklogAddresses(shipping_address)
-          : null;
-        const billing_addr_id = billing_address
-          ? await checkAndAddBacklogAddresses(billing_address)
-          : null;
+        const shipping_addr_id = await checkAndAddBacklogAddresses(
+          shipping_address
+        );
+        const billing_addr_id = await checkAndAddBacklogAddresses(
+          billing_address
+        );
 
         let orderObj = {
           customer_id: customer.get("id"),

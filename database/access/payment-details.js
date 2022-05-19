@@ -27,7 +27,7 @@ const addPaymentDetail = async (data) => {
 
 const addOrderToPayment = async (payment, { order_id, address_id }) => {
   try {
-    if (payment && data) {
+    if (payment && order_id) {
       payment.set({ order_id, address_id });
       return await payment.save();
     }
