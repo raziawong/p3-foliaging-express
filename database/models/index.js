@@ -138,15 +138,6 @@ const Discount = bookshelf.model("Discount", {
   products: function () {
     return this.belongsToMany("Product");
   },
-  parse: function (resp) {
-    if (resp.start_date) {
-      resp.start_date = dayjs(resp.start_date).format("DD MMM YYYY");
-    }
-    if (resp.end_date) {
-      resp.end_date = dayjs(resp.end_date).format("DD MMM YYYY");
-    }
-    return resp;
-  },
 });
 const Product = bookshelf.model("Product", {
   tableName: "products",
@@ -296,6 +287,12 @@ const PaymentDetail = bookshelf.model("PaymentDetail", {
     }
     return resp;
   },
+  format: function (attributes) {
+    if (attributes.amount && !isNaN(attributes.amount)) {
+      attributes.amount = attributes.amount * 100;
+    }
+    return attributes;
+  },
 });
 const Order = bookshelf.model("Order", {
   tableName: "orders",
@@ -330,13 +327,13 @@ const Order = bookshelf.model("Order", {
     if (resp.total_amount) {
       resp.total_amount = resp.total_amount / 100;
     }
-    if (resp.ordered_date) {
-      resp.ordered_date = dayjs(resp.ordered_date).format("DD MMM YYYY");
-    }
-    if (resp.updated_date) {
-      resp.updated_date = dayjs(resp.updated_date).format("DD MMM YYYY");
-    }
     return resp;
+  },
+  format: function (attributes) {
+    if (attributes.total_amount && !isNaN(attributes.total_amount)) {
+      attributes.total_amount = attributes.total_amount * 100;
+    }
+    return attributes;
   },
 });
 
@@ -356,6 +353,15 @@ const OrderedItem = bookshelf.model("OrderedItem", {
       resp.discounted_price = resp.discounted_price / 100;
     }
     return resp;
+  },
+  format: function (attributes) {
+    if (attributes.price && !isNaN(attributes.price)) {
+      attributes.price = attributes.price * 100;
+    }
+    if (attributes.discounted_price && !isNaN(attributes.discounted_price)) {
+      attributes.discounted_price = attributes.discounted_price * 100;
+    }
+    return attributes;
   },
 });
 

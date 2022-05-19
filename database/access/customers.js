@@ -18,7 +18,15 @@ const getCustomerById = async (cid) => {
       id: cid,
     }).fetch({
       require: false,
-      withRelated: ["addresses", "addresses.type", "orders"],
+      withRelated: [
+        "addresses",
+        "addresses.type",
+        "orders",
+        "orders.payments",
+        "orders.status",
+        "orders.items",
+        "orders.shipping_address",
+      ],
     });
   } catch (err) {
     console.error(err);

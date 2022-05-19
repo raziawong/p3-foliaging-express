@@ -32,7 +32,7 @@ router.post(
         resp = await addPaymentDetail({
           payment_intent_id: paymentInfo.payment_intent,
           customer_email: paymentInfo.billing_details.email,
-          amount: paymentInfo.amount,
+          amount: paymentInfo.amount / 100,
           receipt_url: paymentInfo.receipt_url,
           payment_status: paymentInfo.status,
           payment_method: paymentInfo.payment_method_details.type,
@@ -64,7 +64,7 @@ router.post(
           shipping_address,
           billing_address,
           payment_intent_id: checkoutInfo.payment_intent,
-          total_amount: checkoutInfo.amount_total,
+          total_amount: checkoutInfo.amount_total / 100,
           items,
         });
 

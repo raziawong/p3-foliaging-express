@@ -106,29 +106,11 @@ class CustomerServices {
       if (address) {
         const existAddr = await getBacklogAddressByAddress(address);
         if (existAddr) {
-          console.log(
-            "Address exists in Backlog Address ------",
-            existAddr.toJSON()
-          );
           id = existAddr[0].get("id");
         } else {
           const { line_1, line_2, floor_number, unit_number, postal_code } =
             address;
-          console.log("Attempt to insert Backlog Address ------", {
-            line_1,
-            line_2,
-            floor_number,
-            unit_number,
-            postal_code,
-          });
           const addr = await addBacklogAddress({
-            line_1,
-            line_2,
-            floor_number,
-            unit_number,
-            postal_code,
-          });
-          console.log("Results from inserting Backlog Address ------", {
             line_1,
             line_2,
             floor_number,

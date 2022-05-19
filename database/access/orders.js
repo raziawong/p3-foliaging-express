@@ -55,7 +55,7 @@ const getAllOrdersByCustomerId = async (cid) => {
   try {
     return await Order.where({ customer_id: cid }).fetch({
       require: true,
-      withRelated: ["status", "address", "items", "payments"],
+      withRelated: ["status", "shipping_address", "items", "payments"],
     });
   } catch (err) {
     console.error(err);

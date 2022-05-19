@@ -1,6 +1,7 @@
 const express = require("express");
 const hbs = require("hbs");
 const waxOn = require("wax-on");
+const dayjs = require("dayjs");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const flash = require("express-flash");
@@ -23,8 +24,15 @@ app.use(express.static("public"));
 waxOn.on(hbs.handlebars);
 waxOn.setLayoutPath("./views/layouts");
 hbs.registerPartials(__dirname + "/views/partials");
+
 hbs.registerHelper("formatAddr", function (addressModel) {
   return formatAddress(addressModel);
+});
+
+hbs.registerHelper("formatDate", function (date, pattern) {
+  return typeof pattern === "string"
+    ? dayjs(date).format(pattern)
+    : dayjs(date).format("DD MMM YYYY");
 });
 
 app.use(

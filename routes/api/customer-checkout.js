@@ -110,7 +110,7 @@ router.get("/", async (req, res) => {
 
           meta.push({
             product_id: pid,
-            price: disconted_price * 100,
+            price: disconted_price,
             discounted_price: discount_percentage ? disconted_price : 0,
             quantity: item.quantity,
           });
