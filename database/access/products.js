@@ -31,7 +31,19 @@ const getProductById = async (id) => {
   try {
     return await Product.where({ id }).fetch({
       require: true,
-      withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
+      withRelated: [
+        "color",
+        "size",
+        "discounts",
+        "plant.light",
+        "plant.water",
+        "plant.care",
+        "plant.traits",
+        "plant.species",
+        "planter.material",
+        "planter.type",
+        "supply.type",
+      ],
     });
   } catch (err) {
     console.error(err);

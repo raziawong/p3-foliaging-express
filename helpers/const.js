@@ -97,7 +97,7 @@ const searchAndProcessProducts = async (builder) => {
 
   if (products) {
     products = products.toJSON();
-    products = products.filter((item) => item.stock > 0);
+    //products = products.filter((item) => item.stock > 0);
 
     for (const item of products) {
       const productService = new ProductServices(item.id, item.discounts);

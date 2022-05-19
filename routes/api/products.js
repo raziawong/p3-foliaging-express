@@ -1,3 +1,5 @@
+const { getProductById } = require("../../database/access/products");
+const ProductServices = require("../../database/services/product-services");
 const { searchAndProcessProducts, likeKey } = require("../../helpers/const");
 
 const router = require("express").Router();
@@ -12,6 +14,25 @@ const types = {
   router.use("/plants", types.plants);
   router.use("/planters", types.planters);
   router.use("/supplies", types.supplies);
+
+  router.get("/details", async (req, res) => {
+    const { pid } = req.query;
+
+    const results = await getProductById(pid);
+    let product = {};
+    if (results) {
+      product = results.toJSON();
+      const productService = new ProductServices(product.id, product.discounts);
+
+      if (product.uploadcare_group_id) {
+        product.images = await productService.getImagesUrls();
+      }
+
+      product.deals = productService.getDeals();
+    }
+
+    res.send({ details: product });
+  });
 
   router.get("/:sortField/:sortOrder", async (req, res) => {
     const queries = req.query;
