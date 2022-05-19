@@ -15,6 +15,7 @@ const {
   checkIfAuthenticated,
   checkIfAuthenticatedJWT,
 } = require("./middleware");
+const { formatAddress } = require("./helpers/const");
 
 const app = express();
 app.set("view engine", "hbs");
@@ -22,6 +23,9 @@ app.use(express.static("public"));
 waxOn.on(hbs.handlebars);
 waxOn.setLayoutPath("./views/layouts");
 hbs.registerPartials(__dirname + "/views/partials");
+hbs.registerHelper("formatAddr", function (addressModel) {
+  return formatAddress(addressModel);
+});
 
 app.use(
   express.urlencoded({

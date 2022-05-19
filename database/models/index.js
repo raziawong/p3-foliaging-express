@@ -269,6 +269,12 @@ const ShippingType = bookshelf.model("ShippingType", {
   orders: function () {
     return this.hasMany("Order");
   },
+  parse: function (resp) {
+    if (resp.price) {
+      resp.price = resp.price / 100;
+    }
+    return resp;
+  },
 });
 const OrderStatus = bookshelf.model("OrderStatus", {
   tableName: "order_statuses",
@@ -281,8 +287,14 @@ const PaymentDetail = bookshelf.model("PaymentDetail", {
   order: function () {
     return this.belongsTo("Order");
   },
-  address: function () {
+  billing_address: function () {
     return this.belongsTo("BacklogAddress");
+  },
+  parse: function (resp) {
+    if (resp.amount) {
+      resp.amount = resp.amount / 100;
+    }
+    return resp;
   },
 });
 const Order = bookshelf.model("Order", {
@@ -297,7 +309,7 @@ const Order = bookshelf.model("Order", {
     });
   },
   status: function () {
-    return this.belongsTo("OrderStatus");
+    return this.belongsTo("OrderStatus", "status_id");
   },
   customer: function () {
     return this.belongsTo("Customer");
@@ -305,14 +317,26 @@ const Order = bookshelf.model("Order", {
   shipping_type: function () {
     return this.belongsTo("ShippingType");
   },
-  address: function () {
-    return this.belongsTo("BacklogAddress");
+  shipping_address: function () {
+    return this.belongsTo("BacklogAddress", "address_id");
   },
   items: function () {
     return this.hasMany("OrderedItem");
   },
   payments: function () {
     return this.hasMany("PaymentDetail");
+  },
+  parse: function (resp) {
+    if (resp.total_amount) {
+      resp.total_amount = resp.total_amount / 100;
+    }
+    if (resp.ordered_date) {
+      resp.ordered_date = dayjs(resp.ordered_date).format("DD MMM YYYY");
+    }
+    if (resp.updated_date) {
+      resp.updated_date = dayjs(resp.updated_date).format("DD MMM YYYY");
+    }
+    return resp;
   },
 });
 
@@ -322,7 +346,16 @@ const OrderedItem = bookshelf.model("OrderedItem", {
     return this.belongsTo("Order");
   },
   product: function () {
-    return this.belongsTo("product");
+    return this.belongsTo("Product");
+  },
+  parse: function (resp) {
+    if (resp.price) {
+      resp.price = resp.price / 100;
+    }
+    if (resp.discounted_price) {
+      resp.discounted_price = resp.discounted_price / 100;
+    }
+    return resp;
   },
 });
 

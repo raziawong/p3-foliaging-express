@@ -3,6 +3,7 @@ const {
   getAllOrders,
   getOrderById,
   updateOrder,
+  getAllOrderStatusesOpts,
 } = require("../../database/access/orders");
 const {
   messages,
@@ -28,7 +29,9 @@ router.get("/:id/update", async (req, res, next) => {
   const order = await getOrderById(req.params.id);
 
   if (order) {
-    const orderForm = updateOrderForm().bind({ ...order.attributes });
+    const orderForm = updateOrderForm(await getAllOrderStatusesOpts()).bind({
+      ...order.attributes,
+    });
     const customer = order.related("customer");
 
     res.render("operations/update", {
@@ -49,7 +52,12 @@ router.post("/:id/update", async (req, res, next) => {
     const orderForm = updateOrderForm();
     orderForm.handle(req, {
       success: async (form) => {
-        const updatedOrder = await updateOrder(order, form.data);
+        const { status_id, delivery_tracking, remarks } = form.data;
+        const updatedOrder = await updateOrder(order, {
+          status_id,
+          delivery_tracking,
+          remarks,
+        });
         req.flash(
           variables.success,
           messages.updateSuccess(titles.order, updatedOrder.get("id"))

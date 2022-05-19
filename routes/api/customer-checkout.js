@@ -142,7 +142,7 @@ router.get("/", async (req, res) => {
                 shipping_rate_data: {
                   type: "fixed_amount",
                   fixed_amount: {
-                    amount: st.price,
+                    amount: st.price * 100,
                     currency: variables.currency,
                   },
                   display_name: st.name,

@@ -23,6 +23,14 @@ const getOrderById = async (oid) => {
   try {
     return await Order.where({ id: oid }).fetch({
       require: true,
+      withRelated: [
+        "status",
+        "customer",
+        "shipping_type",
+        "shipping_address",
+        "items.product",
+        "payments",
+      ],
     });
   } catch (err) {
     console.error(err);
@@ -132,6 +140,21 @@ const getOrderedItemByProductId = async (pid) => {
   }
 };
 
+const getAllOrderStatuses = async (sortCol = "id", sortOrder = "ASC") => {
+  try {
+    return await OrderStatus.collection().orderBy(sortCol, sortOrder).fetch();
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
+const getAllOrderStatusesOpts = async () => {
+  return await getAllOrderStatuses().then((resp) =>
+    resp.map((o) => [o.get("id"), o.get("status")])
+  );
+};
+
 module.exports = {
   getAllOrders,
   getOrderById,
@@ -143,4 +166,6 @@ module.exports = {
   getAllShippingTypes,
   getShippingTypeById,
   getOrderedItemByProductId,
+  getAllOrderStatuses,
+  getAllOrderStatusesOpts,
 };

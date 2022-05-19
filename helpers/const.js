@@ -68,6 +68,30 @@ const regexp = {
 
 const likeKey = process.env.LIKE_SYNTAX;
 
+const formatAddress = ({
+  line_1,
+  line_2,
+  floor_number,
+  unit_number,
+  postal_code,
+}) => {
+  let address = line_1;
+
+  if (line_2) {
+    address += ", " + line_2;
+  }
+
+  if (floor_number && unit_number) {
+    address += ", #" + floor_number + "-" + unit_number;
+  }
+
+  if (postal_code) {
+    address += ", Singapore " + postal_code;
+  }
+
+  return address;
+};
+
 const searchAndProcessProducts = async (builder) => {
   let products = await searchProducts(builder);
 
@@ -112,6 +136,7 @@ module.exports = {
   apiMessages,
   regexp,
   likeKey,
+  formatAddress,
   searchAndProcessProducts,
   getHashPassword,
   generateSignature,
