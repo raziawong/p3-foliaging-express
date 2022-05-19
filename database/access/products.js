@@ -80,7 +80,7 @@ const updateProductStock = async (pid, deductable) => {
     const product = await getProductById(pid);
 
     if (product) {
-      product.set("stock", product.get("stock" - deductable));
+      product.set("stock", product.get("stock") - deductable);
       await product.save();
     }
 
