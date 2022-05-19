@@ -55,11 +55,11 @@ router.post(
         );
 
         if (shippingRate.hasOwnProperty("metadata")) {
-          shipping_type_id = shippingRate.metadata.type_id;
+          shipping_type_id = Number(shippingRate.metadata.type_id);
         }
 
         resp = await customerService.insertOrderAndPayment({
-          Number(shipping_type_id),
+          shipping_type_id,
           shipping_address,
           billing_address,
           payment_intent_id: checkoutInfo.payment_intent,
