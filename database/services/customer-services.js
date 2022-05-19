@@ -110,7 +110,7 @@ class CustomerServices {
             "Address exists in Backlog Address ------",
             existAddr.toJSON()
           );
-          id = existAddr.get("id");
+          id = existAddr[0].get("id");
         } else {
           const { line_1, line_2, floor_number, unit_number, postal_code } =
             address;
