@@ -1,6 +1,7 @@
 const express = require("express");
 const { deleteCartItemById } = require("../../database/access/cart-items");
 const { addPaymentDetail } = require("../../database/access/payment-details");
+const { updateProductStock } = require("../../database/access/products");
 const router = express.Router();
 const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const CustomerServices = require("../../database/services/customer-services");

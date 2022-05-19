@@ -83,6 +83,7 @@ const getAllAddressTypesOpts = async () => {
 const getBacklogAddressByAddress = async ({
   line_1,
   line_2,
+  floor_number,
   unit_number,
   postal_code,
 }) => {
@@ -90,6 +91,7 @@ const getBacklogAddressByAddress = async ({
     return await BacklogAddress.query(function (qb) {
       qb.where("line_1", "=", line_1)
         .andWhere("line_2", "=", line_2)
+        .andWhere("floor_number", "=", floor_number)
         .andWhere("unit_number", "=", unit_number)
         .andWhere("postal_code", "=", postal_code);
     }).fetchAll({

@@ -16,31 +16,6 @@ const {
   addOrderToPayment,
   getPaymentByCustomerEmail,
 } = require("../access/payment-details");
-
-const checkAndAddBacklogAddresses = async (address) => {
-  let id = null;
-  if (address) {
-    const existAddr = await getBacklogAddressByAddress(address);
-    if (existAddr) {
-      id = existAddr.get("id");
-    } else {
-      const { line_1, line_2, floor_number, unit_number, postal_code } =
-        address;
-      const addr = await addBacklogAddress({
-        line_1,
-        line_2,
-        floor_number,
-        unit_number,
-        postal_code,
-      });
-      if (addr) {
-        id = addr.get("id");
-      }
-    }
-  }
-  return id;
-};
-
 class CustomerServices {
   constructor(cid) {
     this.cid = cid;
@@ -125,6 +100,48 @@ class CustomerServices {
       payment_intent_id,
       ...inputs
     } = data;
+
+    const checkAndAddBacklogAddresses = async (address) => {
+      let id = null;
+      if (address) {
+        const existAddr = await getBacklogAddressByAddress(address);
+        if (existAddr) {
+          console.log(
+            "Address exists in Backlog Address ------",
+            existAddr.toJSON()
+          );
+          id = existAddr.get("id");
+        } else {
+          const { line_1, line_2, floor_number, unit_number, postal_code } =
+            address;
+          console.log("Attempt to insert Backlog Address ------", {
+            line_1,
+            line_2,
+            floor_number,
+            unit_number,
+            postal_code,
+          });
+          const addr = await addBacklogAddress({
+            line_1,
+            line_2,
+            floor_number,
+            unit_number,
+            postal_code,
+          });
+          console.log("Results from inserting Backlog Address ------", {
+            line_1,
+            line_2,
+            floor_number,
+            unit_number,
+            postal_code,
+          });
+          if (addr) {
+            id = addr.get("id");
+          }
+        }
+      }
+      return id;
+    };
 
     if (inputs) {
       const newOrderStatus = await getOrderStatusForNewOrder();
