@@ -95,7 +95,7 @@ const getBacklogAddressByAddress = async ({
         .andWhere("unit_number", "=", unit_number)
         .andWhere("postal_code", "=", postal_code);
     }).fetchAll({
-      require: false,
+      require: true,
     });
   } catch (err) {
     console.error(err);
