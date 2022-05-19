@@ -132,10 +132,10 @@ class CustomerServices {
 
       if (newOrderStatus) {
         const shipping_addr_id = shipping_address
-          ? checkAndAddBacklogAddresses(shipping_address)
+          ? await checkAndAddBacklogAddresses(shipping_address)
           : null;
         const billing_addr_id = billing_address
-          ? checkAndAddBacklogAddresses(billing_address)
+          ? await checkAndAddBacklogAddresses(billing_address)
           : null;
 
         let orderObj = {
@@ -149,17 +149,25 @@ class CustomerServices {
           orderObj.shipping_type_id = shipping_type_id;
         }
 
+        console.log("Attempt to insert Order ------", orderObj);
         const order = await addOrderForCustomer(orderObj);
+        console.log("Results from inserting Order ------", order);
+
         const payment = await getPaymentByCustomerEmail(
           customer.get("email"),
           payment_intent_id
         );
 
         if (payment && order) {
-          await addOrderToPayment(payment, {
+          console.log("Attempt to update Payment ------", payment.get("id"), {
             order_id: order.get("id"),
             address_id: billing_addr_id,
           });
+          const updated = await addOrderToPayment(payment, {
+            order_id: order.get("id"),
+            address_id: billing_addr_id,
+          });
+          console.log("Results from updating Payment ------", updated);
         }
 
         return order;
