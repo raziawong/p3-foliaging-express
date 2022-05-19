@@ -1,8 +1,16 @@
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
-Welcome USER_NAME,
+# Folaiging Express Server and Admin Panel
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. The last update to this file was: **July 2, 2021**
+This is an Express server and is the backend for Foligaing project
+- Access demo integration with frontend [here](https://foliaging.netlify.app/profile)
+- For more details, please visit the README at frontend repository [here](https://github.com/raziawong/p3-foliaging)
+
+## Template
+
+This git repository is created using [Code Institute](https://github.com/Code-Institute-Org/gitpod-full-template) student template for Gitpod.
+
+Following content explains the usage in Gitpod and is taken from the template:
 
 ## Gitpod Reminders
 
@@ -98,5 +106,3 @@ rm .vscode/uptime.sh
 Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
 
 ---
-
-Happy coding!
