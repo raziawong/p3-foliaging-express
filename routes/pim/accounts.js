@@ -40,7 +40,7 @@ router.post("/login", async (req, res) => {
             type: user.related("type").get("type"),
           };
           req.session.save(() => {
-            res.redirect("/user/profile");
+            res.redirect("/retail/products");
           });
         } else {
           req.flash(variables.error, messages.authError);
