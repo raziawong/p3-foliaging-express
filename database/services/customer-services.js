@@ -106,7 +106,8 @@ class CustomerServices {
       if (address) {
         const existAddr = await getBacklogAddressByAddress(address);
         if (existAddr) {
-          id = existAddr[0].get("id");
+          console.log("Order made with existing addr:", existAddr);
+          id = existAddr.get("id");
         } else {
           const { line_1, line_2, floor_number, unit_number, postal_code } =
             address;
