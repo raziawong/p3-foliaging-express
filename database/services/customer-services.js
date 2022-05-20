@@ -106,7 +106,6 @@ class CustomerServices {
       if (address) {
         const existAddr = await getBacklogAddressByAddress(address);
         if (existAddr) {
-          console.log("Order made with existing addr:", existAddr);
           id = existAddr.get("id");
         } else {
           const { line_1, line_2, floor_number, unit_number, postal_code } =
@@ -149,9 +148,7 @@ class CustomerServices {
           orderObj.shipping_type_id = shipping_type_id;
         }
 
-        console.log("Attempt to insert Order ------", orderObj);
         const order = await addOrderForCustomer(orderObj);
-        console.log("Results from inserting Order ------", order);
 
         const payment = await getPaymentByCustomerEmail(
           customer.get("email"),
