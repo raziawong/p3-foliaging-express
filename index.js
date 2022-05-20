@@ -26,7 +26,7 @@ waxOn.setLayoutPath("./views/layouts");
 hbs.registerPartials(__dirname + "/views/partials");
 
 hbs.registerHelper("formatAddr", function (addressModel) {
-  return formatAddress(addressModel);
+  return addressModel ? formatAddress(addressModel) : "";
 });
 
 hbs.registerHelper("formatDate", function (date, pattern) {

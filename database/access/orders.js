@@ -21,7 +21,7 @@ const getAllOrders = async () => {
 
 const getOrderById = async (oid) => {
   try {
-    return await Order.where({ id: oid }).fetchAll({
+    return await Order.where({ id: oid }).fetch({
       require: true,
       withRelated: [
         "status",
