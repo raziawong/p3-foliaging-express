@@ -406,7 +406,9 @@ const createPlanterForm = (types, materials) => {
         validators: [validators.maxlength(200)],
         widget: widgets.textarea(),
       }),
-      details: fields.string(),
+      details: fields.string({
+        widget: widgets.textarea(),
+      }),
     },
     { validatePastFirstError: true }
   );
