@@ -1,5 +1,24 @@
 const { Order, OrderedItem, OrderStatus, ShippingType } = require("../models");
 
+const searchOrders = async (queryBuilder) => {
+  try {
+    return await Order.query(queryBuilder).fetchAll({
+      require: false,
+      withRelated: [
+        "status",
+        "customer",
+        "shipping_type",
+        "shipping_address",
+        "items.product",
+        "payments",
+      ],
+    });
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 const getAllOrders = async () => {
   try {
     return await Order.fetchAll({
@@ -156,6 +175,7 @@ const getAllOrderStatusesOpts = async () => {
 };
 
 module.exports = {
+  searchOrders,
   getAllOrders,
   getOrderById,
   updateOrder,

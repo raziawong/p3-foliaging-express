@@ -16,15 +16,32 @@ const searchProducts = async (queryBuilder) => {
   }
 };
 
-const getAllProducts = async () => {
+const getAllProducts = async (sortCol = "id", sortOrder = "ASC") => {
   try {
-    return await Product.fetchAll({
-      withRelated: ["color", "size", "discounts", "plant", "planter", "supply"],
-    });
+    return await Product.collection()
+      .orderBy(sortCol, sortOrder)
+      .fetch({
+        withRelated: [
+          "color",
+          "size",
+          "discounts",
+          "plant",
+          "planter",
+          "supply",
+        ],
+      });
   } catch (err) {
     console.error(err);
     return false;
   }
+};
+
+const getAllProductsOpts = async () => {
+  const opts = await getAllProducts("title").then((resp) =>
+    resp.map((o) => [o.get("id"), o.get("title")])
+  );
+  opts.unshift(["", "None"]);
+  return opts;
 };
 
 const getProductById = async (id) => {
@@ -190,6 +207,7 @@ const getAllSpecificationsOpts = async () => {
 module.exports = {
   searchProducts,
   getAllProducts,
+  getAllProductsOpts,
   getProductById,
   addProduct,
   updateProduct,

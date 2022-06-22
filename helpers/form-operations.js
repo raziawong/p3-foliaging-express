@@ -441,6 +441,33 @@ const createSupplyForm = (types) => {
   );
 };
 
+const searchOrderForm = (products, statuses) => {
+  return forms.create(
+    {
+      customer: fields.string(),
+      from_ordered_date: fields.date({
+        label: "From Ordered Date",
+        widget: widgets.date(),
+      }),
+      to_ordered_date: fields.date({
+        label: "To Ordered Date",
+        widget: widgets.date(),
+      }),
+      product_id: fields.string({
+        label: "Product",
+        widget: widgets.select(),
+        choices: products,
+      }),
+      status_id: fields.string({
+        label: "Status",
+        widget: widgets.select(),
+        choices: statuses,
+      }),
+    },
+    { validatePastFirstError: true }
+  );
+};
+
 const updateOrderForm = (statuses) => {
   return forms.create(
     {
@@ -472,5 +499,6 @@ module.exports = {
   createPlantForm,
   createPlanterForm,
   createSupplyForm,
+  searchOrderForm,
   updateOrderForm,
 };
