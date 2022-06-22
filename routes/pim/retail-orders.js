@@ -118,6 +118,7 @@ router.get("/:id/update", async (req, res, next) => {
         "first_name"
       )} ${customer.get("last_name")}`,
       form: orderForm.toHTML(uiFields),
+      homePath: "/retail/orders",
     });
   } else {
     fetchErrorHandler(next, "order", req.params.id);
@@ -153,6 +154,7 @@ router.post("/:id/update", async (req, res, next) => {
             "first_name"
           )} ${customer.get("last_name")}`,
           form: form.toHTML(uiFields),
+          homePath: "/retail/orders",
         });
       },
     });

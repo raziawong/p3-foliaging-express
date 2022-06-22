@@ -167,6 +167,7 @@ router.get("/create", async (req, res) => {
     signatureExpiry: expiryTS,
     title: titles.product,
     form: productForm.toHTML(uiFields),
+    homePath: "/retail/products",
   });
 });
 
@@ -179,6 +180,7 @@ router.post("/create", async (req, res) => {
       signatureExpiry: expiryTS,
       title: titles.product,
       form: form.toHTML(uiFields),
+      homePath: "/retail/products",
     });
   };
   const productForm = createProductForm(
@@ -263,6 +265,7 @@ router.get("/:id/update", async (req, res, next) => {
       specification: specification.name,
       title: productObj.title,
       form: productForm.toHTML(uiFields),
+      homePath: "/retail/products",
     });
   } else {
     fetchErrorHandler(next, "product", req.params.id);
@@ -305,6 +308,7 @@ router.post("/:id/update", async (req, res, next) => {
           specification: specification.name,
           title: productObj.title,
           form: form.toHTML(uiFields),
+          homePath: "/retail/products",
         });
       },
     });

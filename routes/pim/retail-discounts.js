@@ -33,6 +33,7 @@ router.get("/create", async (req, res) => {
   res.render("operations/create", {
     title: titles.discount,
     form: discountForm.toHTML(uiFields),
+    homePath: "/retail/discounts",
   });
 });
 
@@ -55,6 +56,7 @@ router.post("/create", async (req, res) => {
       res.render("operations/create", {
         title: titles.discount,
         form: form.toHTML(uiFields),
+        homePath: "/retail/discounts",
       });
     },
   });
@@ -68,6 +70,7 @@ router.get("/:id/update", async (req, res, next) => {
     res.render("operations/update", {
       title: discount.toJSON().title,
       form: discountForm.toHTML(uiFields),
+      homePath: "/retail/discounts",
     });
   } else {
     fetchErrorHandler(next, "discount", req.params.id);
@@ -94,6 +97,7 @@ router.post("/:id/update", async (req, res, next) => {
         res.render("operations/update", {
           title: discount.toJSON().title,
           form: form.toHTML(uiFields),
+          homePath: "/retail/discounts",
         });
       },
     });
