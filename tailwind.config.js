@@ -13,7 +13,6 @@ module.exports = {
       strategy: "base",
       strategy: "class",
     }),
-    require("tw-elements/dist/plugin"),
   ],
   theme: {
     fontFamily: {
