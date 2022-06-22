@@ -1,8 +1,5 @@
 const router = require("express").Router();
-const {
-  getCartItemById,
-  getCartItemByProductId,
-} = require("../../database/access/cart-items");
+const { getCartItemByProductId } = require("../../database/access/cart-items");
 const { getOrderedItemByProductId } = require("../../database/access/orders");
 const {
   getProductById,
@@ -71,7 +68,7 @@ router.get("/", async (req, res, next) => {
     const queries = req.query;
     const builder = (qb) => {
       if (queries.title) {
-        qb.where("title", "ILIKE", "%" + queries.title + "%");
+        qb.where("title", process.env.LIKE_SYNTAX, "%" + queries.title + "%");
       }
       if (queries.specification) {
         const specs = queries.specification.split("_");
@@ -125,7 +122,7 @@ router.get("/", async (req, res, next) => {
     let products = await searchProducts(builder);
 
     if (products) {
-      products = consolidateSpecs(products.toJSON());
+      products = await consolidateSpecs(products.toJSON());
       res.render("listing/products", {
         form: form.toHTML(uiFields),
         products: products,
@@ -145,7 +142,7 @@ router.get("/", async (req, res, next) => {
     empty: (form) => {
       showAllProducts(form);
     },
-    success: async (form) => {
+    success: (form) => {
       showQueriedProducts(form);
     },
     error: (form) => {
