@@ -193,15 +193,35 @@ router.post("/create", async (req, res) => {
     success: async (form) => {
       const { plant_id, planter_id, supply_id } = form.data;
       if (plant_id || planter_id || supply_id) {
-        const product = await addProduct(form.data);
-        req.flash(
-          variables.success,
-          messages.createSuccess(titles.product, product.get("title"))
-        );
+        const displaySpecError = () => {
+          req.flash(
+            variables.error,
+            "Please only select Plant OR Planter OR Supply"
+          );
+          req.session.save(() => {
+            renderForm(form);
+          });
+        };
 
-        req.session.save(() => {
-          res.redirect("/retail/products");
-        });
+        if (plant_id && planter_id && supply_id) {
+          displaySpecError();
+        } else if (plant_id && planter_id) {
+          displaySpecError();
+        } else if (plant_id && supply_id) {
+          displaySpecError();
+        } else if (planter_id && supply_id) {
+          displaySpecError();
+        } else {
+          const product = await addProduct(form.data);
+          req.flash(
+            variables.success,
+            messages.createSuccess(titles.product, product.get("title"))
+          );
+
+          req.session.save(() => {
+            res.redirect("/retail/products");
+          });
+        }
       } else {
         req.flash(
           variables.error,
