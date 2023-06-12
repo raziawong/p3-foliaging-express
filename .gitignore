@@ -107,6 +107,9 @@ dist
 # Session folder
 sessions
 
+# Tailwind generated files
+*.output.css
+
 core.Microsoft*
 core.mongo*
 core.python*
