@@ -97,6 +97,6 @@ const api = {
   });
 })();
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, process.env.HOST, () => {
   console.log("Server has started");
 });
