@@ -5,6 +5,9 @@
   "repository": "https://github.com/raziawong/p3-foliaging-express.git",
   "author": "Razia <nrwpc.stack@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": "20.3.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn run tailwind:css",
