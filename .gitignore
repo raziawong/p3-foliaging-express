@@ -110,9 +110,6 @@ sessions
 # Tailwind generated files
 *.output.css
 
-# fly.io Configuration file
-fly.toml
-
 core.Microsoft*
 core.mongo*
 core.python*
