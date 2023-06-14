@@ -11,9 +11,8 @@ const getDBM = () => {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
         host: process.env.DB_HOST,
-        ssl: {
-          rejectUnauthorized: false,
-        },
+        port: process.env.DB_PORT,
+        ssl: false,
       },
     },
   };
