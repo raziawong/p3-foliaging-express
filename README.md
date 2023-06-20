@@ -1,108 +1,127 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Foliaging Express Server and Admin Panel
 
-# Folaiging Express Server and Admin Panel
-
-This is an Express server and is the backend for Foligaing project
+This is an Express server and is the backend for Foliaging project
 - Access demo integration with frontend [here](https://foliaging.netlify.app/profile)
 - For more details, please visit the README at frontend repository [here](https://github.com/raziawong/p3-foliaging)
+<br/>
+<br/>
 
-## Template
+# Fly.io
 
-This git repository is created using [Code Institute](https://github.com/Code-Institute-Org/gitpod-full-template) student template for Gitpod.
+The application is hosted on [Fly.io](https://fly.io/) and following section will describe necessary steps to for deployment to the platform.
+<br/>
+<br/>
 
-Following content explains the usage in Gitpod and is taken from the template:
+## Steps to deploy to Fly.io
 
-## Gitpod Reminders
+Prequisites:
+  - Signed up an account with [Fly.io](https://fly.io/)
+  - Install Fly CLI on local machine
+  - For more details on accessing Fly apps, visit [Flyctl - Fly CLI documentation](https://fly.io/docs/flyctl/)
+<br/>
+<br/>
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+### Prepare NodeJS Express to be deployed to Fly.io
+  1. Add host "0.0.0.0" for server to listen to all interfaces
+        ```
+        app.listen("3001", "0.0.0.0", () => {
+            # callback
+        });
+        ```
 
-`python3 -m http.server`
+  2. Declare node version used in _package.json_
+        ```
+        "engines": {
+            "node": "20.3.0"
+        }
+        ```
+<br/>
+<br/>
+       
+### Launch Fly.io App
+  1. Navigate to root of NodeJS code directory in terminal
 
-A blue button should appear to click: _Make Public_,
+  2. Launch a Fly app by using following command for interactive setup
+        ```
+        fly launch
+        ```
 
-Another blue button should appear to click: _Open Browser_.
+  3. The interactive setup will have prompts to help set the name, organization, region of the app 
+  
+  4. Select 'No' if prompted to install Postgres at this point, and also 'No' if prompted to deploy now
+  
+  5. Following files will be automatically created by Fly CLI:
+  - _Dockerfile_: update the port, and any runtime commands if different from generated file
+  - _fly.toml_: update the port if different from generated file
+  - _.dockerignore_: check that necessary file and/or directories will be ignored in the deployed environment
+<br/>
+<br/>
+    
+### Create Fly Postgres Cluster and Managing It Locally
+Note that at this point, following instructions on Fly Postgres documentations could not opened up the cluster for public connections and thus the following will be using proxy for local system connections in order to facilitate management of the database.
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+  1. Suggest to navigate to a different directory or perpare a folder to store details of the cluster and generate file
+  
+  2. Create Postgres cluster using Fly CLI and giving it a custome name with the _-n_ flag
+        ```
+        flyctl postgres create -n <custom app name>
+        ```
+  
+  3. Wait for the machine to start and store the cluster details printed by Fly CLI. The details provided will not be found again if missed. Following is a sample of the format:
+        ```
+        Username:    <Postgres DB username>
+        Password:    <Postgres DB password>
+        Hostname:    <DB Internal hostname>
+        Flycast:     <DB Internal IP address>
+        Proxy port:  <Proxy port number>
+        Postgres port:  <Postgres DB port number>
+        Connection string: postgres://<username>:<password>@<hostname>:<port>
+        ```
+  
+  4. _fly.toml_ file will be generated at the end of creating Fly Postgres Cluster
 
-A blue button should appear to click: _Make Public_,
+  5. Reminder to add the file where the cluster details are saved into _.gitigore_ and _.dockerignore_ if they are in the same code repository
 
-Another blue button should appear to click: _Open Browser_.
+  6. Proceed to attach NodeJS app to the Postgres Cluster app
+        ```
+        fly postgres attach -a <NodeJS app name> <Postgres Cluster app name>
+        ```
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+  7. With the attachment, a new user and database at Postgres will be generated
 
-To log into the Heroku toolbelt CLI:
+  8. The secret *DATABASE_URL* will be automatically created and stored in the NodeJS app on Fly.io, it will also be printed out in the terminal. Again, store the string somewhere as it will be encrypted when accessed via dashboard or Fly CLI the next time
+        ```
+        DATABASE_URL=postgres://<username>:<password>@<hostname>:<port>/<database>?<options>
+        ```
 
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+  9. Using the above to dissect the environment variables required for NodeJS to connect to the database, and update your local _.env_ file 
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
+  10. With everything up and local environment variables set, you can now try to forward the Postgres server port to your local system with _fly proxy_:
+        ```
+        fly proxy <Proxy port number> -a <Postgres app name>
+        ```
 
-------
+  11. As long as the proxy is running, your local server will be serving data from the database on Fly Postgres cluster
 
-## Release History
+  12. Perform testing on the new database
+<br/>
+<br/>
 
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
+### Deploy Fly.io App
+After ensuring server can be connected to the database on Fly.io locally, proceed to deploy the codes into the Fly app.
 
-**July 2 2021:** Remove extensions that are not available in Open VSX.
+  1. Navigate to root of NodeJS code repository in the terminal, where the _fly.toml_ file is for the app
 
-**June 30 2021:** Combined the P4 and P5 templates into one file, added the uptime script. See the FAQ at the end of this file.
+  2. You may set environment variables on the Fly app with your local _.env_ file using the following: 
+        ```
+        fly secrets import < <env filename>
+        ```
 
-**June 10 2021:** Added: `font_fix` script and alias to fix the Terminal font issue
+  3. Ensure secrets are set by checking the Fly.io app secrets dashboard, otherwise check that you are in the correct directory
 
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
+  4. Proceed to deploy
+        ```
+        fly deploy
+        ```  
 
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
-
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
-
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
-
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
-
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
-
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
-
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
-
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
-
-------
-
-## FAQ about the uptime script
-
-**Why have you added this script?**
-
-It will help us to calculate how many running workspaces there are at any one time, which greatly helps us with cost and capacity planning. It will help us decide on the future direction of our cloud-based IDE strategy.
-
-**How will this affect me?**
-
-For everyday usage of Gitpod, it doesn’t have any effect at all. The script only captures the following data:
-
-- An ID that is randomly generated each time the workspace is started.
-- The current date and time
-- The workspace status of “started” or “running”, which is sent every 5 minutes.
-
-It is not possible for us or anyone else to trace the random ID back to an individual, and no personal data is being captured. It will not slow down the workspace or affect your work.
-
-**So….?**
-
-We want to tell you this so that we are being completely transparent about the data we collect and what we do with it.
-
-**Can I opt out?**
-
-Yes, you can. Since no personally identifiable information is being captured, we'd appreciate it if you let the script run; however if you are unhappy with the idea, simply run the following commands from the terminal window after creating the workspace, and this will remove the uptime script:
-
-```
-pkill uptime.sh
-rm .vscode/uptime.sh
-```
-
-**Anything more?**
-
-Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
-
----
+  5. After machines are started, the server can be accessed in any web browser with <app name>.fly.dev
